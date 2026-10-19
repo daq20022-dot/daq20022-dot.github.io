@@ -1,26 +1,32 @@
 <!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="Erte Komek"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>Erte Komek</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="theme-color" content="#0b5cad">
+<meta name="theme-color" content="#c9356b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-  /* Layout: app shell — white top bar, one 600px content column of clinical cards, fixed bottom tab bar with five sections.
-     Palette: public-health blue on a cool paper ground; semantic green / amber / red only for results. */
+  /* Layout: app shell — translucent top bar, one 600px column of soft rounded cards, fixed bottom tab bar with six sections.
+     Palette: rose and lavender on a blush ground (Flo-like); serif headings; semantic green / amber / red only for results. */
   :root {
-    --bg: #eef3f8; --surface: #ffffff; --surface-2: #f6f9fc; --fg: #14243a; --muted: #5b6b80; --line: #d9e2ec;
-    --accent: #0b5cad; --accent-fg: #ffffff; --accent-soft: #e3eefb; --teal: #0f8a83; --teal-soft: #dff3f1;
-    --ok: #1b7a43; --ok-bg: #e3f4ea; --warn: #9a5b00; --warn-bg: #fdf1dc; --bad: #b42318; --bad-bg: #fdecea;
-    --font: "Golos Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --bg: #fff5f7; --surface: #ffffff; --surface-2: #fbf1f6; --fg: #4a2340; --muted: #7d5b72; --line: #f1dbe4;
+    --accent: #c9356b; --accent-fg: #ffffff; --accent-soft: #fbe1ea; --teal: #7b4fb0; --teal-soft: #efe4fa;
+    --ok: #2f8a63; --ok-bg: #e2f4ea; --warn: #a45a12; --warn-bg: #fdf0dc; --bad: #b42350; --bad-bg: #fdecef;
+    --bg2: #f8f0fb; --lav: #7b4fb0; --lav-soft: #efe4fa; --period: #e0457b; --period-soft: #fbd3e1; --fert: #8a63c9; --fert-soft: #e9ddf8; --ovu: #6a3fb0;
+    --shadow: 0 12px 34px rgba(201,53,107,.10);
+    --font: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif; --serif: "Playfair Display", Georgia, serif;
     --nav-h: 64px;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg: #0d1522; --surface: #142033; --surface-2: #192840; --fg: #e4ecf6; --muted: #98a9bf; --line: #24364f;
-    --accent: #6aa8ff; --accent-fg: #0b1626; --accent-soft: #1b2f4d; --teal: #4fd1c5; --teal-soft: #15343a;
-    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8a80; --bad-bg: #3d1a17; color-scheme: dark } }
+    --bg: #1f1420; --surface: #2c1f31; --surface-2: #261a2b; --fg: #f8e8f0; --muted: #c9adc0; --line: #45304b;
+    --accent: #f07ba3; --accent-fg: #2a0f1d; --accent-soft: #4a2238; --teal: #c4a6ef; --teal-soft: #352646;
+    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8fb0; --bad-bg: #4a1d2c;
+    --bg2: #261a2b; --lav: #c4a6ef; --lav-soft: #352646; --period: #f07ba3; --period-soft: #5a2440; --fert: #b393ea; --fert-soft: #3b2b55; --ovu: #cdb2f5;
+    --shadow: 0 12px 34px rgba(0,0,0,.35); color-scheme: dark } }
   :root[data-theme="dark"] {
-    --bg: #0d1522; --surface: #142033; --surface-2: #192840; --fg: #e4ecf6; --muted: #98a9bf; --line: #24364f;
-    --accent: #6aa8ff; --accent-fg: #0b1626; --accent-soft: #1b2f4d; --teal: #4fd1c5; --teal-soft: #15343a;
-    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8a80; --bad-bg: #3d1a17; color-scheme: dark }
+    --bg: #1f1420; --surface: #2c1f31; --surface-2: #261a2b; --fg: #f8e8f0; --muted: #c9adc0; --line: #45304b;
+    --accent: #f07ba3; --accent-fg: #2a0f1d; --accent-soft: #4a2238; --teal: #c4a6ef; --teal-soft: #352646;
+    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8fb0; --bad-bg: #4a1d2c;
+    --bg2: #261a2b; --lav: #c4a6ef; --lav-soft: #352646; --period: #f07ba3; --period-soft: #5a2440; --fert: #b393ea; --fert-soft: #3b2b55; --ovu: #cdb2f5;
+    --shadow: 0 12px 34px rgba(0,0,0,.35); color-scheme: dark }
 
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); -webkit-tap-highlight-color: transparent; }
@@ -214,16 +220,135 @@
   .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--nav-h) + 14px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; z-index: 40; }
   footer.legal { font-size: 12px; color: var(--muted); display: grid; gap: 4px; padding-top: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* feminine look */
+  body { background: radial-gradient(120% 60% at 100% 0%, var(--bg2), transparent 60%), var(--bg); background-attachment: fixed; }
+  body::before { background: var(--bg); }
+  header.bar { background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 0; }
+  .brand b { font-family: var(--serif); font-weight: 600; font-size: 21px; letter-spacing: 0; }
+  .brand small { letter-spacing: .02em; text-transform: none; font-size: 12px; }
+  .h1, .h2 { font-family: var(--serif); font-weight: 600; letter-spacing: 0; }
+  .h1 { font-size: 25px; } .h2 { font-size: 21px; }
+  .eyebrow { color: var(--accent); }
+  .card { border-radius: 24px; padding: 18px; box-shadow: var(--shadow); }
+  .card.flat { box-shadow: none; }
+  .btn, .btn.sm { border-radius: 999px; }
+  .btn.primary { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--lav))); }
+  .seg { border-radius: 999px; padding: 3px; background: var(--surface); }
+  .seg button { border-radius: 999px; }
+  .chip { border-width: 1.5px; }
+  .avatar { background: linear-gradient(140deg, #f7b6cb, #c9a7ef); color: #fff; font-family: var(--serif); }
+  .kv div, .banner, .q { border-radius: 18px; }
+  details.art { border-radius: 22px; }
+  .bar-p { background: var(--bg2); } .bar-p i { background: linear-gradient(90deg, var(--period), var(--lav)); }
+  nav.tabbar { border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(201,53,107,.06); }
+  .tabbar-in { grid-template-columns: repeat(6, 1fr); }
+  .tabbar button { font-weight: 800; font-size: 10.5px; }
+  .tabbar .pill { padding: 3px 10px; }
+  .momcard { background: linear-gradient(140deg, #ffe3ec, #efe1fb); border: 0; }
+  :root[data-theme="dark"] .momcard { background: linear-gradient(140deg, #4a2238, #352646); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .momcard { background: linear-gradient(140deg, #4a2238, #352646); } }
+
+  /*MOM-CSS*/
+  #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
+  #mom h1 { font-size: 30px; line-height: 1.15; }
+  #mom h2 { font-size: 22px; line-height: 1.2; }
+  #mom h3 { font-size: 17px; margin: 0; font-weight: 800; }
+  #mom p { margin: 0; }
+  #mom .small { font-size: 14px; } .muted { color: var(--muted); } .stack { display: grid; gap: 14px; }
+  #mom .card { background: var(--surface); border: 1px solid var(--line); border-radius: 26px; padding: 18px; box-shadow: var(--shadow); display: grid; gap: 12px; }
+  #mom .card.soft { background: var(--bg2); box-shadow: none; }
+  #mom .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  #mom .between { justify-content: space-between; }
+  #mom .btn { border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 800; background: var(--accent); color: var(--accent-fg); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; }
+  #mom .btn.soft { background: var(--accent-soft); color: var(--accent); }
+  #mom .btn.lav { background: var(--lav-soft); color: var(--lav); }
+  #mom .btn.line { background: transparent; border: 1.5px solid var(--line); color: var(--fg); }
+  #mom .btn.block { width: 100%; }
+  #mom .btn.sm { min-height: 36px; padding: 8px 14px; font-size: 14px; }
+  #mom .link { border: 0; background: none; color: var(--accent); font-weight: 800; padding: 4px 0; }
+  #mom .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  #mom .chip { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 13px; font-size: 14px; font-weight: 700; color: var(--fg); }
+  #mom .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  #mom .chip.lavc[aria-pressed="true"] { background: var(--lav); border-color: var(--lav); }
+  #mom .field { display: grid; gap: 6px; }
+  #mom .field label { font-size: 14px; font-weight: 700; color: var(--muted); }
+  #mom .field input, #mom .field select, #mom .field textarea { border: 1.5px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px 14px; width: 100%; }
+  #mom .field textarea { min-height: 76px; resize: vertical; }
+  #mom .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--accent); }
+  #mom .ringwrap { position: relative; width: 270px; height: 270px; margin: 4px auto 0; }
+  #mom .ringwrap svg { width: 100%; height: 100%; }
+  #mom .ringtext { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 2px; padding: 40px; }
+  #mom .ringtext .big { font-family: var(--serif); font-size: 40px; line-height: 1.05; }
+  #mom .ringtext .lbl { font-size: 14px; color: var(--muted); font-weight: 700; }
+  #mom .legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; font-size: 13px; color: var(--muted); font-weight: 700; }
+  #mom .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: 1px; }
+  #mom .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  #mom .stat { background: var(--bg2); border-radius: 18px; padding: 12px; text-align: center; }
+  #mom .stat b { display: block; font-family: var(--serif); font-size: 24px; }
+  #mom .stat span { font-size: 12px; color: var(--muted); font-weight: 700; }
+  #mom .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  #mom .cal .dow { text-align: center; font-size: 12px; font-weight: 800; color: var(--muted); padding-bottom: 2px; }
+  #mom .cal button { aspect-ratio: 1; border: 0; border-radius: 50%; background: transparent; font-weight: 700; font-size: 15px; position: relative; color: var(--fg); }
+  #mom .cal button.out { color: transparent; pointer-events: none; }
+  #mom .cal button.period { background: var(--period); color: #fff; }
+  #mom .cal button.pred { background: transparent; box-shadow: inset 0 0 0 2px var(--period); color: var(--period); }
+  #mom .cal button.fert { background: var(--fert-soft); color: var(--fert); }
+  #mom .cal button.ovu { background: var(--fert); color: #fff; }
+  #mom .cal button.today { outline: 2.5px solid var(--fg); outline-offset: 2px; }
+  #mom .cal button.sel { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+  #mom .cal button .lg { position: absolute; bottom: 4px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--lav); }
+  #mom .insight { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: start; }
+  #mom .insight .ic { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; font-size: 22px; background: var(--accent-soft); }
+  #mom .list { display: grid; gap: 0; }
+  #mom .list > div { padding: 12px 0; border-top: 1px solid var(--line); }
+  #mom .list > div:first-child { border-top: 0; }
+  #mom details.art { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
+  #mom details.art summary { list-style: none; padding: 14px 16px; display: grid; grid-template-columns: 40px 1fr 18px; gap: 12px; align-items: center; cursor: pointer; font-weight: 800; }
+  #mom details.art summary::-webkit-details-marker { display: none; }
+  #mom details.art .ic { width: 40px; height: 40px; border-radius: 14px; background: var(--lav-soft); display: grid; place-items: center; font-size: 20px; }
+  #mom details.art .body { padding: 0 16px 16px; display: grid; gap: 8px; color: var(--fg); }
+  #mom details.art .body ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+  #mom details.art[open] .chev { transform: rotate(90deg); }
+  #mom .chev { transition: transform .2s; color: var(--muted); }
+  #mom .banner { border-radius: 20px; padding: 14px 16px; display: grid; gap: 8px; }
+  #mom .banner.warn { background: #fdecef; color: #8a2140; }
+  #mom .banner.info { background: var(--lav-soft); color: var(--fg); }
+  #mom .bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; padding-top: 8px; }
+  #mom .bars div { flex: 1; border-radius: 10px 10px 4px 4px; background: linear-gradient(180deg, var(--period), var(--lav)); position: relative; min-height: 6px; }
+  #mom .bars div span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: 12px; font-weight: 800; color: var(--muted); }
+  #mom .barlbl { display: flex; gap: 8px; font-size: 11px; color: var(--muted); font-weight: 700; }
+  #mom .barlbl span { flex: 1; text-align: center; }
+  #mom .sheet-bg { position: fixed; inset: 0; background: rgba(40,10,30,.45); z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
+  #mom .sheet { background: var(--bg); width: 100%; max-width: 560px; max-height: 92vh; overflow: auto; border-radius: 28px 28px 0 0; padding: 18px 16px 28px; display: grid; gap: 14px; }
+  #mom .pin input { font-size: 32px; letter-spacing: 14px; text-align: center; width: 220px; border: 1.5px solid var(--line); border-radius: 18px; padding: 12px; background: var(--surface); }
+  #mom .week { font-family: var(--serif); font-size: 64px; line-height: 1; color: var(--accent); }
+  #mom .pbar { height: 12px; border-radius: 999px; background: var(--bg2); overflow: hidden; }
+  #mom .pbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--period), var(--lav)); border-radius: 999px; }
+  #mom .qa { border-radius: 18px; padding: 12px 14px; max-width: 88%; }
+  #mom .qa.me { background: var(--accent); color: var(--accent-fg); justify-self: end; }
+  #mom .qa.bot { background: var(--bg2); justify-self: start; }
+  #mom .chat { display: grid; gap: 8px; }
+  #mom .legal { font-size: 12px; color: var(--muted); text-align: center; padding: 6px 8px 0; }
+  @media (max-width: 380px) { #mom .ringwrap { width: 236px; height: 236px;} #mom .ringtext .big { font-size: 34px;} }
+  #mom .pin { display: grid; place-items: center; min-height: 60vh; padding: 24px; text-align: center; }
+  #mom .banner.warn { background: var(--bad-bg); color: var(--bad); }
+  #mom .mtabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 4px; }
+  #mom .mtabs button { flex: none; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-weight: 800; font-size: 14px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+  #mom .mtabs button[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  #mom .logo { width: 36px; height: 36px; border-radius: 12px; background: linear-gradient(140deg, #f07ba3, #9b5fd0); display: grid; place-items: center; color: #fff; font-family: var(--serif); font-size: 20px; font-style: italic; }
+  #mom > .stack { gap: 14px; }
+  /*/MOM-CSS*/
 </style>
 
 </head><body><header class="bar">
   <div class="bar-in">
     <div class="brand">
       <svg viewBox="0 0 40 40" aria-hidden="true">
-        <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--accent)"/>
+        <defs><linearGradient id="lg-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f07ba3"/><stop offset="1" stop-color="#9b5fd0"/></linearGradient></defs><rect x="1" y="1" width="38" height="38" rx="12" fill="url(#lg-brand)"/>
         <path d="M20 31V19" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
         <path d="M20 22c-6 0-9-3.5-9-8.5 6 0 9 3.5 9 8.5z" fill="#fff"/>
-        <path d="M20 19c0-5 3-8 9-8 0 5-3 8-9 8z" fill="#9fe3db"/>
+        <path d="M20 19c0-5 3-8 9-8 0 5-3 8-9 8z" fill="#ffd1e1"/>
         <path d="M29 26h6M32 23v6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
       </svg>
       <div><b>Erte Komek</b><small id="sub"></small></div>
@@ -244,7 +369,8 @@
 const T = {
   kk: {
     sub: 'Бала дамуының күнделігі',
-    nav: ['Басты', 'Тексеру', 'Ойындар', 'Білім', 'Көмек'],
+    nav: ['Басты', 'Тексеру', 'Ойындар', 'Білім', 'Көмек', 'Ана'],
+    momT: 'Ана денсаулығы', momNote: 'Цикл, овуляция, жүктілік күнтізбесі, көңіл-күй мен белгілер — Flo сияқты. Деректер тек осы телефонда.', openMom: 'Ашу',
     example: 'Бұл — мысал. Өз балаңызды қосыңыз, сонда деректер тек сіздің телефоныңызда сақталады.',
     addChild: 'Бала қосу', editChild: 'Өңдеу', delChild: 'Өшіру', save: 'Сақтау', cancel: 'Болдырмау',
     confirmDel: n => `${n} туралы барлық деректер өшеді. Өшіру керек пе?`, yesDel: 'Иә, өшіру',
@@ -308,7 +434,8 @@ const T = {
   },
   ru: {
     sub: 'Дневник развития ребёнка',
-    nav: ['Главная', 'Проверка', 'Игры', 'Знания', 'Помощь'],
+    nav: ['Главная', 'Проверка', 'Игры', 'Знания', 'Помощь', 'Мама'],
+    momT: 'Здоровье мамы', momNote: 'Календарь цикла, овуляции и беременности, настроение и симптомы — как во Flo. Данные только на этом телефоне.', openMom: 'Открыть',
     example: 'Это пример. Добавьте своего ребёнка — данные будут храниться только на вашем телефоне.',
     addChild: 'Добавить ребёнка', editChild: 'Изменить', delChild: 'Удалить', save: 'Сохранить', cancel: 'Отмена',
     confirmDel: n => `Все данные о ребёнке ${n} будут удалены. Удалить?`, yesDel: 'Да, удалить',
@@ -529,6 +656,7 @@ const ICONS = {
   ear: '<path d="M8 9a5 5 0 0 1 10 0c0 4-4 5-4 8a3 3 0 0 1-6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="9.5" r="1.6" fill="currentColor"/>',
   puzzle: '<path d="M5 5h5a2 2 0 1 1 4 0h5v5a2 2 0 1 1 0 4v5h-5a2 2 0 1 0-4 0H5v-5a2 2 0 1 0 0-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   book: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2"/>',
+  mom: '<path d="M12 20c-4-2-7-5-7-9a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 4-3 7-7 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/>',
   food: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 3c-2 2-2 6 0 8v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
 };
 
@@ -777,9 +905,9 @@ function reportCanvas(txt) {
   const wrap = (line, size, bold) => { x.font = `${bold ? 700 : 400} ${size}px ${font}`; const out = []; let cur = ''; for (const w of line.split(' ')) { const tryL = cur ? cur + ' ' + w : w; if (x.measureText(tryL).width > W - 2 * P && cur) { out.push(cur); cur = w; } else cur = tryL; } out.push(cur); return out; };
   const lines = []; txt.split('\n').forEach((ln, i) => { const head = i === 0, bold = head || /:$/.test(ln) || /^(Кезең|Этап)/.test(ln); (ln ? wrap(ln, head ? 40 : 32, bold) : ['']).forEach(l => lines.push([l, head ? 40 : 32, bold])); });
   cv.width = W; cv.height = 150 + lines.reduce((a, [, sz]) => a + sz * 1.45, 0) + 60;
-  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, cv.height); x.fillStyle = '#0b5cad'; x.fillRect(0, 0, W, 16);
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, cv.height); x.fillStyle = '#c9356b'; x.fillRect(0, 0, W, 16);
   let y = 90; x.textBaseline = 'alphabetic';
-  lines.forEach(([l, sz, bold], i) => { x.font = `${bold ? 700 : 400} ${sz}px ${font}`; x.fillStyle = i === 0 ? '#0b5cad' : '#14243a'; x.fillText(l, P, y); y += sz * 1.45; });
+  lines.forEach(([l, sz, bold], i) => { x.font = `${bold ? 700 : 400} ${sz}px ${font}`; x.fillStyle = i === 0 ? '#c9356b' : '#4a2340'; x.fillText(l, P, y); y += sz * 1.45; });
   x.font = `400 24px ${font}`; x.fillStyle = '#5b6b80'; x.fillText('daq20022-dot.github.io', P, cv.height - 40);
   return cv;
 }
@@ -842,16 +970,609 @@ function stageState(c, st) {
   return { a, done, n, no, uns, k };
 }
 
+/*MOM-JS*/
+/* ---------- «Ана»: women's health module (cycle, ovulation, pregnancy) — own storage key, mounted into #mom ---------- */
+const MOM = (HOST => {
+/* ================= Erte Komek — women's health tracker (cycle, fertility, pregnancy). Data stays on this device. ================= */
+const KEY = 'erte-komek-ana-v1';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* ---------- dates (local calendar days as 'YYYY-MM-DD') ---------- */
+const pad = n => String(n).padStart(2, '0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const D = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+const add = (s, n) => { const d = D(s); d.setDate(d.getDate() + n); return iso(d); };
+const diff = (a, b) => Math.round((D(a) - D(b)) / 864e5);
+const today = () => iso(new Date());
+
+/* ---------- state ---------- */
+let S = load();
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === 'object') return Object.assign(fresh(), s); } catch (e) {}
+  return fresh();
+}
+function fresh() { return { lang: 'ru', theme: 'auto', tab: 0, onboarded: false, mode: 'cycle', cycleLen: 28, periodLen: 5, periods: [], logs: {}, preg: null, pin: '', remind: true, name: '' }; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const ui = { sel: null, month: null, unlocked: false, chat: [] };
+
+/* ---------- texts ---------- */
+const T = {
+  ru: {
+    sub: 'Календарь женского здоровья', tabs: ['Сегодня', 'Календарь', 'Анализ', 'Знания', 'Я'],
+    hello: 'Здравствуйте', welcome: 'Ваш личный календарь цикла, овуляции и беременности.',
+    privacy: 'Без регистрации. Все данные хранятся только на этом телефоне.',
+    goal: 'Что вы хотите отслеживать?', mCycle: 'Цикл', mTtc: 'Хочу забеременеть', mPreg: 'Беременность',
+    mCycleD: 'Месячные, овуляция, самочувствие', mTtcD: 'Фертильные дни и шансы зачатия', mPregD: 'Неделя за неделей',
+    lastStart: 'Первый день последних месячных', cycleLen: 'Длина цикла (дней)', periodLen: 'Длительность месячных (дней)',
+    lmp: 'Первый день последних месячных до беременности', start: 'Начать', name: 'Имя (необязательно)',
+    cycleDay: 'день цикла', toPeriod: 'до месячных', periodDay: 'день месячных', late: 'задержка',
+    daysW: n => `${n} ${plural(n, 'день', 'дня', 'дней')}`,
+    phase: { men: 'Менструация', fol: 'Фолликулярная фаза', fert: 'Фертильное окно', ovu: 'День овуляции', lut: 'Лютеиновая фаза' },
+    chance: { low: 'Низкий шанс забеременеть', mid: 'Средний шанс забеременеть', high: 'Высокий шанс забеременеть' },
+    lgPeriod: 'Месячные', lgPred: 'Прогноз', lgFert: 'Фертильные дни', lgOvu: 'Овуляция',
+    logToday: 'Отметить самочувствие', periodStart: 'Месячные начались', periodEnd: 'Месячные закончились', periodOn: 'Идут месячные',
+    nextPeriod: 'Следующие месячные', nextOvu: 'Овуляция', fertWin: 'Фертильное окно',
+    insight: 'Совет на сегодня', tips: TIPS_RU(), dayLog: 'Отметки дня', saved: 'Сохранено', none: 'Нет отметок',
+    flow: 'Выделения при месячных', flows: ['Нет', 'Мажущие', 'Слабые', 'Средние', 'Обильные'],
+    symptoms: 'Симптомы', sym: ['Спазмы', 'Головная боль', 'Боль в спине', 'Чувствительная грудь', 'Акне', 'Вздутие', 'Тошнота', 'Усталость', 'Бессонница', 'Тяга к сладкому', 'Головокружение', 'Боль внизу живота', 'Запор', 'Диарея', 'Всё хорошо'],
+    mood: 'Настроение', moods: ['Спокойная', 'Счастливая', 'Энергичная', 'Раздражительная', 'Тревожная', 'Грустная', 'Перепады', 'Сонная'],
+    discharge: 'Выделения', dis: ['Нет', 'Липкие', 'Кремовые', 'Как яичный белок', 'Водянистые', 'Необычные'],
+    sex: 'Близость', sexes: ['Не было', 'Защищённый', 'Незащищённый'], pill: 'Таблетка (контрацепция)', pillT: 'Приняла',
+    tests: 'Тесты', ovuTest: 'Тест на овуляцию', pregTest: 'Тест на беременность', testV: ['—', 'Отрицательный', 'Положительный'],
+    body: 'Тело', weight: 'Вес, кг', temp: 'Базальная температура, °C', water: 'Вода, стаканов', sleep: 'Сон, часов', note: 'Заметка',
+    save: 'Сохранить', cancel: 'Закрыть', del: 'Удалить',
+    anTitle: 'Анализ цикла', avgCycle: 'Средний цикл', avgPeriod: 'Месячные', cycles: 'Циклов',
+    regular: 'Цикл регулярный', irregular: 'Цикл нерегулярный — разница больше 7 дней', needMore: 'Отметьте хотя бы 2 цикла, чтобы увидеть анализ',
+    history: 'История циклов', topSym: 'Частые симптомы', bbt: 'Базальная температура', bbtNote: 'Подъём температуры на 0,2–0,5 °C обычно бывает после овуляции.',
+    report: 'Отчёт для врача', reportNote: 'Сводка циклов и симптомов — покажите гинекологу.', print: 'Открыть / распечатать',
+    learn: 'Знания', learnNote: 'Короткие статьи по рекомендациям ВОЗ и гинекологов.',
+    checkT: 'Проверка симптомов', checkNote: 'Ответьте на вопросы — подскажем, стоит ли обсудить это с врачом. Это не диагноз.',
+    assist: 'Помощник', assistNote: 'Ответы на частые вопросы. Не заменяет врача.', ask: 'Ваш вопрос', send: 'Спросить',
+    flags: 'Срочно к врачу, если', flagList: ['Очень обильные месячные: прокладка промокает за час', 'Сильная боль, которая не проходит от обезболивающих', 'Кровотечение во время беременности', 'Температура выше 38 °C с болью внизу живота', 'Месячных нет больше 90 дней (и вы не беременны)'],
+    me: 'Профиль', modeT: 'Режим', settings: 'Настройки', theme: 'Тема', themes: ['Авто', 'Светлая', 'Тёмная'],
+    remindT: 'Напоминания', remindNote: 'Добавьте прогноз месячных, овуляции и таблетку в календарь телефона — телефон сам напомнит.',
+    addCal: 'Добавить в календарь', partner: 'Поделиться с партнёром', partnerNote: 'Отправьте близкому человеку, в какой вы фазе и как поддержать.',
+    pinT: 'Код-пароль', pinNote: 'Закрыть приложение 4-значным кодом.', pinSet: 'Установить код', pinOff: 'Отключить код', pinEnter: 'Введите код',
+    pinWrong: 'Неверный код', pinNew: 'Новый код (4 цифры)',
+    data: 'Мои данные', export: 'Скачать копию', import: 'Загрузить копию', wipe: 'Удалить все данные', wipeQ: 'Удалить всё безвозвратно?',
+    disclaimer: 'Erte Komek не является средством контрацепции и не ставит диагнозы. При сомнениях обратитесь к врачу.',
+    pregWeek: 'неделя беременности', trimester: n => `${n}-й триместр`, due: 'Предполагаемая дата родов', baby: 'Размер малыша',
+    pregLeft: 'Осталось', pregTips: PREG_RU(), fruit: FRUIT_RU(),
+    partnerMsg: (ph, d) => `Привет! У меня сейчас ${ph.toLowerCase()}. ${d}\nОтправлено из Erte Komek`,
+    periodsIn: n => `Месячные через ${n} ${plural(n, 'день', 'дня', 'дней')}`, periodToday: 'Месячные ожидаются сегодня',
+    yes: 'Да', no: 'Нет', result: 'Результат', recheck: 'Пройти снова', clear: 'Очистить',
+  },
+  kk: {
+    sub: 'Әйел денсаулығының күнтізбесі', tabs: ['Бүгін', 'Күнтізбе', 'Талдау', 'Білім', 'Мен'],
+    hello: 'Сәлеметсіз бе', welcome: 'Етеккір, овуляция және жүктілік бойынша жеке күнтізбеңіз.',
+    privacy: 'Тіркеусіз. Барлық деректер тек осы телефонда сақталады.',
+    goal: 'Нені қадағалағыңыз келеді?', mCycle: 'Цикл', mTtc: 'Жүкті болғым келеді', mPreg: 'Жүктілік',
+    mCycleD: 'Етеккір, овуляция, көңіл-күй', mTtcD: 'Құнарлы күндер және мүмкіндік', mPregD: 'Апта сайын',
+    lastStart: 'Соңғы етеккірдің бірінші күні', cycleLen: 'Цикл ұзақтығы (күн)', periodLen: 'Етеккір ұзақтығы (күн)',
+    lmp: 'Жүктілікке дейінгі соңғы етеккірдің бірінші күні', start: 'Бастау', name: 'Есіміңіз (міндетті емес)',
+    cycleDay: 'цикл күні', toPeriod: 'етеккірге дейін', periodDay: 'етеккір күні', late: 'кешігу',
+    daysW: n => `${n} күн`,
+    phase: { men: 'Етеккір', fol: 'Фолликулярлық фаза', fert: 'Құнарлы кезең', ovu: 'Овуляция күні', lut: 'Лютеиндік фаза' },
+    chance: { low: 'Жүкті болу мүмкіндігі төмен', mid: 'Жүкті болу мүмкіндігі орташа', high: 'Жүкті болу мүмкіндігі жоғары' },
+    lgPeriod: 'Етеккір', lgPred: 'Болжам', lgFert: 'Құнарлы күндер', lgOvu: 'Овуляция',
+    logToday: 'Көңіл-күйді белгілеу', periodStart: 'Етеккір басталды', periodEnd: 'Етеккір аяқталды', periodOn: 'Етеккір жүріп жатыр',
+    nextPeriod: 'Келесі етеккір', nextOvu: 'Овуляция', fertWin: 'Құнарлы кезең',
+    insight: 'Бүгінгі кеңес', tips: TIPS_KK(), dayLog: 'Күн белгілері', saved: 'Сақталды', none: 'Белгі жоқ',
+    flow: 'Етеккір мөлшері', flows: ['Жоқ', 'Аздап', 'Аз', 'Орташа', 'Көп'],
+    symptoms: 'Белгілер', sym: ['Түйілу', 'Бас ауруы', 'Бел ауруы', 'Кеуде сезімталдығы', 'Безеу', 'Іш кебуі', 'Жүрек айну', 'Шаршау', 'Ұйқысыздық', 'Тәттіге құмарлық', 'Бас айналу', 'Іштің төменгі ауыруы', 'Іш қатуы', 'Іш өту', 'Бәрі жақсы'],
+    mood: 'Көңіл-күй', moods: ['Тыныш', 'Бақытты', 'Сергек', 'Ашуланшақ', 'Мазасыз', 'Мұңды', 'Құбылмалы', 'Ұйқышыл'],
+    discharge: 'Бөліністер', dis: ['Жоқ', 'Жабысқақ', 'Кілегейлі', 'Жұмыртқа ақуызындай', 'Сулы', 'Әдеттен тыс'],
+    sex: 'Жақындық', sexes: ['Болған жоқ', 'Қорғалған', 'Қорғалмаған'], pill: 'Контрацептив таблетка', pillT: 'Іштім',
+    tests: 'Тесттер', ovuTest: 'Овуляция тесті', pregTest: 'Жүктілік тесті', testV: ['—', 'Теріс', 'Оң'],
+    body: 'Дене', weight: 'Салмақ, кг', temp: 'Базальды температура, °C', water: 'Су, стақан', sleep: 'Ұйқы, сағат', note: 'Жазба',
+    save: 'Сақтау', cancel: 'Жабу', del: 'Өшіру',
+    anTitle: 'Цикл талдауы', avgCycle: 'Орташа цикл', avgPeriod: 'Етеккір', cycles: 'Цикл саны',
+    regular: 'Цикл тұрақты', irregular: 'Цикл тұрақсыз — айырма 7 күннен асады', needMore: 'Талдауды көру үшін кемінде 2 циклді белгілеңіз',
+    history: 'Циклдер тарихы', topSym: 'Жиі белгілер', bbt: 'Базальды температура', bbtNote: 'Овуляциядан кейін температура әдетте 0,2–0,5 °C көтеріледі.',
+    report: 'Дәрігерге есеп', reportNote: 'Циклдер мен белгілердің қысқаша есебі — гинекологқа көрсетіңіз.', print: 'Ашу / басып шығару',
+    learn: 'Білім', learnNote: 'ДДҰ және гинекологтар ұсынымдары бойынша қысқа мақалалар.',
+    checkT: 'Белгілерді тексеру', checkNote: 'Сұрақтарға жауап беріңіз — дәрігермен ақылдасу керек пе, айтамыз. Бұл диагноз емес.',
+    assist: 'Көмекші', assistNote: 'Жиі қойылатын сұрақтарға жауап. Дәрігерді алмастырмайды.', ask: 'Сұрағыңыз', send: 'Сұрау',
+    flags: 'Дереу дәрігерге барыңыз, егер', flagList: ['Етеккір өте көп: төсеніш бір сағатта толады', 'Ауырсынуды басатын дәрі көмектеспейтін қатты ауру', 'Жүктілік кезінде қан кету', '38 °C-тан жоғары қызу және іштің төменгі ауыруы', 'Етеккір 90 күннен астам жоқ (жүкті емессіз)'],
+    me: 'Профиль', modeT: 'Режим', settings: 'Баптаулар', theme: 'Тақырып', themes: ['Авто', 'Ашық', 'Қараңғы'],
+    remindT: 'Еске салғыштар', remindNote: 'Етеккір, овуляция болжамын және таблетканы телефон күнтізбесіне қосыңыз — телефон өзі еске салады.',
+    addCal: 'Күнтізбеге қосу', partner: 'Жарыңызбен бөлісу', partnerNote: 'Жақын адамыңызға қай фазада екеніңізді және қалай қолдау керегін жіберіңіз.',
+    pinT: 'Құпия код', pinNote: 'Қосымшаны 4 таңбалы кодпен жабу.', pinSet: 'Код орнату', pinOff: 'Кодты өшіру', pinEnter: 'Кодты енгізіңіз',
+    pinWrong: 'Код қате', pinNew: 'Жаңа код (4 сан)',
+    data: 'Менің деректерім', export: 'Көшірмесін жүктеу', import: 'Көшірмені қалпына келтіру', wipe: 'Барлық деректерді өшіру', wipeQ: 'Бәрін біржола өшіресіз бе?',
+    disclaimer: 'Erte Komek контрацепция құралы емес және диагноз қоймайды. Күмәніңіз болса, дәрігерге барыңыз.',
+    pregWeek: 'жүктілік аптасы', trimester: n => `${n}-триместр`, due: 'Болжамды босану күні', baby: 'Нәрестенің көлемі',
+    pregLeft: 'Қалды', pregTips: PREG_KK(), fruit: FRUIT_KK(),
+    partnerMsg: (ph, d) => `Сәлем! Менде қазір ${ph.toLowerCase()}. ${d}\nErte Komek қосымшасынан жіберілді`,
+    periodsIn: n => `Етеккір ${n} күннен кейін`, periodToday: 'Етеккір бүгін күтіледі',
+    yes: 'Иә', no: 'Жоқ', result: 'Нәтиже', recheck: 'Қайта тексеру', clear: 'Тазалау',
+  }
+};
+function plural(n, a, b, c) { n = Math.abs(n) % 100; const m = n % 10; if (n > 10 && n < 20) return c; if (m > 1 && m < 5) return b; if (m === 1) return a; return c; }
+function TIPS_RU() { return {
+  men: [['🫖', 'Тепло помогает', 'Грелка на живот и тёплый чай расслабляют мышцы матки и уменьшают спазмы.'], ['🥬', 'Железо', 'С кровью уходит железо — добавьте гречку, говядину, шпинат и витамин C для усвоения.'], ['🛌', 'Бережный режим', 'Лёгкая прогулка или растяжка часто помогают лучше, чем постельный режим.']],
+  fol: [['⚡', 'Энергия растёт', 'Эстроген поднимается — хорошее время для новых дел и активных тренировок.'], ['🥗', 'Лёгкая еда', 'Овощи, бобовые, рыба поддержат энергию и кожу.'], ['🧠', 'Фокус', 'В эти дни многим легче учиться и планировать.']],
+  fert: [['💗', 'Фертильные дни', 'Шанс зачатия выше всего за 2–3 дня до овуляции и в её день.'], ['💧', 'Выделения как белок', 'Прозрачные тягучие выделения — естественный признак приближения овуляции.'], ['🛡', 'Не планируете?', 'Календарь — не метод контрацепции. Используйте надёжную защиту.']],
+  ovu: [['🥚', 'Овуляция', 'Яйцеклетка живёт около суток. Возможна лёгкая боль сбоку внизу живота.'], ['🌡', 'Температура', 'После овуляции базальная температура обычно повышается.']],
+  lut: [['🍫', 'Тяга к сладкому', 'Перед месячными она нормальна. Выберите тёмный шоколад, орехи, фрукты.'], ['😴', 'Больше сна', 'Прогестерон может вызывать сонливость — ложитесь пораньше.'], ['🧂', 'Меньше соли', 'Это уменьшит отёки и вздутие перед месячными.'], ['🤍', 'Бережность к себе', 'Перепады настроения перед месячными — частое явление. Если они мешают жить, обсудите с врачом.']],
+}; }
+function TIPS_KK() { return {
+  men: [['🫖', 'Жылу көмектеседі', 'Ішке жылытқыш пен жылы шай жатыр бұлшықетін босаңсытып, түйілуді азайтады.'], ['🥬', 'Темір', 'Қанмен бірге темір де кетеді — қарақұмық, сиыр еті, шпинат және С дәруменін жеңіз.'], ['🛌', 'Аялы режим', 'Жеңіл серуен не созылу жаттығулары төсек режимінен жиі жақсы көмектеседі.']],
+  fol: [['⚡', 'Қуат артады', 'Эстроген көтеріледі — жаңа істер мен белсенді жаттығуларға жақсы уақыт.'], ['🥗', 'Жеңіл тағам', 'Көкөніс, бұршақ, балық қуат пен теріге пайдалы.'], ['🧠', 'Зейін', 'Бұл күндері көпшілікке оқу мен жоспарлау жеңіл.']],
+  fert: [['💗', 'Құнарлы күндер', 'Жүкті болу мүмкіндігі овуляцияға 2–3 күн қалғанда және сол күні ең жоғары.'], ['💧', 'Ақуыздай бөліністер', 'Мөлдір, созылмалы бөліністер — овуляция жақындағанының табиғи белгісі.'], ['🛡', 'Жоспарламасаңыз', 'Күнтізбе — контрацепция әдісі емес. Сенімді қорғаныс қолданыңыз.']],
+  ovu: [['🥚', 'Овуляция', 'Жұмыртқа жасушасы шамамен бір тәулік өмір сүреді. Іштің бір жағы сәл ауыруы мүмкін.'], ['🌡', 'Температура', 'Овуляциядан кейін базальды температура әдетте көтеріледі.']],
+  lut: [['🍫', 'Тәттіге құмарлық', 'Етеккір алдында бұл қалыпты. Қара шоколад, жаңғақ, жеміс таңдаңыз.'], ['😴', 'Көбірек ұйқы', 'Прогестерон ұйқышылдық тудыруы мүмкін — ертерек жатыңыз.'], ['🧂', 'Тұзды азайту', 'Етеккір алдындағы ісіну мен кебуді азайтады.'], ['🤍', 'Өзіңізді аялаңыз', 'Етеккір алдындағы көңіл-күй құбылуы жиі кездеседі. Өмірге кедергі келтірсе, дәрігермен сөйлесіңіз.']],
+}; }
+function FRUIT_RU() { return { 4: 'маковое зёрнышко', 5: 'кунжутное семечко', 6: 'чечевица', 7: 'черника', 8: 'малина', 9: 'вишня', 10: 'клубника', 11: 'инжир', 12: 'лайм', 13: 'стручок гороха', 14: 'лимон', 15: 'яблоко', 16: 'авокадо', 17: 'груша', 18: 'болгарский перец', 19: 'манго', 20: 'банан', 21: 'морковь', 22: 'папайя', 23: 'грейпфрут', 24: 'кукуруза', 25: 'цветная капуста', 26: 'салат-латук', 27: 'кочан капусты', 28: 'баклажан', 29: 'тыква-мускат', 30: 'кокос', 31: 'ананас', 32: 'дыня-канталупа', 33: 'дыня', 34: 'кабачок', 35: 'медовая дыня', 36: 'кочан салата ромэн', 37: 'мангольд', 38: 'порей', 39: 'арбуз (маленький)', 40: 'тыква' }; }
+function FRUIT_KK() { return { 4: 'көкнәр дәні', 5: 'күнжіт дәні', 6: 'жасымық', 7: 'көкжидек', 8: 'таңқурай', 9: 'шие', 10: 'құлпынай', 11: 'інжір', 12: 'лайм', 13: 'бұршақ қынабы', 14: 'лимон', 15: 'алма', 16: 'авокадо', 17: 'алмұрт', 18: 'болгар бұрышы', 19: 'манго', 20: 'банан', 21: 'сәбіз', 22: 'папайя', 23: 'грейпфрут', 24: 'жүгері', 25: 'түсті қырыққабат', 26: 'салат жапырағы', 27: 'қырыққабат', 28: 'баклажан', 29: 'асқабақ', 30: 'кокос', 31: 'ананас', 32: 'кішкене қауын', 33: 'қауын', 34: 'кәді', 35: 'балды қауын', 36: 'ромэн салаты', 37: 'мангольд', 38: 'порей', 39: 'кішкене қарбыз', 40: 'асқабақ' }; }
+function PREG_RU() { return { 1: ['Первый триместр', 'Принимайте фолиевую кислоту, встаньте на учёт до 12 недель, откажитесь от алкоголя и курения. Тошнота и усталость — частые спутники.'], 2: ['Второй триместр', 'Самое спокойное время. Около 18–22 недель — плановое УЗИ. Вы почувствуете первые шевеления.'], 3: ['Третий триместр', 'Считайте шевеления, следите за давлением и отёками. Соберите сумку в роддом к 36 неделе.'] }; }
+function PREG_KK() { return { 1: ['Бірінші триместр', 'Фолий қышқылын ішіңіз, 12 аптаға дейін есепке тұрыңыз, алкоголь мен темекіден бас тартыңыз. Жүрек айну мен шаршау жиі болады.'], 2: ['Екінші триместр', 'Ең тыныш кезең. 18–22 аптада жоспарлы УДЗ. Алғашқы қимылдарды сезінесіз.'], 3: ['Үшінші триместр', 'Қимылдарды санаңыз, қан қысымы мен ісінуді бақылаңыз. 36 аптаға қарай перзентханаға сөмке жинаңыз.'] }; }
+const t = () => T[S.lang];
+
+/* ---------- articles (library) ---------- */
+const ARTS = [
+  ['🌙', ['Что такое нормальный цикл', 'Қалыпты цикл қандай'], [['Нормальный цикл длится 21–35 дней, месячные — 2–7 дней.', 'Разница между циклами до 7 дней — норма.', 'В первые 2 года после первых месячных и перед менопаузой цикл часто нерегулярный.', 'Если цикл короче 21 или длиннее 35 дней несколько раз подряд — обсудите с гинекологом.'], ['Қалыпты цикл 21–35 күн, етеккір 2–7 күн созылады.', 'Циклдер арасындағы 7 күнге дейінгі айырма — қалыпты.', 'Алғашқы етеккірден кейінгі 2 жылда және менопауза алдында цикл жиі тұрақсыз.', 'Цикл бірнеше рет қатарынан 21 күннен қысқа не 35 күннен ұзақ болса — гинекологпен ақылдасыңыз.']]],
+  ['🥚', ['Овуляция и фертильные дни', 'Овуляция және құнарлы күндер'], [['Овуляция обычно за 12–16 дней до следующих месячных.', 'Сперматозоиды живут до 5 дней, яйцеклетка — около суток, поэтому фертильное окно ≈ 6 дней.', 'Признаки: прозрачные тягучие выделения, лёгкая боль сбоку, рост базальной температуры после овуляции.', 'Тесты на овуляцию (ЛГ) уточняют день.'], ['Овуляция әдетте келесі етеккірге 12–16 күн қалғанда болады.', 'Сперматозоидтар 5 күнге дейін, жұмыртқа жасушасы шамамен бір тәулік өмір сүреді, сондықтан құнарлы кезең ≈ 6 күн.', 'Белгілері: мөлдір созылмалы бөліністер, бір жақтағы жеңіл ауру, овуляциядан кейін базальды температураның көтерілуі.', 'Овуляция тесттері (ЛГ) күнді нақтылайды.']]],
+  ['🤰', ['Как готовиться к беременности', 'Жүктілікке қалай дайындалу'], [['Фолиевая кислота 400 мкг в день — минимум за 1–3 месяца до зачатия.', 'Проверьтесь у гинеколога и терапевта, обновите прививки.', 'Откажитесь от алкоголя и курения, нормализуйте вес и сон.', 'Если беременность не наступает 12 месяцев (6 месяцев после 35 лет) — к врачу вдвоём.'], ['Фолий қышқылы күніне 400 мкг — жүктілікке кемінде 1–3 ай бұрын.', 'Гинеколог пен терапевтке қаралыңыз, екпелерді жаңартыңыз.', 'Алкоголь мен темекіден бас тартыңыз, салмақ пен ұйқыны реттеңіз.', 'Жүктілік 12 ай бойы болмаса (35 жастан кейін 6 ай) — екеуіңіз дәрігерге барыңыз.']]],
+  ['😣', ['Боль при месячных', 'Етеккір кезіндегі ауру'], [['Умеренная боль в первые 1–2 дня — частое явление.', 'Помогают тепло, движение, обезболивающие из группы НПВС (по инструкции).', 'Сильная боль, из-за которой вы пропускаете учёбу или работу, — повод исключить эндометриоз.', 'Боль с температурой или необычными выделениями — сразу к врачу.'], ['Алғашқы 1–2 күндегі орташа ауру жиі кездеседі.', 'Жылу, қозғалыс және ҚҚСП тобындағы ауруды басатын дәрілер (нұсқаулық бойынша) көмектеседі.', 'Оқу не жұмысты қалдыруға мәжбүр ететін қатты ауру — эндометриозды тексеру себебі.', 'Қызу не әдеттен тыс бөлініспен бірге ауру — дереу дәрігерге.']]],
+  ['🌪', ['ПМС: что это и что помогает', 'Етеккір алды синдромы'], [['ПМС — перепады настроения, вздутие, чувствительная грудь за 3–10 дней до месячных.', 'Помогают сон, физическая активность, меньше соли, кофеина и алкоголя.', 'Отмечайте симптомы: так видно, что они связаны с циклом.', 'Если настроение сильно падает и мешает жить (ПМДР) — это лечится, обратитесь к врачу.'], ['ЕАС — етеккірге 3–10 күн қалғанда көңіл-күй құбылуы, іш кебуі, кеуде сезімталдығы.', 'Ұйқы, қозғалыс, тұз, кофеин және алкогольді азайту көмектеседі.', 'Белгілерді жазыңыз: сонда олардың циклге байланысты екені көрінеді.', 'Көңіл-күй қатты түсіп, өмірге кедергі келтірсе (ЕАДБ) — бұл емделеді, дәрігерге барыңыз.']]],
+  ['🩺', ['СПКЯ: признаки', 'Аналық бездің поликистозы: белгілері'], [['СПКЯ — частое гормональное состояние: около 1 из 10 женщин.', 'Признаки: редкие или нерегулярные месячные, акне, избыточный рост волос, трудности с зачатием.', 'Диагноз ставит врач по анализам и УЗИ.', 'Образ жизни и лечение хорошо помогают — важно не откладывать визит.'], ['АБП — жиі кездесетін гормондық жағдай: шамамен 10 әйелдің 1-інде.', 'Белгілері: сирек не тұрақсыз етеккір, безеу, түктің артық өсуі, жүкті болудың қиындауы.', 'Диагнозды дәрігер талдау мен УДЗ арқылы қояды.', 'Өмір салты мен ем жақсы көмектеседі — дәрігерге баруды кейінге қалдырмаңыз.']]],
+  ['💊', ['Контрацепция', 'Контрацепция'], [['Календарный метод ненадёжен: овуляция может сдвигаться.', 'Надёжные методы: презерватив, гормональные таблетки, спираль, имплант — подбирает гинеколог.', 'Презерватив единственный защищает от инфекций.', 'Пропустили таблетку — смотрите инструкцию и используйте презерватив 7 дней.'], ['Күнтізбе әдісі сенімсіз: овуляция ығысуы мүмкін.', 'Сенімді әдістер: презерватив, гормондық таблеткалар, спираль, имплант — гинеколог таңдайды.', 'Тек презерватив жыныстық инфекциялардан қорғайды.', 'Таблетканы өткізіп алсаңыз — нұсқаулықты қараңыз және 7 күн презерватив қолданыңыз.']]],
+  ['🌸', ['Выделения: норма и тревожные признаки', 'Бөліністер: қалыпты және қауіпті белгілер'], [['Количество и вид выделений меняются по циклу — это норма.', 'Повод к врачу: неприятный запах, зуд, жжение, творожистые или зеленоватые выделения.', 'Кровянистые выделения между месячными или после близости — тоже обсудите с врачом.'], ['Бөліністердің мөлшері мен түрі цикл бойы өзгереді — бұл қалыпты.', 'Дәрігерге бару себебі: жағымсыз иіс, қышу, күйдіру, ірімшік тәрізді не жасылдау бөліністер.', 'Етеккір арасында не жақындықтан кейін қанды бөлініс болса да дәрігермен ақылдасыңыз.']]],
+];
+
+/* ---------- assistant: rule-based FAQ ---------- */
+const FAQ = [
+  [/задерж|кешік|не пришл|келмеді/i, ['Задержка до 7 дней бывает от стресса, болезни, перелётов. Если была незащищённая близость — сделайте тест на беременность. Задержка больше 7 дней или отрицательный тест при отсутствии месячных — к гинекологу.', 'Стресс, ауру, ұшу 7 күнге дейінгі кешігуге әкелуі мүмкін. Қорғалмаған жақындық болса — жүктілік тестін жасаңыз. 7 күннен астам кешігу не тест теріс болып, етеккір келмесе — гинекологқа.']],
+  [/боль|болит|ауыр|спазм|түйіл/i, ['При месячных помогают тепло, движение и обезболивающие (по инструкции). Если боль сильная, с температурой или мешает жить — обратитесь к врачу.', 'Етеккір кезінде жылу, қозғалыс және ауруды басатын дәрі (нұсқаулық бойынша) көмектеседі. Ауру қатты, қызумен бірге не өмірге кедергі келтірсе — дәрігерге.']],
+  [/овуляц/i, ['Овуляция обычно за 12–16 дней до месячных. Посмотрите на главном экране — Erte Komek считает её по вашему циклу. Точнее подскажут тесты на ЛГ и базальная температура.', 'Овуляция әдетте етеккірге 12–16 күн қалғанда болады. Басты экранды қараңыз — Erte Komek оны сіздің циклыңыз бойынша есептейді. ЛГ тесті мен базальды температура нақтырақ көрсетеді.']],
+  [/беремен|жүкті|зачат/i, ['Шанс зачатия выше всего за 2–3 дня до овуляции и в её день. Если беременность не наступает 12 месяцев (6 после 35 лет) — к врачу вдвоём.', 'Жүкті болу мүмкіндігі овуляцияға 2–3 күн қалғанда және сол күні ең жоғары. 12 ай бойы жүктілік болмаса (35 жастан кейін 6 ай) — екеуіңіз дәрігерге.']],
+  [/выделен|бөлін/i, ['Прозрачные тягучие выделения перед овуляцией — норма. Зуд, запах, творожистые или зелёные выделения — повод к врачу.', 'Овуляция алдындағы мөлдір созылмалы бөлініс — қалыпты. Қышу, иіс, ірімшік тәрізді не жасыл бөлініс — дәрігерге бару себебі.']],
+  [/пмс|настроен|көңіл|еас/i, ['Перепады настроения за 3–10 дней до месячных — ПМС. Помогают сон, движение, меньше соли и кофе. Если сильно мешает жить — это лечится, обратитесь к врачу.', 'Етеккірге 3–10 күн қалғандағы көңіл-күй құбылуы — ЕАС. Ұйқы, қозғалыс, тұз бен кофені азайту көмектеседі. Өмірге қатты кедергі келтірсе — бұл емделеді, дәрігерге барыңыз.']],
+  [/таблет|контрацеп|защит|қорға/i, ['Календарь — не контрацепция. Надёжный метод подберёт гинеколог. Пропущенную таблетку примите как можно скорее и смотрите инструкцию.', 'Күнтізбе — контрацепция емес. Сенімді әдісті гинеколог таңдайды. Өткізіп алған таблетканы мүмкіндігінше тез ішіп, нұсқаулықты қараңыз.']],
+];
+
+/* ---------- symptom checker (PCOS / endometriosis signals — not a diagnosis) ---------- */
+const CHECK = [
+  ['Месячные реже, чем раз в 35 дней, или очень нерегулярные', 'Етеккір 35 күнде бір реттен сирек не өте тұрақсыз'],
+  ['Сильные угри (акне) или жирная кожа, не проходящие с возрастом', 'Жасқа қарай кетпейтін қатты безеу не майлы тері'],
+  ['Лишние волосы на лице, груди, животе', 'Бетте, кеудеде, іште артық түк'],
+  ['Сильная боль при месячных, из-за которой пропускаете дела', 'Істерді қалдыруға мәжбүр ететін етеккірдегі қатты ауру'],
+  ['Боль во время близости или при походе в туалет во время месячных', 'Жақындық кезінде не етеккір кезінде дәретханаға барғанда ауру'],
+  ['Беременность не наступает больше года', 'Жүктілік бір жылдан астам болмай жатыр'],
+];
+
+/* ---------- cycle math ---------- */
+function starts() { return S.periods.map(p => p.start).sort(); }
+function cycleLens() {
+  const st = starts(); const out = [];
+  for (let i = 1; i < st.length; i++) { const L = diff(st[i], st[i - 1]); if (L >= 15 && L <= 60) out.push(L); }
+  return out;
+}
+function avgCycle() { const L = cycleLens().slice(-6); return L.length ? Math.round(L.reduce((a, b) => a + b, 0) / L.length) : S.cycleLen; }
+function avgPeriod() {
+  const L = S.periods.filter(p => p.end).map(p => diff(p.end, p.start) + 1).filter(n => n > 0 && n < 15).slice(-6);
+  return L.length ? Math.round(L.reduce((a, b) => a + b, 0) / L.length) : S.periodLen;
+}
+function lastStart() { const st = starts(); return st[st.length - 1] || null; }
+function openPeriod() { const p = S.periods.slice().sort((a, b) => a.start.localeCompare(b.start)).pop(); return p && !p.end && diff(today(), p.start) < 15 ? p : null; }
+function cycleInfo(day = today()) {
+  const ls = lastStart(); if (!ls) return null;
+  const C = avgCycle(), P = avgPeriod();
+  const cd = diff(day, ls) + 1;
+  let next = add(ls, C); const late = diff(day, next);
+  const ovu = add(next, -14), fertS = add(ovu, -5), fertE = add(ovu, 1);
+  const inPeriod = isPeriodDay(day);
+  let ph = 'fol';
+  if (inPeriod) ph = 'men'; else if (day === ovu) ph = 'ovu'; else if (day >= fertS && day <= fertE) ph = 'fert'; else if (day > ovu) ph = 'lut';
+  const dOvu = diff(ovu, day);
+  const chance = (day >= fertS && day <= fertE) ? (dOvu >= -0 && dOvu <= 2 ? 'high' : 'mid') : 'low';
+  return { ls, C, P, cd, next, ovu, fertS, fertE, ph, chance, late: late > 0 ? late : 0, toNext: diff(next, day) };
+}
+function isPeriodDay(day) {
+  for (const p of S.periods) { const e = p.end || add(p.start, avgPeriod() - 1); if (day >= p.start && day <= e) return true; }
+  const l = S.logs[day]; return !!(l && l.flow > 0);
+}
+/* predictions for calendar: next 6 cycles */
+function marks() {
+  const m = {}; const ls = lastStart(); if (!ls) return m;
+  const C = avgCycle(), P = avgPeriod();
+  for (let k = 1; k <= 6; k++) {
+    const s = add(ls, C * k), ovu = add(s, -14);
+    for (let i = 0; i < P; i++) m[add(s, i)] = m[add(s, i)] || 'pred';
+    for (let i = -5; i <= 1; i++) { const d = add(ovu, i); if (!m[d]) m[d] = i === 0 ? 'ovu' : 'fert'; }
+  }
+  /* current cycle fertile window (before the first predicted period) */
+  const ovu0 = add(add(ls, C), -14);
+  for (let i = -5; i <= 1; i++) { const d = add(ovu0, i); if (!m[d]) m[d] = i === 0 ? 'ovu' : 'fert'; }
+  for (const p of S.periods) { const e = p.end || add(p.start, P - 1); for (let d = p.start; d <= e; d = add(d, 1)) m[d] = 'period'; }
+  for (const [d, l] of Object.entries(S.logs)) if (l.flow > 0) m[d] = 'period';
+  return m;
+}
+function pregInfo(day = today()) {
+  if (!S.preg) return null;
+  const days = diff(day, S.preg.lmp); const w = Math.floor(days / 7), dd = days % 7;
+  const due = add(S.preg.lmp, 280); const tri = w < 13 ? 1 : w < 27 ? 2 : 3;
+  return { w, dd, due, tri, left: diff(due, day), pct: Math.min(100, Math.max(0, days / 280 * 100)) };
+}
+
+/* ---------- render ---------- */
+const ICONS = ['🌸', '📅', '📈', '📚', '👤'];
+function render() {
+  S.lang = HOST.lang();
+  const tabs = $('#mom-tabs'), app = $('#mom-app'); if (!tabs || !app) return;
+  if (S.pin && !ui.unlocked) { tabs.hidden = true; app.innerHTML = pinScreen(); bindPin(); return; }
+  if (!S.onboarded) { tabs.hidden = true; app.innerHTML = onboard(); bindOnboard(); return; }
+  tabs.hidden = false;
+  tabs.innerHTML = t().tabs.map((n, i) => `<button type="button" data-mtab="${i}" ${S.tab === i ? 'aria-current="page"' : ''}><span>${ICONS[i]}</span>${n}</button>`).join('');
+  tabs.querySelectorAll('[data-mtab]').forEach(b => b.onclick = () => { S.tab = +b.dataset.mtab; save(); render(); scrollTo(0, 0); });
+  const V = [home, calendar, analysis, learn, profile][S.tab] || home;
+  app.innerHTML = V(); bindAll();
+}
+
+function pinScreen() {
+  return `<div class="pin"><div class="stack" style="justify-items:center"><div class="logo" style="width:64px;height:64px;font-size:34px;border-radius:22px">🌸</div>
+    <h1>Erte Komek</h1><p class="muted">${t().pinEnter}</p>
+    <input id="pin-in" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="${t().pinEnter}">
+    <p id="pin-err" class="small" style="color:var(--accent)"></p></div></div>`;
+}
+function bindPin() {
+  const i = $('#pin-in'); i.focus();
+  i.oninput = async () => { if (i.value.length < 4) return; if (await hash(i.value) === S.pin) { ui.unlocked = true; render(); } else { $('#pin-err').textContent = t().pinWrong; i.value = ''; } };
+}
+async function hash(s) {
+  try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('aisulu:' + s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+  catch (e) { let h = 0; for (const c of 'aisulu:' + s) h = (h * 31 + c.charCodeAt(0)) | 0; return 'x' + h; }
+}
+
+function onboard() {
+  const x = t(), md = S.mode;
+  const opt = (k, title, desc, ic) => `<button type="button" class="card" data-mode="${k}" style="text-align:left;grid-template-columns:44px 1fr;align-items:center;${md === k ? 'border:2px solid var(--accent)' : ''}"><span style="font-size:28px">${ic}</span><span><h3>${title}</h3><span class="small muted">${desc}</span></span></button>`;
+  return `<div class="stack" style="padding-top:14px">
+    <div class="card" style="background:linear-gradient(140deg,#ffe3ec,#efe1fb);border:0">
+      <p class="eyebrow">${x.hello}</p><h1>${x.welcome}</h1><p class="small muted">🔒 ${x.privacy}</p></div>
+    <h2>${x.goal}</h2>
+    ${opt('cycle', x.mCycle, x.mCycleD, '🌙')}${opt('ttc', x.mTtc, x.mTtcD, '💗')}${opt('preg', x.mPreg, x.mPregD, '🤰')}
+    <form class="card" id="ob" novalidate>
+      <div class="field"><label for="ob-name">${x.name}</label><input id="ob-name" maxlength="30" value="${esc(S.name)}" autocomplete="off"></div>
+      <div class="field"><label for="ob-date">${md === 'preg' ? x.lmp : x.lastStart}</label><input id="ob-date" type="date" max="${today()}" min="${add(today(), md === 'preg' ? -300 : -120)}" value="${md === 'preg' ? (S.preg?.lmp || '') : (lastStart() || '')}" required></div>
+      ${md === 'preg' ? '' : `<div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="ob-c">${x.cycleLen}</label><input id="ob-c" type="number" min="18" max="50" value="${S.cycleLen}"></div>
+      <div class="field" style="flex:1"><label for="ob-p">${x.periodLen}</label><input id="ob-p" type="number" min="1" max="12" value="${S.periodLen}"></div></div>`}
+      <p id="ob-err" class="small" style="color:var(--accent)"></p>
+      <button class="btn block" type="submit">${x.start} →</button>
+    </form>
+    <p class="legal">${x.disclaimer}</p></div>`;
+}
+function bindOnboard() {
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { S.mode = b.dataset.mode; save(); render(); });
+  $('#ob').onsubmit = e => {
+    e.preventDefault(); const d = $('#ob-date').value;
+    if (!d || d > today()) { $('#ob-err').textContent = '⚠ ' + (S.mode === 'preg' ? t().lmp : t().lastStart); return; }
+    S.name = $('#ob-name').value.trim();
+    if (S.mode === 'preg') S.preg = { lmp: d };
+    else {
+      S.cycleLen = clampN(+$('#ob-c').value, 18, 50, 28); S.periodLen = clampN(+$('#ob-p').value, 1, 12, 5);
+      if (!S.periods.some(p => p.start === d)) S.periods.push({ start: d, end: add(d, S.periodLen - 1) > today() ? null : add(d, S.periodLen - 1) });
+    }
+    S.onboarded = true; S.tab = 0; save(); render();
+  };
+}
+const clampN = (v, a, b, d) => Number.isFinite(v) && v >= a && v <= b ? Math.round(v) : d;
+
+/* ---------- home ---------- */
+function home() {
+  const x = t();
+  if (S.mode === 'preg') return pregHome();
+  const c = cycleInfo(); if (!c) return `<div class="card"><button class="btn" data-go-onb>${x.start}</button></div>`;
+  const op = openPeriod();
+  let big, lbl;
+  if (c.ph === 'men') { big = x.periodDay + ' ' + Math.max(1, diff(today(), lastStart()) + 1); lbl = ''; big = `${x.daysW(Math.max(1, diff(today(), lastStart()) + 1)).split(' ')[0]}`; lbl = x.periodDay; }
+  else if (c.late > 0) { big = x.daysW(c.late); lbl = x.late; }
+  else if (c.toNext === 0) { big = '0'; lbl = x.periodToday; }
+  else { big = x.daysW(c.toNext); lbl = x.toPeriod; }
+  const tipsArr = x.tips[c.ph]; const tip = tipsArr[(new Date().getDate()) % tipsArr.length];
+  const log = S.logs[today()];
+  const logSum = log ? logSummary(log) : '';
+  return `<div class="stack" style="padding-top:8px">
+    ${S.name ? `<p class="muted" style="font-weight:700">${x.hello}, ${esc(S.name)} 🌸</p>` : ''}
+    <div class="card" style="padding-bottom:22px">
+      <div class="ringwrap">${ring(c)}<div class="ringtext"><span class="lbl">${x.phase[c.ph]}</span><span class="big">${big}</span><span class="lbl">${lbl}</span>
+        <span class="small" style="font-weight:800;color:${c.chance === 'low' ? 'var(--muted)' : 'var(--fert)'};margin-top:6px">${S.mode === 'ttc' || c.chance !== 'low' ? x.chance[c.chance] : x.cycleDay + ' ' + c.cd}</span></div></div>
+      <div class="legend"><span><i class="dot" style="background:var(--period)"></i>${x.lgPeriod}</span><span><i class="dot" style="background:var(--fert-soft);box-shadow:inset 0 0 0 2px var(--fert)"></i>${x.lgFert}</span><span><i class="dot" style="background:var(--fert)"></i>${x.lgOvu}</span></div>
+      <div class="row" style="justify-content:center">
+        ${op ? `<button class="btn" type="button" id="p-end">${x.periodEnd}</button>` : `<button class="btn" type="button" id="p-start">🩸 ${x.periodStart}</button>`}
+        <button class="btn lav" type="button" data-log="${today()}">＋ ${x.logToday}</button></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>${fmtShort(c.next)}</b><span>${x.nextPeriod}</span></div>
+      <div class="stat"><b>${fmtShort(c.ovu)}</b><span>${x.nextOvu}</span></div>
+      <div class="stat"><b>${fmtShort(c.fertS).split(' ')[0]}–${fmtShort(c.fertE)}</b><span>${x.fertWin}</span></div>
+    </div>
+    <div class="card"><div class="insight"><div class="ic">${tip[0]}</div><div class="stack" style="gap:4px"><span class="eyebrow">${x.insight}</span><h3>${tip[1]}</h3><p class="small muted">${tip[2]}</p></div></div></div>
+    <div class="card"><div class="row between"><h3>${x.dayLog}</h3><button class="link small" data-log="${today()}">✎</button></div><p class="small ${logSum ? '' : 'muted'}">${logSum || x.none}</p></div>
+    ${c.late >= 7 ? `<div class="banner warn"><b>${x.late}: ${x.daysW(c.late)}</b><span class="small">${S.lang === 'ru' ? 'Сделайте тест на беременность; если он отрицательный — запишитесь к гинекологу.' : 'Жүктілік тестін жасаңыз; теріс болса — гинекологқа жазылыңыз.'}</span></div>` : ''}
+    <p class="legal">${x.disclaimer}</p></div>`;
+}
+function ring(c) {
+  const R = 118, C = 2 * Math.PI * R, N = c.C;
+  const seg = (from, len, col, w = 18) => { const a = (from / N) * C, l = Math.max(0.6, (len / N) * C - 3); return `<circle cx="135" cy="135" r="${R}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="${l} ${C}" stroke-dashoffset="${-a}" transform="rotate(-90 135 135)"/>`; };
+  const fs = diff(c.fertS, c.ls), ov = diff(c.ovu, c.ls);
+  const pos = ((Math.min(c.cd, N) - 0.5) / N) * 2 * Math.PI - Math.PI / 2;
+  const px = 135 + R * Math.cos(pos), py = 135 + R * Math.sin(pos);
+  return `<svg viewBox="0 0 270 270" aria-hidden="true"><circle cx="135" cy="135" r="${R}" fill="none" stroke="var(--bg2)" stroke-width="18"/>
+    ${seg(0, c.P, 'var(--period)')}${seg(fs, 7, 'var(--fert-soft)')}${seg(ov, 1, 'var(--fert)')}
+    <circle cx="${px}" cy="${py}" r="15" fill="var(--surface)" stroke="var(--accent)" stroke-width="4"/></svg>`;
+}
+function pregHome() {
+  const x = t(), p = pregInfo(); if (!p) return '';
+  const fr = x.fruit[Math.min(40, Math.max(4, p.w))] || '';
+  const tip = x.pregTips[p.tri];
+  return `<div class="stack" style="padding-top:8px">
+    <div class="card" style="text-align:center;background:linear-gradient(150deg,#ffe3ec,#efe1fb);border:0">
+      <p class="eyebrow">${x.trimester(p.tri)}</p><div class="week">${p.w}<span style="font-size:28px"> + ${p.dd}</span></div><p style="font-weight:800">${x.pregWeek}</p>
+      <div class="pbar" style="margin:8px 0"><i style="width:${p.pct.toFixed(1)}%"></i></div>
+      <p class="small muted">${x.due}: <b>${fmtLong(p.due)}</b> · ${x.pregLeft}: ${x.daysW(Math.max(0, p.left))}</p></div>
+    ${p.w >= 4 ? `<div class="card"><div class="insight"><div class="ic">🍓</div><div class="stack" style="gap:4px"><span class="eyebrow">${x.baby}</span><h3>${S.lang === 'ru' ? 'Примерно как' : 'Шамамен'} ${fr}</h3></div></div></div>` : ''}
+    <div class="card"><div class="insight"><div class="ic">🤰</div><div class="stack" style="gap:4px"><span class="eyebrow">${x.insight}</span><h3>${tip[0]}</h3><p class="small muted">${tip[1]}</p></div></div></div>
+    <div class="card"><div class="row between"><h3>${x.dayLog}</h3><button class="btn lav sm" data-log="${today()}">＋ ${x.logToday}</button></div><p class="small muted">${logSummary(S.logs[today()] || {}) || x.none}</p></div>
+    <div class="banner warn"><b>${x.flags}</b><span class="small">${x.flagList[2]}; ${x.flagList[3].toLowerCase()}.</span></div>
+    <p class="legal">${x.disclaimer}</p></div>`;
+}
+function logSummary(l) {
+  const x = t(), a = [];
+  if (l.flow) a.push('🩸 ' + x.flows[l.flow]);
+  (l.sym || []).forEach(i => a.push(x.sym[i])); (l.mood || []).forEach(i => a.push(x.moods[i]));
+  if (l.dis) a.push(x.discharge + ': ' + x.dis[l.dis]); if (l.sex) a.push('💞 ' + x.sexes[l.sex]); if (l.pill) a.push('💊 ' + x.pillT);
+  if (l.ovuT) a.push(x.ovuTest + ': ' + x.testV[l.ovuT]); if (l.pregT) a.push(x.pregTest + ': ' + x.testV[l.pregT]);
+  if (l.w) a.push(l.w + ' кг'); if (l.temp) a.push(l.temp + ' °C'); if (l.water) a.push('💧 ' + l.water); if (l.sleep) a.push('😴 ' + l.sleep + ' ч');
+  if (l.note) a.push('“' + l.note + '”');
+  return a.map(esc).join(' · ');
+}
+const MON = { ru: ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'], kk: ['қаң', 'ақп', 'нау', 'сәу', 'мам', 'мау', 'шіл', 'там', 'қыр', 'қаз', 'қар', 'жел'] };
+const MONF = { ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'], kk: ['Қаңтар', 'Ақпан', 'Наурыз', 'Сәуір', 'Мамыр', 'Маусым', 'Шілде', 'Тамыз', 'Қыркүйек', 'Қазан', 'Қараша', 'Желтоқсан'] };
+const DOW = { ru: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], kk: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'] };
+const fmtShort = s => { const d = D(s); return `${d.getDate()} ${MON[S.lang][d.getMonth()]}`; };
+const fmtLong = s => { const d = D(s); return `${d.getDate()} ${MON[S.lang][d.getMonth()]} ${d.getFullYear()}`; };
+
+/* ---------- calendar ---------- */
+function calendar() {
+  const x = t(); const base = ui.month || today().slice(0, 7);
+  const [y, m] = base.split('-').map(Number); const first = new Date(y, m - 1, 1, 12); const offset = (first.getDay() + 6) % 7;
+  const days = new Date(y, m, 0).getDate(); const mk = S.mode === 'preg' ? {} : marks(); const td = today();
+  let cells = DOW[S.lang].map(d => `<div class="dow">${d}</div>`).join('');
+  for (let i = 0; i < offset; i++) cells += '<button class="out" tabindex="-1" aria-hidden="true"></button>';
+  for (let d = 1; d <= days; d++) {
+    const ds = `${y}-${pad(m)}-${pad(d)}`; const cls = [mk[ds] || '', ds === td ? 'today' : '', ui.sel === ds ? 'sel' : ''].join(' ');
+    const lg = S.logs[ds] && Object.keys(S.logs[ds]).length ? '<i class="lg"></i>' : '';
+    cells += `<button class="${cls}" data-day="${ds}" ${ds > td ? '' : ''} aria-label="${fmtLong(ds)}">${d}${lg}</button>`;
+  }
+  const sel = ui.sel || td; const sl = S.logs[sel];
+  const prev = iso(new Date(y, m - 2, 1, 12)).slice(0, 7), next = iso(new Date(y, m, 1, 12)).slice(0, 7);
+  return `<div class="stack" style="padding-top:8px">
+    <div class="card">
+      <div class="row between"><button class="btn line sm" data-month="${prev}" aria-label="prev">‹</button><h2>${MONF[S.lang][m - 1]} ${y}</h2><button class="btn line sm" data-month="${next}" aria-label="next">›</button></div>
+      <div class="cal">${cells}</div>
+      <div class="legend"><span><i class="dot" style="background:var(--period)"></i>${x.lgPeriod}</span><span><i class="dot" style="box-shadow:inset 0 0 0 2px var(--period)"></i>${x.lgPred}</span><span><i class="dot" style="background:var(--fert-soft);box-shadow:inset 0 0 0 2px var(--fert)"></i>${x.lgFert}</span><span><i class="dot" style="background:var(--fert)"></i>${x.lgOvu}</span></div>
+    </div>
+    <div class="card"><div class="row between"><h3>${fmtLong(sel)}</h3>${sel <= td ? `<button class="btn lav sm" data-log="${sel}">✎ ${x.logToday}</button>` : ''}</div>
+      <p class="small ${sl ? '' : 'muted'}">${sl ? logSummary(sl) : x.none}</p>
+      ${S.mode !== 'preg' && sel <= td ? `<div class="row"><button class="btn soft sm" id="mark-start">🩸 ${x.periodStart}</button>${isPeriodDay(sel) ? `<button class="btn line sm" id="mark-end">${x.periodEnd}</button>` : ''}</div>` : ''}
+    </div></div>`;
+}
+
+/* ---------- daily log sheet ---------- */
+function openLog(day) {
+  const x = t(); const l = Object.assign({ flow: 0, sym: [], mood: [], dis: 0, sex: 0, pill: false, ovuT: 0, pregT: 0, w: '', temp: '', water: '', sleep: '', note: '' }, S.logs[day] || {});
+  const single = (key, arr, cls = '') => `<div class="chips" data-single="${key}">${arr.map((n, i) => `<button type="button" class="chip ${cls}" data-v="${i}" aria-pressed="${l[key] === i}">${n}</button>`).join('')}</div>`;
+  const multi = (key, arr, cls = '') => `<div class="chips" data-multi="${key}">${arr.map((n, i) => `<button type="button" class="chip ${cls}" data-v="${i}" aria-pressed="${l[key].includes(i)}">${n}</button>`).join('')}</div>`;
+  $('#mom-sheet').innerHTML = `<div class="sheet-bg" id="sb"><div class="sheet" role="dialog" aria-label="${x.dayLog}">
+    <div class="row between"><h2>${fmtLong(day)}</h2><button class="btn line sm" id="sh-x">✕</button></div>
+    ${S.mode === 'preg' ? '' : `<div class="card"><h3>${x.flow}</h3>${single('flow', x.flows)}</div>`}
+    <div class="card"><h3>${x.symptoms}</h3>${multi('sym', x.sym)}</div>
+    <div class="card"><h3>${x.mood}</h3>${multi('mood', x.moods, 'lavc')}</div>
+    ${S.mode === 'preg' ? '' : `<div class="card"><h3>${x.discharge}</h3>${single('dis', x.dis, 'lavc')}</div>
+    <div class="card"><h3>${x.sex}</h3>${single('sex', x.sexes)}<label class="row small" style="font-weight:700"><input type="checkbox" id="lg-pill" ${l.pill ? 'checked' : ''}> 💊 ${x.pill}: ${x.pillT}</label></div>
+    <div class="card"><h3>${x.tests}</h3><p class="small muted">${x.ovuTest}</p>${single('ovuT', x.testV, 'lavc')}<p class="small muted">${x.pregTest}</p>${single('pregT', x.testV)}</div>`}
+    <div class="card"><h3>${x.body}</h3>
+      <div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="lg-w">${x.weight}</label><input id="lg-w" type="number" step="0.1" min="30" max="200" value="${esc(l.w)}"></div>
+      <div class="field" style="flex:1"><label for="lg-t">${x.temp}</label><input id="lg-t" type="number" step="0.01" min="35" max="38.5" value="${esc(l.temp)}"></div></div>
+      <div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="lg-wa">${x.water}</label><input id="lg-wa" type="number" min="0" max="20" value="${esc(l.water)}"></div>
+      <div class="field" style="flex:1"><label for="lg-s">${x.sleep}</label><input id="lg-s" type="number" step="0.5" min="0" max="16" value="${esc(l.sleep)}"></div></div>
+      <div class="field"><label for="lg-n">${x.note}</label><textarea id="lg-n" maxlength="300">${esc(l.note)}</textarea></div></div>
+    <button class="btn block" id="sh-save">${x.save}</button></div></div>`;
+  document.querySelectorAll('[data-single]').forEach(g => g.querySelectorAll('button').forEach(b => b.onclick = () => { const k = g.dataset.single, v = +b.dataset.v; l[k] = l[k] === v ? 0 : v; g.querySelectorAll('button').forEach(o => o.setAttribute('aria-pressed', l[k] === +o.dataset.v)); }));
+  document.querySelectorAll('[data-multi]').forEach(g => g.querySelectorAll('button').forEach(b => b.onclick = () => { const k = g.dataset.multi, v = +b.dataset.v; l[k] = l[k].includes(v) ? l[k].filter(z => z !== v) : [...l[k], v]; b.setAttribute('aria-pressed', l[k].includes(v)); }));
+  const close = () => { $('#mom-sheet').innerHTML = ''; };
+  $('#sh-x').onclick = close; $('#sb').onclick = e => { if (e.target.id === 'sb') close(); };
+  $('#sh-save').onclick = () => {
+    l.pill = !!$('#lg-pill')?.checked; l.w = $('#lg-w').value; l.temp = $('#lg-t').value; l.water = $('#lg-wa').value; l.sleep = $('#lg-s').value; l.note = $('#lg-n').value.trim();
+    const clean = {}; for (const [k, v] of Object.entries(l)) if (v && (!Array.isArray(v) || v.length)) clean[k] = v;
+    if (Object.keys(clean).length) S.logs[day] = clean; else delete S.logs[day];
+    if (clean.flow > 0 && S.mode !== 'preg' && !isInKnownPeriod(day)) startPeriod(day, true);
+    save(); close(); toast(x.saved); render();
+  };
+}
+function isInKnownPeriod(day) { return S.periods.some(p => day >= p.start && day <= (p.end || add(p.start, 14))); }
+function startPeriod(day, quiet) {
+  if (S.periods.some(p => Math.abs(diff(day, p.start)) < 10)) { if (!quiet) toast('✓'); return; }
+  S.periods.push({ start: day, end: null }); S.periods.sort((a, b) => a.start.localeCompare(b.start));
+  /* close the previous open period, if any */
+  S.periods.forEach((p, i) => { if (!p.end && i < S.periods.length - 1) p.end = add(p.start, avgPeriod() - 1); });
+  if (!S.logs[day]) S.logs[day] = { flow: 3 };
+}
+function endPeriod(day) {
+  const p = S.periods.filter(q => q.start <= day).sort((a, b) => a.start.localeCompare(b.start)).pop(); if (!p) return;
+  if (diff(day, p.start) < 15) p.end = day;
+}
+
+/* ---------- analysis ---------- */
+function analysis() {
+  const x = t(); const L = cycleLens(); const st = starts();
+  const sc = {}; Object.values(S.logs).forEach(l => (l.sym || []).forEach(i => { if (i !== 14) sc[i] = (sc[i] || 0) + 1; }));
+  const top = Object.entries(sc).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const temps = Object.entries(S.logs).filter(([, l]) => l.temp).sort().slice(-30);
+  const rng = L.length > 1 ? Math.max(...L) - Math.min(...L) : 0;
+  return `<div class="stack" style="padding-top:8px">
+    <h1>${x.anTitle}</h1>
+    <div class="stats"><div class="stat"><b>${avgCycle()}</b><span>${x.avgCycle}</span></div><div class="stat"><b>${avgPeriod()}</b><span>${x.avgPeriod}</span></div><div class="stat"><b>${st.length}</b><span>${x.cycles}</span></div></div>
+    ${L.length >= 1 ? `<div class="card"><h3>${x.history}</h3>
+      <div class="bars">${L.slice(-8).map(n => `<div style="height:${Math.min(100, n / 45 * 100)}%"><span>${n}</span></div>`).join('')}</div>
+      <div class="barlbl">${st.slice(-L.slice(-8).length - 1, -1).map(s => `<span>${fmtShort(s)}</span>`).join('')}</div>
+      <div class="banner ${rng > 7 ? 'warn' : 'info'}"><span class="small"><b>${rng > 7 ? x.irregular : x.regular}</b></span></div></div>`
+      : `<div class="card soft"><p class="muted">${x.needMore}</p></div>`}
+    <div class="card"><h3>${x.topSym}</h3>${top.length ? `<div class="list">${top.map(([i, n]) => `<div class="row between"><span>${x.sym[i]}</span><b>${n}</b></div>`).join('')}</div>` : `<p class="small muted">${x.none}</p>`}</div>
+    ${temps.length >= 3 ? `<div class="card"><h3>${x.bbt}</h3>${tempChart(temps)}<p class="small muted">${x.bbtNote}</p></div>` : ''}
+    <div class="card"><h3>📄 ${x.report}</h3><p class="small muted">${x.reportNote}</p><button class="btn soft" id="rep">${x.print}</button></div>
+  </div>`;
+}
+function tempChart(rows) {
+  const v = rows.map(([, l]) => +l.temp), mn = Math.min(...v) - 0.1, mx = Math.max(...v) + 0.1, W = 300, H = 110;
+  const pts = v.map((y, i) => [10 + i * (W - 20) / Math.max(1, v.length - 1), H - 10 - (y - mn) / (mx - mn) * (H - 20)]);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" aria-label="BBT"><polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="var(--lav)"/>`).join('')}
+    <text x="4" y="12" font-size="10" fill="var(--muted)">${mx.toFixed(1)}</text><text x="4" y="${H - 2}" font-size="10" fill="var(--muted)">${mn.toFixed(1)}</text></svg>`;
+}
+function openReport() {
+  const x = t(); const L = cycleLens(); const st = starts();
+  const rows = st.slice(-12).map((s, i, a) => { const p = S.periods.find(q => q.start === s); const len = i + 1 < a.length ? diff(a[i + 1], s) : '—'; return `<tr><td>${fmtLong(s)}</td><td>${len}</td><td>${p && p.end ? diff(p.end, p.start) + 1 : '—'}</td></tr>`; }).join('');
+  const sc = {}; Object.values(S.logs).forEach(l => (l.sym || []).forEach(i => sc[i] = (sc[i] || 0) + 1));
+  const sym = Object.entries(sc).sort((a, b) => b[1] - a[1]).map(([i, n]) => `${x.sym[i]} (${n})`).join(', ') || x.none;
+  const w = window.open('', '_blank');
+  const html = `<!doctype html><meta charset="utf-8"><title>Erte Komek — ${x.report}</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#222}h1{color:#c9356b}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}</style>
+    <h1>Erte Komek — ${x.report}</h1><p>${S.name ? esc(S.name) + ' · ' : ''}${fmtLong(today())}</p>
+    <p><b>${x.avgCycle}:</b> ${avgCycle()} · <b>${x.avgPeriod}:</b> ${avgPeriod()} · <b>${x.cycles}:</b> ${st.length}</p>
+    <table><tr><th>${x.lastStart}</th><th>${x.cycleLen}</th><th>${x.periodLen}</th></tr>${rows}</table>
+    <p><b>${x.topSym}:</b> ${esc(sym)}</p><p style="color:#777;font-size:12px">${x.disclaimer}</p><script>print()<\/script>`;
+  if (w) { w.document.write(html); w.document.close(); } else download('aisulu-report.html', html, 'text/html');
+}
+
+/* ---------- learn: articles, checker, assistant ---------- */
+function learn() {
+  const x = t(), k = S.lang === 'ru' ? 0 : 1;
+  return `<div class="stack" style="padding-top:8px">
+    <div><h1>${x.learn}</h1><p class="small muted">${x.learnNote}</p></div>
+    <div class="card"><h3>💬 ${x.assist}</h3><p class="small muted">${x.assistNote}</p>
+      <div class="chat" id="chat">${ui.chat.map(m => `<div class="qa ${m[0]}">${esc(m[1])}</div>`).join('')}</div>
+      <form class="row" id="ask" style="flex-wrap:nowrap"><input id="ask-in" class="field" style="flex:1;border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;background:var(--surface)" placeholder="${x.ask}" maxlength="200" autocomplete="off"><button class="btn sm" type="submit">${x.send}</button></form></div>
+    ${ARTS.map((a, i) => `<details class="art"><summary><span class="ic">${a[0]}</span><span>${a[1][k]}</span><span class="chev">›</span></summary><div class="body"><ul>${a[2][k].map(s => `<li>${s}</li>`).join('')}</ul></div></details>`).join('')}
+    <div class="card"><h3>🔎 ${x.checkT}</h3><p class="small muted">${x.checkNote}</p><div class="stack" id="chk">${CHECK.map((q, i) => `<label class="row small" style="flex-wrap:nowrap;align-items:flex-start;font-weight:700"><input type="checkbox" data-chk="${i}" style="margin-top:3px"> ${q[k]}</label>`).join('')}</div>
+      <button class="btn soft" id="chk-go">${x.result}</button><div id="chk-out"></div></div>
+    <div class="banner warn"><b>🚑 ${x.flags}</b><ul class="small" style="margin:0;padding-left:18px">${x.flagList.map(f => `<li>${f}</li>`).join('')}</ul></div>
+  </div>`;
+}
+function answer(q) {
+  const k = S.lang === 'ru' ? 0 : 1;
+  for (const [re, a] of FAQ) if (re.test(q)) return a[k];
+  return S.lang === 'ru' ? 'Я пока знаю ответы о цикле, задержке, боли, овуляции, беременности, выделениях, ПМС и контрацепции. Попробуйте спросить об этом — а с личными вопросами лучше к врачу.'
+    : 'Мен әзірге цикл, кешігу, ауру, овуляция, жүктілік, бөлініс, ЕАС және контрацепция туралы білемін. Солар туралы сұраңыз — жеке сұрақтар бойынша дәрігерге барған дұрыс.';
+}
+
+/* ---------- profile / settings ---------- */
+function profile() {
+  const x = t();
+  const modes = [['cycle', x.mCycle], ['ttc', x.mTtc], ['preg', x.mPreg]];
+  return `<div class="stack" style="padding-top:8px">
+    <h1>${x.me}</h1>
+    <div class="card"><h3>${x.modeT}</h3><div class="chips">${modes.map(([k, n]) => `<button class="chip" data-setmode="${k}" aria-pressed="${S.mode === k}">${n}</button>`).join('')}</div>
+      ${S.mode !== 'preg' ? `<div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="st-c">${x.cycleLen}</label><input id="st-c" type="number" min="18" max="50" value="${S.cycleLen}"></div><div class="field" style="flex:1"><label for="st-p">${x.periodLen}</label><input id="st-p" type="number" min="1" max="12" value="${S.periodLen}"></div></div>` : `<div class="field"><label for="st-lmp">${x.lmp}</label><input id="st-lmp" type="date" max="${today()}" value="${S.preg?.lmp || ''}"></div>`}
+      <button class="btn soft sm" id="st-save" style="justify-self:start">${x.save}</button></div>
+    <div class="card"><h3>🔔 ${x.remindT}</h3><p class="small muted">${x.remindNote}</p><button class="btn soft" id="ics">📅 ${x.addCal}</button></div>
+    <div class="card"><h3>💞 ${x.partner}</h3><p class="small muted">${x.partnerNote}</p><button class="btn soft" id="share">${x.partner}</button></div>
+    <div class="card"><h3>🔒 ${x.pinT}</h3><p class="small muted">${x.pinNote}</p>
+      ${S.pin ? `<button class="btn line" id="pin-off">${x.pinOff}</button>` : `<div class="row" style="flex-wrap:nowrap"><input id="pin-new" inputmode="numeric" maxlength="4" placeholder="${x.pinNew}" style="flex:1;border:1.5px solid var(--line);border-radius:16px;padding:12px;background:var(--surface)"><button class="btn soft" id="pin-set">${x.pinSet}</button></div>`}</div>
+    <div class="card"><h3>${x.settings}</h3>
+      <div class="field"><label for="st-name">${x.name}</label><input id="st-name" maxlength="30" value="${esc(S.name)}"></div></div>
+    <div class="card"><h3>🗂 ${x.data}</h3><p class="small muted">🔒 ${x.privacy}</p><div class="row"><button class="btn line sm" id="exp">⬇ ${x.export}</button><label class="btn line sm">⬆ ${x.import}<input type="file" id="imp" accept="application/json" hidden></label></div>
+      <button class="link" id="wipe" style="color:var(--warn);justify-self:start">${x.wipe}</button></div>
+    <p class="legal">${x.disclaimer}</p></div>`;
+}
+
+/* ---------- reminders (.ics), share, export ---------- */
+function buildIcs() {
+  const x = t(); const ev = []; const c = cycleInfo();
+  const dt = s => s.replace(/-/g, '');
+  const push = (d, sum, rr) => ev.push(`BEGIN:VEVENT\r\nUID:${dt(d)}-${ev.length}@aisulu\r\nDTSTAMP:${dt(today())}T090000Z\r\nDTSTART;VALUE=DATE:${dt(d)}\r\nSUMMARY:${sum}\r\n${rr || ''}BEGIN:VALARM\r\nTRIGGER:-PT15H\r\nACTION:DISPLAY\r\nDESCRIPTION:${sum}\r\nEND:VALARM\r\nEND:VEVENT`);
+  if (S.mode === 'preg') { const p = pregInfo(); if (p) push(p.due, x.due); }
+  else if (c) {
+    for (let k = 0; k < 6; k++) { const s = add(c.next, c.C * k); push(add(s, -2), `Erte Komek: ${x.periodsIn(2)}`); push(add(s, -14), `Erte Komek: ${x.lgOvu}`); push(add(s, -19), `Erte Komek: ${x.fertWin}`); }
+    if (Object.values(S.logs).some(l => l.pill)) push(add(today(), 1), `Erte Komek: 💊 ${x.pill}`, 'RRULE:FREQ=DAILY\r\n');
+  }
+  return `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Erte Komek//RU\r\n${ev.join('\r\n')}\r\nEND:VCALENDAR\r\n`;
+}
+function download(name, text, type) {
+  const blob = new Blob([text], { type });
+  if (navigator.canShare && navigator.share) { try { const f = new File([blob], name, { type }); if (navigator.canShare({ files: [f] })) { navigator.share({ files: [f] }).catch(() => {}); return; } } catch (e) {} }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function partnerText() {
+  const x = t();
+  if (S.mode === 'preg') { const p = pregInfo(); return S.lang === 'ru' ? `У нас ${p.w}-я неделя беременности! Дата родов: ${fmtLong(p.due)}.` : `Бізде жүктіліктің ${p.w}-аптасы! Босану күні: ${fmtLong(p.due)}.`; }
+  const c = cycleInfo(); if (!c) return '';
+  const hint = { men: S.lang === 'ru' ? 'Мне сейчас может быть больно и тяжело — тепло, чай и забота очень помогут 💗' : 'Маған қазір ауыр болуы мүмкін — жылу, шай және қамқорлық көп көмектеседі 💗',
+    lut: S.lang === 'ru' ? 'Скоро месячные — возможны перепады настроения, будь со мной помягче 🤍' : 'Жақында етеккір — көңіл-күйім құбылуы мүмкін, маған жұмсақ бол 🤍',
+    fol: S.lang === 'ru' ? 'У меня сейчас много энергии — отличное время для планов вместе ✨' : 'Қазір қуатым көп — бірге жоспар құруға тамаша уақыт ✨',
+    fert: S.lang === 'ru' ? 'Сейчас фертильные дни.' : 'Қазір құнарлы күндер.', ovu: S.lang === 'ru' ? 'Сегодня, по прогнозу, овуляция.' : 'Болжам бойынша бүгін овуляция.' }[c.ph];
+  return x.partnerMsg(x.phase[c.ph], `${hint} ${x.nextPeriod}: ${fmtShort(c.next)}.`);
+}
+
+/* ---------- bindings ---------- */
+function bindAll() {
+  document.querySelectorAll('[data-log]').forEach(b => b.onclick = () => openLog(b.dataset.log));
+  $('#p-start') && ($('#p-start').onclick = () => { startPeriod(today()); save(); toast(t().saved); render(); });
+  $('#p-end') && ($('#p-end').onclick = () => { endPeriod(today()); save(); toast(t().saved); render(); });
+  document.querySelectorAll('[data-month]').forEach(b => b.onclick = () => { ui.month = b.dataset.month; render(); });
+  document.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { ui.sel = b.dataset.day; render(); });
+  $('#mark-start') && ($('#mark-start').onclick = () => { startPeriod(ui.sel || today()); save(); toast(t().saved); render(); });
+  $('#mark-end') && ($('#mark-end').onclick = () => { endPeriod(ui.sel || today()); save(); toast(t().saved); render(); });
+  $('#rep') && ($('#rep').onclick = openReport);
+  if ($('#ask')) $('#ask').onsubmit = e => { e.preventDefault(); const q = $('#ask-in').value.trim(); if (!q) return; ui.chat.push(['me', q], ['bot', answer(q)]); ui.chat = ui.chat.slice(-10); render(); $('#chat')?.scrollIntoView({ block: 'end' }); };
+  if ($('#chk-go')) $('#chk-go').onclick = () => {
+    const sel = [...document.querySelectorAll('[data-chk]')].filter(c => c.checked).map(c => +c.dataset.chk), ru = S.lang === 'ru';
+    const pcos = sel.filter(i => i <= 2).length, endo = sel.filter(i => i === 3 || i === 4).length, inf = sel.includes(5);
+    let msg = [];
+    if (pcos >= 2) msg.push(ru ? 'Есть признаки, которые бывают при СПКЯ. Запишитесь к гинекологу или эндокринологу — нужны анализы и УЗИ.' : 'АБП кезінде болатын белгілер бар. Гинеколог не эндокринологқа жазылыңыз — талдау мен УДЗ керек.');
+    if (endo >= 1) msg.push(ru ? 'Сильная боль при месячных — повод исключить эндометриоз. Обсудите с гинекологом.' : 'Етеккірдегі қатты ауру — эндометриозды тексеру себебі. Гинекологпен ақылдасыңыз.');
+    if (inf) msg.push(ru ? 'Если беременность не наступает больше года — обратитесь к врачу вдвоём с партнёром.' : 'Жүктілік бір жылдан астам болмаса — жарыңызбен бірге дәрігерге барыңыз.');
+    if (!msg.length) msg.push(ru ? 'Явных поводов для беспокойства по этим вопросам нет. Продолжайте отмечать цикл.' : 'Бұл сұрақтар бойынша алаңдауға айқын себеп жоқ. Циклді белгілей беріңіз.');
+    $('#chk-out').innerHTML = `<div class="banner ${sel.length && msg.length && (pcos >= 2 || endo || inf) ? 'warn' : 'info'}">${msg.map(m => `<p class="small">${m}</p>`).join('')}<p class="small muted">${t().checkNote.split('.').slice(-2).join('.')}</p></div>`;
+  };
+  document.querySelectorAll('[data-setmode]').forEach(b => b.onclick = () => { S.mode = b.dataset.setmode; if (S.mode === 'preg' && !S.preg) { S.onboarded = false; } else if (S.mode !== 'preg' && !lastStart()) { S.onboarded = false; } save(); render(); });
+  $('#st-save') && ($('#st-save').onclick = () => {
+    if ($('#st-c')) { S.cycleLen = clampN(+$('#st-c').value, 18, 50, S.cycleLen); S.periodLen = clampN(+$('#st-p').value, 1, 12, S.periodLen); }
+    if ($('#st-lmp') && $('#st-lmp').value) S.preg = { lmp: $('#st-lmp').value };
+    save(); toast(t().saved); render();
+  });
+  $('#st-name') && ($('#st-name').onchange = () => { S.name = $('#st-name').value.trim(); save(); toast(t().saved); });
+    $('#ics') && ($('#ics').onclick = () => download('aisulu.ics', buildIcs(), 'text/calendar'));
+  $('#share') && ($('#share').onclick = () => { const txt = partnerText(); if (navigator.share) navigator.share({ text: txt }).catch(() => {}); else { navigator.clipboard?.writeText(txt).then(() => toast('✓ ' + (S.lang === 'ru' ? 'Скопировано' : 'Көшірілді'))); } });
+  $('#pin-set') && ($('#pin-set').onclick = async () => { const v = $('#pin-new').value; if (!/^\d{4}$/.test(v)) { toast(t().pinNew); return; } S.pin = await hash(v); ui.unlocked = true; save(); toast(t().saved); render(); });
+  $('#pin-off') && ($('#pin-off').onclick = () => { S.pin = ''; save(); render(); });
+  $('#exp') && ($('#exp').onclick = () => download(`aisulu-${today()}.json`, JSON.stringify(S, null, 1), 'application/json'));
+  $('#imp') && ($('#imp').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const d = JSON.parse(r.result); if (d && Array.isArray(d.periods)) { S = Object.assign(fresh(), d); ui.unlocked = true; save(); toast(t().saved); render(); } } catch (er) { toast('⚠'); } }; r.readAsText(f); });
+  $('#wipe') && ($('#wipe').onclick = () => { if (confirm(t().wipeQ)) { const lang = S.lang; S = fresh(); S.lang = lang; save(); render(); } });
+}
+function toast(msg) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
+
+function summary() {
+  S.lang = HOST.lang(); const x = t();
+  if (S.pin && !ui.unlocked) return '🔒'; if (!S.onboarded) return '';
+  if (S.mode === 'preg') { const p = pregInfo(); return p ? `${p.w} + ${p.dd} · ${x.pregWeek}` : ''; }
+  const c = cycleInfo(); if (!c) return '';
+  return c.late > 0 ? `${x.late}: ${x.daysW(c.late)}` : c.toNext === 0 ? x.periodToday : x.periodsIn(c.toNext);
+}
+return { render, summary };
+})({ lang: () => S.lang });
+/*/MOM-JS*/
 /* ---------- shell ---------- */
-const NAV = ['home', 'check', 'play', 'learn', 'help'];
+const NAV = ['home', 'check', 'play', 'learn', 'help', 'mom'], NAV_S = [0, 1, 2, 3, 4, 7];
 function renderShell() {
   document.documentElement.lang = S.lang;
   if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', S.theme);
   $('#sub').textContent = L().sub;
   document.querySelectorAll('.seg button[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === S.lang));
-  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${(S.tab === 5 ? 0 : S.tab === 6 ? 3 : S.tab) === i ? 'aria-current="page"' : ''}>
+  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${(S.tab === 5 ? 0 : S.tab === 6 ? 3 : S.tab) === NAV_S[i] ? 'aria-current="page"' : ''}>
     <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().nav[i]}</button>`).join('');
-  NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(i)));
+  NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(NAV_S[i])));
 }
 function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
 function toast(msg) {
@@ -1027,6 +1748,11 @@ function home() {
       <p class="small muted">${t.diaryNote}</p>
       <button class="btn soft" type="button" id="go-diary">${t.openDiary} →</button>
     </div>
+    <div class="card momcard">
+      <div class="row between"><span class="eyebrow">🌸 ${t.momT}</span>${MOM.summary() ? `<span class="status todo">${esc(MOM.summary())}</span>` : ''}</div>
+      <p class="small">${t.momNote}</p>
+      <button class="btn primary" type="button" id="go-mom" style="justify-self:start">${t.openMom} →</button>
+    </div>
     ${corrM(c) < 6 ? `<div class="card">
       <h2 class="h3">🍼 ${t.careT}</h2><p class="small muted">${t.careNote}</p>
       <button class="btn soft" type="button" id="go-care">${t.openCare} →</button>
@@ -1054,6 +1780,7 @@ function bindHome() {
   $('#go-check')?.addEventListener('click', () => go(1));
   $('#go-play')?.addEventListener('click', () => go(2));
   $('#go-diary')?.addEventListener('click', () => go(5));
+  $('#go-mom')?.addEventListener('click', () => go(7));
   $('#go-care')?.addEventListener('click', () => go(6));
   $('#rem-daily')?.addEventListener('change', e => { ui.daily = e.target.checked; });
   bindTip(); bindNotif();
@@ -1359,7 +2086,8 @@ function bindDiary() {
 
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
-const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => $('#go-care')?.addEventListener('click', () => go(6))], [help, bindHelp], [diary, bindDiary], [care, () => $('#care-back')?.addEventListener('click', () => go(3))]];
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => $('#go-care')?.addEventListener('click', () => go(6))], [help, bindHelp], [diary, bindDiary], [care, () => $('#care-back')?.addEventListener('click', () => go(3))], [mom, () => MOM.render()]];
+function mom() { return `<div id="mom" class="stack"><nav class="mtabs" id="mom-tabs" aria-label="${L().momT}"></nav><div id="mom-app"></div><div id="mom-sheet"></div></div>${legal()}`; }
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
   renderShell();

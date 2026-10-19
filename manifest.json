@@ -1,11 +1,11 @@
 {
   "name": "Erte Komek",
   "short_name": "Erte Komek",
-  "description": "Бала дамуының күнделігі / Дневник развития ребёнка",
+  "description": "Бала дамуы және ана денсаулығы / Развитие ребёнка и здоровье мамы",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#eef3f8",
-  "theme_color": "#0b5cad",
+  "background_color": "#fff5f7",
+  "theme_color": "#c9356b",
   "icons": [
     {
       "src": "icon-192.png",
