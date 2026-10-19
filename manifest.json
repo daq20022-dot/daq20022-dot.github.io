@@ -4,8 +4,8 @@
   "description": "Бала дамуы және ана денсаулығы / Развитие ребёнка и здоровье мамы",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#fff5f7",
-  "theme_color": "#c9356b",
+  "background_color": "#FFF8F2",
+  "theme_color": "#C64A37",
   "icons": [
     {
       "src": "icon-192.png",

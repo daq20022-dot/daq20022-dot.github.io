@@ -1,32 +1,32 @@
 <!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="Erte Komek"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>Erte Komek</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="theme-color" content="#c9356b">
+<meta name="theme-color" content="#C64A37">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Bad+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
   /* Layout: app shell — translucent top bar, one 600px column of soft rounded cards, fixed bottom tab bar with six sections.
      Palette: rose and lavender on a blush ground (Flo-like); serif headings; semantic green / amber / red only for results. */
   :root {
-    --bg: #fff5f7; --surface: #ffffff; --surface-2: #fbf1f6; --fg: #4a2340; --muted: #7d5b72; --line: #f1dbe4;
-    --accent: #c9356b; --accent-fg: #ffffff; --accent-soft: #fbe1ea; --teal: #7b4fb0; --teal-soft: #efe4fa;
-    --ok: #2f8a63; --ok-bg: #e2f4ea; --warn: #a45a12; --warn-bg: #fdf0dc; --bad: #b42350; --bad-bg: #fdecef;
-    --bg2: #f8f0fb; --lav: #7b4fb0; --lav-soft: #efe4fa; --period: #e0457b; --period-soft: #fbd3e1; --fert: #8a63c9; --fert-soft: #e9ddf8; --ovu: #6a3fb0;
-    --shadow: 0 12px 34px rgba(201,53,107,.10);
-    --font: "Comfortaa", "Segoe UI", system-ui, -apple-system, sans-serif; --serif: "Cormorant Garamond", Georgia, serif; --script: "Bad Script", "Comfortaa", cursive;
+    --bg: #FFF8F2; --surface: #ffffff; --surface-2: #FFF1E8; --fg: #3B2F4A; --muted: #6E6178; --line: #F2E3D8;
+    --accent: #C64A37; --accent-fg: #ffffff; --accent-soft: #FFE1D9; --teal: #2E7D66; --teal-soft: #D9F1E8;
+    --ok: #2E7D66; --ok-bg: #D9F1E8; --warn: #8A5A00; --warn-bg: #FFE7A8; --bad: #B23A2A; --bad-bg: #FFE1D9;
+    --bg2: #FFF1E8; --lav: #2E7D66; --lav-soft: #D9F1E8; --period: #C64A37; --period-soft: #FFE1D9; --fert: #3E9C80; --fert-soft: #D9F1E8; --ovu: #23604E;
+    --butter: #FFE7A8; --peach: #FFB4A2; --shadow: none;
+    --font: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif; --serif: "Montserrat Alternates", "Nunito", sans-serif; --script: "Montserrat Alternates", "Nunito", sans-serif;
     --nav-h: 64px;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg: #1f1420; --surface: #2c1f31; --surface-2: #261a2b; --fg: #f8e8f0; --muted: #c9adc0; --line: #45304b;
-    --accent: #f07ba3; --accent-fg: #2a0f1d; --accent-soft: #4a2238; --teal: #c4a6ef; --teal-soft: #352646;
-    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8fb0; --bad-bg: #4a1d2c;
-    --bg2: #261a2b; --lav: #c4a6ef; --lav-soft: #352646; --period: #f07ba3; --period-soft: #5a2440; --fert: #b393ea; --fert-soft: #3b2b55; --ovu: #cdb2f5;
-    --shadow: 0 12px 34px rgba(0,0,0,.35); color-scheme: dark } }
+    --bg: #241C2C; --surface: #2F2539; --surface-2: #382C44; --fg: #FFF1E8; --muted: #C9B9CF; --line: #4A3C55;
+    --accent: #FF9A86; --accent-fg: #2A1410; --accent-soft: #4A2C30; --teal: #8FD6BE; --teal-soft: #1F3B34;
+    --ok: #8FD6BE; --ok-bg: #1F3B34; --warn: #FFD27A; --warn-bg: #3F3318; --bad: #FF9A86; --bad-bg: #4A2C30;
+    --bg2: #2F2539; --lav: #8FD6BE; --lav-soft: #1F3B34; --period: #FF9A86; --period-soft: #4A2C30; --fert: #8FD6BE; --fert-soft: #1F3B34; --ovu: #BDEBDB;
+    --butter: #4A4024; --peach: #5A3A36; --shadow: none; color-scheme: dark } }
   :root[data-theme="dark"] {
-    --bg: #1f1420; --surface: #2c1f31; --surface-2: #261a2b; --fg: #f8e8f0; --muted: #c9adc0; --line: #45304b;
-    --accent: #f07ba3; --accent-fg: #2a0f1d; --accent-soft: #4a2238; --teal: #c4a6ef; --teal-soft: #352646;
-    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8fb0; --bad-bg: #4a1d2c;
-    --bg2: #261a2b; --lav: #c4a6ef; --lav-soft: #352646; --period: #f07ba3; --period-soft: #5a2440; --fert: #b393ea; --fert-soft: #3b2b55; --ovu: #cdb2f5;
-    --shadow: 0 12px 34px rgba(0,0,0,.35); color-scheme: dark }
+    --bg: #241C2C; --surface: #2F2539; --surface-2: #382C44; --fg: #FFF1E8; --muted: #C9B9CF; --line: #4A3C55;
+    --accent: #FF9A86; --accent-fg: #2A1410; --accent-soft: #4A2C30; --teal: #8FD6BE; --teal-soft: #1F3B34;
+    --ok: #8FD6BE; --ok-bg: #1F3B34; --warn: #FFD27A; --warn-bg: #3F3318; --bad: #FF9A86; --bad-bg: #4A2C30;
+    --bg2: #2F2539; --lav: #8FD6BE; --lav-soft: #1F3B34; --period: #FF9A86; --period-soft: #4A2C30; --fert: #8FD6BE; --fert-soft: #1F3B34; --ovu: #BDEBDB;
+    --butter: #4A4024; --peach: #5A3A36; --shadow: none; color-scheme: dark }
 
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); -webkit-tap-highlight-color: transparent; }
@@ -221,54 +221,51 @@
   footer.legal { font-size: 12px; color: var(--muted); display: grid; gap: 4px; padding-top: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-  /* feminine look */
-  body { background: radial-gradient(120% 60% at 100% 0%, var(--bg2), transparent 60%), var(--bg); background-attachment: fixed; }
+  /* brand D «Тәтті»: coral, peach, mint, butter; Montserrat Alternates + Nunito; big soft radii, flat colour cards */
+  body { background: var(--bg); }
   body::before { background: var(--bg); }
-  header.bar { background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 0; }
-  body { font-weight: 500; }
-  .brand b { font-family: var(--script); font-weight: 400; font-size: 27px; line-height: 1.1; letter-spacing: 0; color: var(--accent); }
-  .h1, .h2, #mom h1, #mom h2, #mom .week, #mom .ringtext .big, #mom .stat b, .tear-date b { font-family: var(--serif); font-weight: 700; font-variant-numeric: lining-nums; }
-  .h1 { font-size: 28px !important; } .h2 { font-size: 24px !important; } #mom h1 { font-size: 32px; } #mom h2 { font-size: 25px; }
-  .eyebrow, .h3, #mom h3 { letter-spacing: .02em; }
-  .sndbtn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; font-size: 17px; padding: 0; flex: none; }
+  header.bar { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 0; }
+  .brand b { font-family: var(--script); font-weight: 700; font-size: 22px; letter-spacing: -.01em; text-transform: lowercase; color: var(--fg); }
+  .brand small, p:empty, span.small:empty, .tiny:empty { display: none; }
+  .h1, .h2, #mom h1, #mom h2, #mom .week, #mom .ringtext .big, #mom .stat b, .tear-date b { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
+  .h1 { font-size: 24px !important; } .h2 { font-size: 20px !important; } #mom h1 { font-size: 28px; } #mom h2 { font-size: 22px; }
+  .h3, #mom h3 { font-weight: 800; }
+  .eyebrow { color: var(--accent); font-weight: 800; }
+  .sndbtn { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--butter); display: grid; place-items: center; font-size: 17px; padding: 0; flex: none; }
   .sndbtn[aria-pressed="false"] { opacity: .45; filter: grayscale(1); }
-  .brand small { letter-spacing: .02em; text-transform: none; font-size: 12px; }
-  .eyebrow { color: var(--accent); }
-  .card { border-radius: 24px; padding: 18px; box-shadow: var(--shadow); }
-  .card.flat { box-shadow: none; }
-  .btn, .btn.sm { border-radius: 999px; }
-  .btn.primary { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--lav))); }
-  .seg { border-radius: 999px; padding: 3px; background: var(--surface); }
+  main { gap: 14px; }
+  .card, .card.flat, details.art, .tear, .q { box-shadow: none; border: 0; }
+  .card { border-radius: 30px; padding: 20px; }
+  .card.flat { background: var(--surface-2); }
+  .btn, .btn.sm { border-radius: 999px; font-weight: 800; }
+  .btn.primary { background: var(--accent); }
+  .btn.soft { background: var(--teal-soft); color: var(--teal); }
+  .seg { border-radius: 999px; padding: 3px; background: var(--surface); border: 0; }
   .seg button { border-radius: 999px; }
   .chip { border-width: 1.5px; }
-  .avatar { background: linear-gradient(140deg, #f7b6cb, #c9a7ef); color: #fff; font-family: var(--serif); }
-  .kv div, .banner, .q { border-radius: 18px; }
-  details.art { border-radius: 22px; }
-  .bar-p { background: var(--bg2); } .bar-p i { background: linear-gradient(90deg, var(--period), var(--lav)); }
-  nav.tabbar { border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(201,53,107,.06); }
+  .chip[aria-pressed="true"] { background: var(--butter); border-color: var(--butter); color: var(--fg); }
+  .avatar { background: var(--peach); color: var(--fg); font-family: var(--serif); }
+  .kv div { border-radius: 20px; }
+  .banner, .q { border-radius: 22px; }
+  .banner.info { background: var(--butter); color: var(--fg); }
+  details.art { border-radius: 24px; }
+  .pic { border-radius: 22px; }
+  .bar-p { background: var(--accent-soft); height: 10px; } .bar-p i { background: var(--accent); }
+  nav.tabbar { border-top: 0; box-shadow: none; }
   .tabbar-in { grid-template-columns: repeat(6, 1fr); }
   .tabbar button { font-weight: 800; font-size: 10.5px; }
   .tabbar .pill { padding: 3px 10px; }
-  .momcard { background: linear-gradient(140deg, #ffe3ec, #efe1fb); border: 0; }
-  :root[data-theme="dark"] .momcard { background: linear-gradient(140deg, #4a2238, #352646); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .momcard { background: linear-gradient(140deg, #4a2238, #352646); } }
-
-
-  /* minimal: flat cards, one accent, more air, fewer words */
-  body { background: var(--bg); }
-  main { gap: 16px; }
-  .card, .card.flat, details.art, .tear, .q { box-shadow: none; border: 1px solid var(--line); }
-  .card { border-radius: 20px; }
-  .btn.primary { background: var(--accent); }
-  .momcard, :root[data-theme="dark"] .momcard { background: var(--surface); border: 1px solid var(--line); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .momcard { background: var(--surface); } }
-  .banner.info { background: transparent; border: 1px dashed var(--line); color: var(--fg); }
-  nav.tabbar { box-shadow: none; }
-  .brand small, p:empty, span.small:empty, .tiny:empty { display: none; }
+  .tabbar button[aria-current="page"] .pill { background: var(--accent-soft); }
+  .momcard { background: var(--teal-soft); }
+  .momcard .eyebrow { color: var(--teal); }
+  .tear { border-radius: 30px; transform: none; }
+  .tear-top { background: var(--peach); }
   footer.legal { text-align: center; opacity: .8; }
-  #mom .card, #mom .card.soft { box-shadow: none !important; }
-  #mom .card[style*="gradient"] { background: var(--surface) !important; border: 1px solid var(--line) !important; }
-  #mom .stat { background: transparent !important; border: 1px solid var(--line); }
+  #mom .card, #mom .card.soft { box-shadow: none !important; border: 0; border-radius: 30px; }
+  #mom .card[style*="gradient"] { background: var(--accent-soft) !important; border: 0 !important; }
+  #mom .stat { background: var(--butter) !important; border-radius: 22px; }
+  #mom .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+
 
 
   /*MOM-CSS*/
@@ -358,7 +355,7 @@
   #mom .mtabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 4px; }
   #mom .mtabs button { flex: none; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-weight: 800; font-size: 14px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
   #mom .mtabs button[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
-  #mom .logo { width: 36px; height: 36px; border-radius: 12px; background: linear-gradient(140deg, #f07ba3, #9b5fd0); display: grid; place-items: center; color: #fff; font-family: var(--serif); font-size: 20px; font-style: italic; }
+  #mom .logo { width: 36px; height: 36px; border-radius: 12px; background: var(--peach); display: grid; place-items: center; color: #fff; font-family: var(--serif); font-size: 20px; font-style: italic; }
   #mom > .stack { gap: 14px; }
   #mom .mtabs[hidden] { display: none; }
   /*/MOM-CSS*/
@@ -367,13 +364,7 @@
 </head><body><header class="bar">
   <div class="bar-in">
     <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true">
-        <defs><linearGradient id="lg-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f07ba3"/><stop offset="1" stop-color="#9b5fd0"/></linearGradient></defs><rect x="1" y="1" width="38" height="38" rx="12" fill="url(#lg-brand)"/>
-        <path d="M20 31V19" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-        <path d="M20 22c-6 0-9-3.5-9-8.5 6 0 9 3.5 9 8.5z" fill="#fff"/>
-        <path d="M20 19c0-5 3-8 9-8 0 5-3 8-9 8z" fill="#ffd1e1"/>
-        <path d="M29 26h6M32 23v6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
-      </svg>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3c9 0 17 6 17 16s-7 18-17 18S3 30 3 20 11 3 20 3z" fill="#FFB4A2"/><path d="M20 30c-6-3.5-9-7-9-11a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 4-3 7.5-9 11z" fill="#C64A37"/><path d="M20 15c0-4 3-7 7-7 0 4-3 7-7 7z" fill="#3E9C80"/></svg>
       <div><b>Erte Komek</b><small id="sub"></small></div>
     </div>
     <div class="row" style="flex-wrap:nowrap;gap:8px">
@@ -931,9 +922,9 @@ function reportCanvas(txt) {
   const wrap = (line, size, bold) => { x.font = `${bold ? 700 : 400} ${size}px ${font}`; const out = []; let cur = ''; for (const w of line.split(' ')) { const tryL = cur ? cur + ' ' + w : w; if (x.measureText(tryL).width > W - 2 * P && cur) { out.push(cur); cur = w; } else cur = tryL; } out.push(cur); return out; };
   const lines = []; txt.split('\n').forEach((ln, i) => { const head = i === 0, bold = head || /:$/.test(ln) || /^(Кезең|Этап)/.test(ln); (ln ? wrap(ln, head ? 40 : 32, bold) : ['']).forEach(l => lines.push([l, head ? 40 : 32, bold])); });
   cv.width = W; cv.height = 150 + lines.reduce((a, [, sz]) => a + sz * 1.45, 0) + 60;
-  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, cv.height); x.fillStyle = '#c9356b'; x.fillRect(0, 0, W, 16);
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, cv.height); x.fillStyle = '#C64A37'; x.fillRect(0, 0, W, 16);
   let y = 90; x.textBaseline = 'alphabetic';
-  lines.forEach(([l, sz, bold], i) => { x.font = `${bold ? 700 : 400} ${sz}px ${font}`; x.fillStyle = i === 0 ? '#c9356b' : '#4a2340'; x.fillText(l, P, y); y += sz * 1.45; });
+  lines.forEach(([l, sz, bold], i) => { x.font = `${bold ? 700 : 400} ${sz}px ${font}`; x.fillStyle = i === 0 ? '#C64A37' : '#3B2F4A'; x.fillText(l, P, y); y += sz * 1.45; });
   x.font = `400 24px ${font}`; x.fillStyle = '#5b6b80'; x.fillText('daq20022-dot.github.io', P, cv.height - 40);
   return cv;
 }
@@ -1492,7 +1483,7 @@ function openReport() {
   const sc = {}; Object.values(S.logs).forEach(l => (l.sym || []).forEach(i => sc[i] = (sc[i] || 0) + 1));
   const sym = Object.entries(sc).sort((a, b) => b[1] - a[1]).map(([i, n]) => `${x.sym[i]} (${n})`).join(', ') || x.none;
   const w = window.open('', '_blank');
-  const html = `<!doctype html><meta charset="utf-8"><title>Erte Komek — ${x.report}</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#222}h1{color:#c9356b}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}</style>
+  const html = `<!doctype html><meta charset="utf-8"><title>Erte Komek — ${x.report}</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#222}h1{color:#C64A37}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}</style>
     <h1>Erte Komek — ${x.report}</h1><p>${S.name ? esc(S.name) + ' · ' : ''}${fmtLong(today())}</p>
     <p><b>${x.avgCycle}:</b> ${avgCycle()} · <b>${x.avgPeriod}:</b> ${avgPeriod()} · <b>${x.cycles}:</b> ${st.length}</p>
     <table><tr><th>${x.lastStart}</th><th>${x.cycleLen}</th><th>${x.periodLen}</th></tr>${rows}</table>
