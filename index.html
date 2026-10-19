@@ -171,6 +171,14 @@
   .vrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
   .vrow:last-child { border-bottom: 0; }
   .vrow .vid { flex-basis: 100%; }
+  .qrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .say { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface-2); color: var(--accent); display: grid; place-items: center; padding: 0; }
+  .rep-img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); }
+  .ephoto { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; background: var(--surface-2); }
+  .gwrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .gstat { display: grid; gap: 2px; background: var(--surface-2); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+  .gstat b { font-size: 20px; }
+  .spark { width: 100%; height: 60px; }
   .myth { display: grid; gap: 6px; }
   .myth .m { font-weight: 700; color: var(--bad); display: flex; gap: 8px; }
   .myth .t { display: flex; gap: 8px; }
@@ -255,7 +263,18 @@ const T = {
       no: 'Әзірге жоқ:', unsure: 'Ата-ана білмейді:', allYes: 'Барлық белгілер бар.', flags: 'Ата-ананы алаңдатқан белгілер:', none: 'жоқ', foot: 'Ата-ана толтырған сауалнама (CDC 2022 негізінде). Диагноз емес.' },
     legal: ['Даму белгілері АҚШ-тың CDC «Learn the Signs. Act Early.» (2022) бағдарламасы бойынша қысқартылған.', 'Қосымша диагноз қоймайды және дәрігерді алмастырмайды. Деректер тек осы құрылғыда сақталады.'],
     theme: 'Тақырып', themes: ['Авто', 'Ақшыл', 'Қараңғы'],
-    watch: 'Видеоны көру', today: 'Бүгін', tomorrow: 'Ертең', yesterday: 'Кеше', backToday: 'Бүгінге оралу', gameOfDay: 'Күн ойыны',
+    watch: 'Видеоны көру',
+    diaryT: 'Күнделік', diaryNote: 'Алғашқы сөз, алғашқы қадам, бойы мен салмағы, суреттер — бәрі бір жерде.', openDiary: 'Күнделікті ашу', addEntry: 'Жазба қосу',
+    etypes: { word: 'Алғашқы сөз', step: 'Алғашқы қадам', growth: 'Бойы мен салмағы', tooth: 'Тіс шықты', note: 'Жазба' },
+    eType: 'Түрі', eDate: 'Күні', eText: 'Не болды?', eTextPh: 'Мысалы: «апа» деді', eH: 'Бойы, см', eW: 'Салмағы, кг', ePhoto: 'Сурет (міндетті емес)',
+    eErr: 'Мәтін жазыңыз немесе бойы/салмағын енгізіңіз.', eEmpty: 'Әзірге жазба жоқ. Бірінші жазбаны қосыңыз — мысалы, бүгінгі бойы мен салмағы.',
+    growthT: 'Өсу динамикасы', delEntry: 'Өшіру', delEntryQ: 'Бұл жазбаны өшіру керек пе?', back: '← Артқа',
+    remT: 'Еске салғыштар', remNote: 'Келесі тексеру күндерін және күнделікті ойын уақытын телефоныңыздың күнтізбесіне қосыңыз — телефон өзі еске салады.',
+    remDaily: 'Күн сайын 19:00-де ойын туралы еске салу', remBtn: 'Күнтізбеге қосу', remDone: 'Файл дайын — ашып, «Қосу» батырмасын басыңыз',
+    remSandbox: 'Бұл терезеде файл жүктелмейді. Қосымшаны daq20022-dot.github.io сайтынан ашыңыз.',
+    remEv: (n, st) => `Erte Komek: ${n} — ${st} тексеру`, remEvD: 'Erte Komek қосымшасын ашып, осы жастағы 5 сұраққа жауап беріңіз.', remPlay: n => `Erte Komek: ${n}мен 10 минут ойын`,
+    imgBtn: 'Сурет ретінде сақтау', imgNote: 'Суретті басып тұрып сақтаңыз немесе WhatsApp-қа жіберіңіз.', share: 'Бөлісу',
+    listen: 'Тыңдау', mapT: 'Жақын ПМПК мен ППТК-ны табу', mapNote: 'Қалаңызды таңдаңыз — картадан мекенжайлар ашылады.', city: 'Қала', today: 'Бүгін', tomorrow: 'Ертең', yesterday: 'Кеше', backToday: 'Бүгінге оралу', gameOfDay: 'Күн ойыны',
     futureNote: 'Бұл күннің ойындарын алдын ала көре аласыз. Белгіні сол күні ғана қоюға болады.', pastNote: 'Өткен күн: белгілерді өзгертуге болмайды.', ytSearch: 'YouTube-та видео', stageVidT: 'Әр кезең туралы видео', stageVidNote: 'Әр жастағы даму туралы түсіндірме видеолар. YouTube-тағы видеоларды өзіңіз тексеріңіз: дәрігерлер мен ресми ұйымдардың арналарына сеніңіз.', example2: 'Мысал'
   },
   ru: {
@@ -298,7 +317,18 @@ const T = {
       no: 'Пока нет:', unsure: 'Родитель не знает:', allYes: 'Все признаки есть.', flags: 'Признаки, которые беспокоят родителя:', none: 'нет', foot: 'Опросник заполнен родителем (по CDC 2022). Не является диагнозом.' },
     legal: ['Признаки развития сокращены по программе CDC (США) «Learn the Signs. Act Early.» (2022).', 'Приложение не ставит диагноз и не заменяет врача. Данные хранятся только на этом устройстве.'],
     theme: 'Тема', themes: ['Авто', 'Светлая', 'Тёмная'],
-    watch: 'Смотреть видео', today: 'Сегодня', tomorrow: 'Завтра', yesterday: 'Вчера', backToday: 'Вернуться к сегодня', gameOfDay: 'Игра дня',
+    watch: 'Смотреть видео',
+    diaryT: 'Дневник', diaryNote: 'Первое слово, первые шаги, рост и вес, фото — всё в одном месте.', openDiary: 'Открыть дневник', addEntry: 'Добавить запись',
+    etypes: { word: 'Первое слово', step: 'Первые шаги', growth: 'Рост и вес', tooth: 'Прорезался зуб', note: 'Заметка' },
+    eType: 'Тип', eDate: 'Дата', eText: 'Что произошло?', eTextPh: 'Например: сказал «мама»', eH: 'Рост, см', eW: 'Вес, кг', ePhoto: 'Фото (необязательно)',
+    eErr: 'Напишите текст или укажите рост/вес.', eEmpty: 'Пока нет записей. Добавьте первую — например, сегодняшний рост и вес.',
+    growthT: 'Динамика роста', delEntry: 'Удалить', delEntryQ: 'Удалить эту запись?', back: '← Назад',
+    remT: 'Напоминания', remNote: 'Добавьте даты следующих проверок и время ежедневной игры в календарь телефона — телефон сам напомнит.',
+    remDaily: 'Каждый день в 19:00 напоминать об игре', remBtn: 'Добавить в календарь', remDone: 'Файл готов — откройте его и нажмите «Добавить»',
+    remSandbox: 'В этом окне файлы не скачиваются. Откройте приложение на сайте daq20022-dot.github.io.',
+    remEv: (n, st) => `Erte Komek: ${n} — проверка ${st}`, remEvD: 'Откройте Erte Komek и ответьте на 5 вопросов для этого возраста.', remPlay: n => `Erte Komek: 10 минут игры с ${n}`,
+    imgBtn: 'Сохранить картинкой', imgNote: 'Нажмите и удерживайте картинку, чтобы сохранить, или отправьте в WhatsApp.', share: 'Поделиться',
+    listen: 'Прослушать', mapT: 'Найти ближайшие ПМПК и КППК', mapNote: 'Выберите город — адреса откроются на карте.', city: 'Город', today: 'Сегодня', tomorrow: 'Завтра', yesterday: 'Вчера', backToday: 'Вернуться к сегодня', gameOfDay: 'Игра дня',
     futureNote: 'Игры этого дня можно посмотреть заранее. Отметить их можно только в сам день.', pastNote: 'Прошедший день: отметки изменить нельзя.', ytSearch: 'Видео на YouTube', stageVidT: 'Видео по этапам развития', stageVidNote: 'Пояснительные видео о развитии в каждом возрасте. Ролики на YouTube проверяйте сами: доверяйте каналам врачей и официальных организаций.', example2: 'Пример'
   }
 };
@@ -572,14 +602,91 @@ function videoBlock(kind, key, q) {
   return `<a class="btn yt sm" href="${id ? 'https://www.youtube.com/watch?v=' + id : ytUrl(q)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9l5 3-5 3z" fill="var(--surface)"/></svg>${id ? t.watch : t.ytSearch}</a>`;
 }
 
+const CITIES = [['Астана', 'Астана'], ['Алматы', 'Алматы'], ['Шымкент', 'Шымкент'], ['Ақтөбе', 'Актобе'], ['Қарағанды', 'Караганда'], ['Тараз', 'Тараз'], ['Павлодар', 'Павлодар'],
+  ['Өскемен', 'Усть-Каменогорск'], ['Семей', 'Семей'], ['Атырау', 'Атырау'], ['Қостанай', 'Костанай'], ['Қызылорда', 'Кызылорда'], ['Орал', 'Уральск'], ['Петропавл', 'Петропавловск'],
+  ['Ақтау', 'Актау'], ['Түркістан', 'Туркестан'], ['Көкшетау', 'Кокшетау'], ['Талдықорған', 'Талдыкорган'], ['Жезқазған', 'Жезказган'], ['Қонаев', 'Конаев'], ['Екібастұз', 'Экибастуз']];
+
+/* ---------- photo store (IndexedDB; photos never leave the phone) ---------- */
+const PDB = (() => {
+  let dbp;
+  const open = () => dbp || (dbp = new Promise((res, rej) => { try { const r = indexedDB.open('erte-komek', 1); r.onupgradeneeded = () => r.result.createObjectStore('photos'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } }));
+  const tx = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction('photos', mode), st = t.objectStore('photos'), q = fn(st); t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); }));
+  return { put: (k, v) => tx('readwrite', s => s.put(v, k)), get: k => tx('readonly', s => s.get(k)), del: k => tx('readwrite', s => s.delete(k)) };
+})();
+function shrinkPhoto(file) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => { const im = new Image(); im.onload = () => { const k = Math.min(1, 900 / Math.max(im.width, im.height)); const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', 0.8)); }; im.onerror = rej; im.src = fr.result; };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+
+/* ---------- read aloud (device voices) ---------- */
+let VOICES = [];
+const loadVoices = () => { try { VOICES = speechSynthesis.getVoices(); } catch (e) { VOICES = []; } };
+try { loadVoices(); speechSynthesis.onvoiceschanged = () => { loadVoices(); if (S.tab === 1 || S.tab === 2) render(); }; } catch (e) {}
+const voiceFor = lang => VOICES.find(v => v.lang && v.lang.toLowerCase().startsWith(lang === 'kk' ? 'kk' : 'ru'));
+function speak(text) { try { const v = voiceFor(S.lang); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.voice = v; u.lang = v.lang; u.rate = 0.95; speechSynthesis.speak(u); } catch (e) {} }
+// recorded clips (ElevenLabs) for the milestone questions: audio/{kk|ru}/{stageMin}_{i}.mp3; device voice for everything else
+let CLIP = null;
+function playClip(url, text) {
+  try { if (CLIP) { CLIP.pause(); CLIP = null; } speechSynthesis.cancel(); } catch (e) {}
+  CLIP = new Audio(url); CLIP.play().catch(() => speak(text));
+}
+const clipBtn = (id, url, text) => `<button type="button" class="say" id="say-${id}" data-clip="${url}" data-say="${esc(text)}" aria-label="${L().listen}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>`;
+const sayBtn = (id, text) => voiceFor(S.lang) ? `<button type="button" class="say" id="say-${id}" data-say="${esc(text)}" aria-label="${L().listen}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>` : '';
+const bindSay = () => document.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); b.dataset.clip ? playClip(b.dataset.clip, b.dataset.say) : speak(b.dataset.say); }));
+
+/* ---------- files: calendar (.ics) and images ---------- */
+const SANDBOX = /claude\.ai|claudeusercontent/.test(location.href) || window.top !== window;
+function offerFile(name, mime, data, msgEl) {
+  const blob = data instanceof Blob ? data : new Blob([data], { type: mime });
+  const file = new File([blob], name, { type: mime });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], title: name }).catch(() => {}); return; } } catch (e) {}
+  if (SANDBOX) { if (msgEl) msgEl.textContent = L().remSandbox; return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  if (msgEl) msgEl.textContent = L().remDone;
+}
+function buildIcs(c, daily) {
+  const t = L(), pad = n => String(n).padStart(2, '0'), stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+  const dt = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+  const escI = x => String(x).replace(/[,;\\]/g, m => '\\' + m);
+  const L2 = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Erte Komek//KZ', 'CALSCALE:GREGORIAN'];
+  const b = new Date(c.dob + 'T10:00:00'), w = parseInt(c.weeks, 10), shiftDays = w && w < 37 ? (40 - w) * 7 : 0, now = new Date();
+  STAGES.forEach(st => {
+    const d = new Date(b); d.setMonth(d.getMonth() + st.min); if (st.min < 24) d.setDate(d.getDate() + shiftDays);
+    if (d < now) return;
+    L2.push('BEGIN:VEVENT', `UID:ek-${c.id}-${st.min}@erte-komek`, `DTSTAMP:${stamp}`, `DTSTART;TZID=Asia/Almaty:${dt(d)}T100000`, `DTEND;TZID=Asia/Almaty:${dt(d)}T103000`,
+      `SUMMARY:${escI(t.remEv(c.name, st.label[li()]))}`, `DESCRIPTION:${escI(t.remEvD + ' https://daq20022-dot.github.io')}`,
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:PT0M', `DESCRIPTION:${escI(t.remEv(c.name, st.label[li()]))}`, 'END:VALARM', 'END:VEVENT');
+  });
+  if (daily) { const d = new Date(); d.setDate(d.getDate() + 1);
+    L2.push('BEGIN:VEVENT', `UID:ek-${c.id}-daily@erte-komek`, `DTSTAMP:${stamp}`, `DTSTART;TZID=Asia/Almaty:${dt(d)}T190000`, `DTEND;TZID=Asia/Almaty:${dt(d)}T191000`, 'RRULE:FREQ=DAILY',
+      `SUMMARY:${escI(t.remPlay(c.name))}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:PT0M', `DESCRIPTION:${escI(t.remPlay(c.name))}`, 'END:VALARM', 'END:VEVENT'); }
+  L2.push('END:VCALENDAR');
+  return L2.join('\r\n');
+}
+function reportCanvas(txt) {
+  const W = 1080, P = 64, cv = document.createElement('canvas'), x = cv.getContext('2d'), font = '"Golos Text", "Segoe UI", Arial, sans-serif';
+  const wrap = (line, size, bold) => { x.font = `${bold ? 700 : 400} ${size}px ${font}`; const out = []; let cur = ''; for (const w of line.split(' ')) { const tryL = cur ? cur + ' ' + w : w; if (x.measureText(tryL).width > W - 2 * P && cur) { out.push(cur); cur = w; } else cur = tryL; } out.push(cur); return out; };
+  const lines = []; txt.split('\n').forEach((ln, i) => { const head = i === 0, bold = head || /:$/.test(ln) || /^(Кезең|Этап)/.test(ln); (ln ? wrap(ln, head ? 40 : 32, bold) : ['']).forEach(l => lines.push([l, head ? 40 : 32, bold])); });
+  cv.width = W; cv.height = 150 + lines.reduce((a, [, sz]) => a + sz * 1.45, 0) + 60;
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, cv.height); x.fillStyle = '#0b5cad'; x.fillRect(0, 0, W, 16);
+  let y = 90; x.textBaseline = 'alphabetic';
+  lines.forEach(([l, sz, bold], i) => { x.font = `${bold ? 700 : 400} ${sz}px ${font}`; x.fillStyle = i === 0 ? '#0b5cad' : '#14243a'; x.fillText(l, P, y); y += sz * 1.45; });
+  x.font = `400 24px ${font}`; x.fillStyle = '#5b6b80'; x.fillText('daq20022-dot.github.io', P, cv.height - 40);
+  return cv;
+}
+
 /* ---------- state ---------- */
 const KEY = 'erte-komek-v2';
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-let S = Object.assign({ lang: 'kk', theme: 'auto', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {} }, load());
+let S = Object.assign({ lang: 'kk', theme: 'auto', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {}, diary: {} }, load());
+S.diary = S.diary || {};
 const EX_DOB = (() => { const d = new Date(); d.setMonth(d.getMonth() - 19); d.setDate(d.getDate() - 5); return iso(d); })();
 const EXAMPLE = { id: 'example', name: 'Айым', dob: EX_DOB, weeks: '' };
-let ui = { form: null, err: '', confirmDel: false, stage: null, toast: '' };
+let ui = { form: null, err: '', confirmDel: false, stage: null, toast: '', entry: false, eErr: '', delEntry: null, daily: true };
 
 function iso(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
 const $ = s => document.querySelector(s);
@@ -636,11 +743,11 @@ function renderShell() {
   if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', S.theme);
   $('#sub').textContent = L().sub;
   document.querySelectorAll('.seg button[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === S.lang));
-  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${S.tab === i ? 'aria-current="page"' : ''}>
+  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${(S.tab === 5 ? 0 : S.tab) === i ? 'aria-current="page"' : ''}>
     <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().nav[i]}</button>`).join('');
   NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(i)));
 }
-function go(i, stage) { ui.dayOff = 0; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
+function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
 function toast(msg) {
   ui.toast = msg; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
   document.body.appendChild(el); setTimeout(() => el.remove(), 1800);
@@ -729,6 +836,17 @@ function home() {
       <p class="small">${S.lang === 'kk' ? pi[1] : pi[3]}</p>
       <button class="link small" type="button" id="go-play" style="justify-self:start">${t.allPlays} →</button>
     </div>
+    <div class="card">
+      <div class="row between"><h2 class="h3">📒 ${t.diaryT}</h2><span class="small muted num">${(S.diary[c.id] || []).length || ''}</span></div>
+      <p class="small muted">${t.diaryNote}</p>
+      <button class="btn soft" type="button" id="go-diary">${t.openDiary} →</button>
+    </div>
+    ${isEx() ? '' : `<div class="card">
+      <h2 class="h3">🔔 ${t.remT}</h2><p class="small muted">${t.remNote}</p>
+      <div class="check" style="border:0;padding:0"><input type="checkbox" id="rem-daily" ${ui.daily ? 'checked' : ''}><label for="rem-daily">${t.remDaily}</label></div>
+      <button class="btn primary" type="button" id="rem-ics">📅 ${t.remBtn}</button>
+      <p class="small muted" id="rem-msg" role="status"></p>
+    </div>`}
     <div class="card flat">
       <span class="eyebrow">${t.tip}</span>
       <p>${tip}</p>
@@ -746,13 +864,17 @@ function home() {
 function bindHome() {
   $('#go-check')?.addEventListener('click', () => go(1));
   $('#go-play')?.addEventListener('click', () => go(2));
+  $('#go-diary')?.addEventListener('click', () => go(5));
+  $('#rem-daily')?.addEventListener('change', e => { ui.daily = e.target.checked; });
+  $('#rem-ics')?.addEventListener('click', () => offerFile('erte-komek.ics', 'text/calendar', buildIcs(child(), ui.daily), $('#rem-msg')));
   $('#edit')?.addEventListener('click', () => { ui.form = 'edit'; ui.err = ''; render(); window.scrollTo(0, 0); });
   document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
   $('#del')?.addEventListener('click', () => { ui.confirmDel = true; render(); });
   $('#del-no')?.addEventListener('click', () => { ui.confirmDel = false; render(); });
   $('#del-yes')?.addEventListener('click', () => {
     const id = child().id; S.children = S.children.filter(c => c.id !== id);
-    [S.ans, S.done, S.play, S.flags].forEach(o => delete o[id]);
+    (S.diary[id] || []).forEach(e => e.photo && PDB.del(e.id).catch(() => {}));
+    [S.ans, S.done, S.play, S.flags, S.diary].forEach(o => delete o[id]);
     S.cur = S.children[0]?.id || null; ui.confirmDel = false; save(); render();
   });
 }
@@ -779,7 +901,7 @@ function check() {
     ${Object.entries(groups).map(([d, idx]) => `
       <div class="domain-t"><i></i>${t.domains[d]}</div>
       ${idx.map(i => `<div class="q ${ss.a[i] || ''}">
-        <p>${st.items[i][k]}</p>
+        <div class="qrow"><p>${st.items[i][k]}</p>${clipBtn('q' + i, `audio/${S.lang}/${st.min}_${i}.mp3`, st.items[i][k])}</div>
         <div class="ans" role="group">${['yes', 'no', 'unsure'].map(v => `<button type="button" id="a-${st.min}-${i}-${v}" data-i="${i}" data-v="${v}" aria-pressed="${ss.a[i] === v}">${t[v]}</button>`).join('')}</div>
       </div>`).join('')}`).join('')}
     <div class="banner ${cls}"><b>${title}</b><p>${res[1]}</p>
@@ -810,6 +932,7 @@ function bindCheck() {
     save(); const y = window.scrollY; render(); window.scrollTo(0, y); document.getElementById(b.id)?.focus({ preventScroll: true });
   }));
   document.querySelectorAll('[data-stage]').forEach(b => b.addEventListener('click', () => { ui.stage = +b.dataset.stage; render(); window.scrollTo(0, 0); }));
+  bindSay();
   $('#reset')?.addEventListener('click', () => { delete bucket(S.ans, c.id)[st.min]; delete bucket(S.done, c.id)[st.min]; save(); render(); });
   $('#to-report')?.addEventListener('click', () => { go(4); setTimeout(() => $('#report')?.scrollIntoView({ block: 'start' }), 50); });
 }
@@ -856,7 +979,7 @@ function play() {
     <span class="eyebrow">${g.label[li()]}</span>
     ${order.map((i, pos) => {
       const it = g.items[i], on = (P[selIso] || []).includes(i);
-      return `<div class="card game"><div class="pic">${PICS[gi * 3 + i]}</div>${pos === 0 ? `<span class="status todo" style="justify-self:start">${t.gameOfDay}</span>` : ''}<div class="act"><div class="stack" style="gap:4px"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
+      return `<div class="card game"><div class="pic">${PICS[gi * 3 + i]}</div>${pos === 0 ? `<span class="status todo" style="justify-self:start">${t.gameOfDay}</span>` : ''}<div class="act"><div class="stack" style="gap:4px"><div class="qrow"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3>${sayBtn('g' + i, (S.lang === 'kk' ? it[0] + '. ' + it[1] : it[2] + '. ' + it[3]))}</div><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
         ${canTick ? `<button type="button" class="tick" id="pl-${i}" data-play="${i}" aria-pressed="${on}" aria-label="✓"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`
           : `<span class="tick ${on ? 'done' : 'locked'}" aria-hidden="true">${on ? '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="11" width="12" height="9" rx="2" fill="currentColor"/><path d="M9 11V8a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>'}</span>`}</div></div>`;
     }).join('')}
@@ -868,6 +991,7 @@ function bindPlay() {
   $('#day-prev')?.addEventListener('click', () => setOff((ui.dayOff || 0) - 1));
   $('#day-next')?.addEventListener('click', () => setOff((ui.dayOff || 0) + 1));
   $('#day-today')?.addEventListener('click', () => setOff(0));
+  bindSay();
   document.querySelectorAll('[data-off]').forEach(b => b.addEventListener('click', () => setOff(+b.dataset.off)));
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => {
     if (isEx()) { ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return; }
@@ -925,10 +1049,15 @@ function help() {
     <div class="card"><h2 class="h2">${t.whereT}</h2>
       <ol class="steps">${WHERE.map(w => `<li><div class="card flat"><h3 class="h3">${k ? w[0] : w[2]}</h3><p class="small">${k ? w[1] : w[3]}</p></div></li>`).join('')}</ol>
     </div>
+    <div class="card"><h2 class="h3">📍 ${t.mapT}</h2><p class="small muted">${t.mapNote}</p>
+      <div class="field"><label for="city">${t.city}</label><select id="city">${CITIES.map((c2, i) => `<option value="${i}" ${ui.city === i ? 'selected' : ''}>${c2[li()]}</option>`).join('')}</select></div>
+      <div class="row" id="map-links"></div>
+    </div>
     <div class="card"><h2 class="h3">${t.takeT}</h2><ul style="padding-left:20px;display:grid;gap:6px">${TAKE.map(x => `<li>${x[li()]}</li>`).join('')}</ul></div>
     <div class="card" id="report"><h2 class="h2">${t.reportT}</h2><p class="small muted">${t.reportNote}</p>
       <div class="report num" id="rep-text">${esc(reportText(c))}</div>
-      <button class="btn primary" type="button" id="copy">${t.copy}</button>
+      <div class="row"><button class="btn primary" type="button" id="copy">${t.copy}</button><button class="btn soft" type="button" id="rep-img">🖼 ${t.imgBtn}</button></div>
+      <div id="rep-out" class="stack"></div>
     </div>
     ${legal()}`;
 }
@@ -940,6 +1069,15 @@ function bindHelp() {
     S.flags[c.id] = b.checked ? [...new Set(F.concat(i))].sort() : F.filter(x => x !== i);
     save(); const y = window.scrollY; render(); window.scrollTo(0, y); document.getElementById(b.id)?.focus({ preventScroll: true });
   }));
+  const mapLinks = () => { const ci = ui.city || 0, ru = CITIES[ci][1], gm = q => 'https://www.google.com/maps/search/' + encodeURIComponent(q), g2 = q => 'https://2gis.kz/search/' + encodeURIComponent(q);
+    $('#map-links').innerHTML = [['ПМПК', gm('ПМПК ' + ru)], ['КППК / ППТК', gm('кабинет психолого-педагогической коррекции ' + ru)], ['2ГИС: ПМПК', g2('ПМПК ' + ru)]]
+      .map(([n, u]) => `<a class="btn line sm" href="${u}" target="_blank" rel="noopener">🗺 ${n}</a>`).join(''); };
+  if ($('#city')) { mapLinks(); $('#city').addEventListener('change', e => { ui.city = +e.target.value; mapLinks(); }); }
+  $('#rep-img')?.addEventListener('click', () => {
+    const cv = reportCanvas($('#rep-text').innerText), t = L(), url = cv.toDataURL('image/png');
+    $('#rep-out').innerHTML = `<img src="${url}" alt="${t.reportT}" class="rep-img"><p class="small muted">${t.imgNote}</p><button class="btn line sm" type="button" id="rep-share" style="justify-self:start">${t.share}</button><p class="small muted" id="rep-msg" role="status"></p>`;
+    $('#rep-share').addEventListener('click', () => cv.toBlob(b => offerFile('erte-komek-report.png', 'image/png', b, $('#rep-msg')), 'image/png'));
+  });
   $('#copy')?.addEventListener('click', () => {
     const txt = $('#rep-text').innerText, t = L();
     const sel = () => { const r = document.createRange(); r.selectNodeContents($('#rep-text')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast(t.selected); };
@@ -947,9 +1085,71 @@ function bindHelp() {
   });
 }
 
+function diary() {
+  const t = L(), c = child(), E = (S.diary[c.id] || []).slice().sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  const G = E.filter(e => e.h || e.w).slice().reverse();
+  const spark = (key, unit, color) => {
+    const pts = G.filter(e => e[key]).map(e => [ageM(c, new Date(e.date + 'T12:00:00')), +e[key]]);
+    if (pts.length < 2) return pts.length ? `<div class="gstat"><span class="muted small">${key === 'h' ? t.eH : t.eW}</span><b class="num">${pts[0][1]} ${unit}</b></div>` : '';
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]), x0 = Math.min(...xs), x1 = Math.max(...xs) || 1, y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const X = v => 8 + (x1 === x0 ? 0.5 : (v - x0) / (x1 - x0)) * 284, Y = v => 52 - (y1 === y0 ? 0.5 : (v - y0) / (y1 - y0)) * 44;
+    const d = pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join(' '), last = pts[pts.length - 1];
+    return `<div class="gstat"><span class="muted small">${key === 'h' ? t.eH : t.eW}</span><b class="num">${last[1]} ${unit}</b>
+      <svg viewBox="0 0 300 60" class="spark" aria-hidden="true"><path d="${d} L${X(last[0])} 58 L${X(pts[0][0])} 58z" fill="${color}" opacity=".12"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${X(last[0])}" cy="${Y(last[1])}" r="4.5" fill="${color}"/></svg></div>`;
+  };
+  const form = ui.entry ? `<div class="card"><form class="f" id="eform" novalidate>
+      <h2 class="h2">${t.addEntry}</h2>
+      <div class="field"><label for="e-type">${t.eType}</label><select id="e-type">${Object.entries(t.etypes).map(([k2, v]) => `<option value="${k2}" ${ui.eType === k2 ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+      <div class="field"><label for="e-date">${t.eDate}</label><input id="e-date" type="date" max="${iso(new Date())}" min="${c.dob}" value="${iso(new Date())}"></div>
+      <div class="field"><label for="e-text">${t.eText}</label><input id="e-text" maxlength="200" placeholder="${t.eTextPh}" autocomplete="off"></div>
+      <div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="e-h">${t.eH}</label><input id="e-h" type="number" inputmode="decimal" step="0.1" min="30" max="140"></div>
+        <div class="field" style="flex:1"><label for="e-w">${t.eW}</label><input id="e-w" type="number" inputmode="decimal" step="0.01" min="1" max="40"></div></div>
+      <div class="field"><label for="e-photo">${t.ePhoto}</label><input id="e-photo" type="file" accept="image/*"></div>
+      ${ui.eErr ? `<p class="err">${ui.eErr}</p>` : ''}
+      <div class="row"><button class="btn primary" type="submit">${t.save}</button><button class="btn line" type="button" id="e-cancel">${t.cancel}</button></div>
+    </form></div>` : '';
+  return `
+    ${childPicker()}
+    <button class="link small" type="button" id="d-back" style="justify-self:start">${t.back}</button>
+    <div class="card"><span class="eyebrow">${esc(c.name)} · ${ageTxt(ageM(c))}</span><h1 class="h1">📒 ${t.diaryT}</h1><p class="small muted">${t.diaryNote}</p>
+      ${ui.entry ? '' : `<button class="btn primary" type="button" id="e-add">＋ ${t.addEntry}</button>`}</div>
+    ${isEx() ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
+    ${form}
+    ${G.length ? `<div class="card"><h2 class="h3">${t.growthT}</h2><div class="gwrap">${spark('h', 'см', 'var(--accent)')}${spark('w', 'кг', 'var(--teal)')}</div></div>` : ''}
+    ${E.length ? E.map(e => `<div class="card entry">
+        <div class="row between"><span class="status todo">${t.etypes[e.type] || e.type}</span><span class="small muted num">${fmtDate(e.date)} · ${ageTxt(ageM(c, new Date(e.date + 'T12:00:00')))}</span></div>
+        ${e.text ? `<p>${esc(e.text)}</p>` : ''}
+        ${e.h || e.w ? `<p class="num"><b>${e.h ? e.h + ' см' : ''}${e.h && e.w ? ' · ' : ''}${e.w ? e.w + ' кг' : ''}</b></p>` : ''}
+        ${e.photo ? `<img class="ephoto" data-photo="${e.id}" alt="">` : ''}
+        ${ui.delEntry === e.id ? `<div class="banner bad"><p>${t.delEntryQ}</p><div class="row"><button class="btn sm" style="background:var(--bad);color:#fff" type="button" data-edel-yes="${e.id}">${t.yesDel}</button><button class="btn line sm" type="button" data-edel-no>${t.cancel}</button></div></div>`
+          : `<button class="link small" type="button" data-edel="${e.id}" style="justify-self:start;color:var(--muted)">${t.delEntry}</button>`}
+      </div>`).join('') : `<div class="card flat"><p class="muted">${t.eEmpty}</p></div>`}
+    ${legal()}`;
+}
+function bindDiary() {
+  const c = child(), t = L();
+  $('#d-back')?.addEventListener('click', () => go(0));
+  $('#e-add')?.addEventListener('click', () => { if (isEx()) { ui.form = 'new'; go(0); ui.form = 'new'; render(); return; } ui.entry = true; ui.eErr = ''; render(); $('#e-text')?.focus(); });
+  $('#e-cancel')?.addEventListener('click', () => { ui.entry = false; ui.eErr = ''; render(); });
+  $('#e-type')?.addEventListener('change', e => { ui.eType = e.target.value; });
+  $('#eform')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const type = $('#e-type').value, date = $('#e-date').value || iso(new Date()), text = $('#e-text').value.trim(), h = $('#e-h').value.trim(), w = $('#e-w').value.trim(), f = $('#e-photo').files[0];
+    if (!text && !h && !w && !f) { ui.eErr = t.eErr; return render(); }
+    const id = 'e' + Date.now().toString(36), ent = { id, type, date, text, h: h ? +h : null, w: w ? +w : null, photo: false };
+    if (f) { try { await PDB.put(id, await shrinkPhoto(f)); ent.photo = true; } catch (err) {} }
+    (S.diary[c.id] = S.diary[c.id] || []).push(ent); ui.entry = false; ui.eErr = ''; save(); render(); toast(t.save + ' ✓');
+  });
+  document.querySelectorAll('[data-edel]').forEach(b => b.addEventListener('click', () => { ui.delEntry = b.dataset.edel; render(); }));
+  document.querySelectorAll('[data-edel-no]').forEach(b => b.addEventListener('click', () => { ui.delEntry = null; render(); }));
+  document.querySelectorAll('[data-edel-yes]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.edelYes; S.diary[c.id] = (S.diary[c.id] || []).filter(x => x.id !== id); PDB.del(id).catch(() => {}); ui.delEntry = null; save(); render(); }));
+  document.querySelectorAll('[data-photo]').forEach(img => PDB.get(img.dataset.photo).then(u => { if (u) img.src = u; else img.remove(); }).catch(() => img.remove()));
+}
+
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
-const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp]];
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary]];
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
   renderShell();
