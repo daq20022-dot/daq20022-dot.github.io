@@ -259,7 +259,7 @@ const T = {
     whereT: 'Қайда бару керек', takeT: 'Дәрігерге не апарасыз',
     reportT: 'Дәрігерге есеп', reportNote: 'Мәтінді көшіріп, WhatsApp-қа жіберіңіз немесе экранды суретке түсіріп, дәрігерге көрсетіңіз.',
     copy: 'Мәтінді көшіру', copied: 'Көшірілді', selected: 'Мәтін белгіленді — көшіріңіз',
-    rep: { head: 'ERTE KOMEK — бала дамуының тексеруі', child: 'Бала', born: 'туған күні', stage: 'Кезең', checked: 'тексерілді', notChecked: 'әлі тексерілмеген',
+    rep: { head: 'ERTE KOMEK — бала дамуының тексеруі', child: 'Бала', born: 'туған күні', stage: 'Кезең', checked: 'тексерілді', notChecked: 'әлі тексерілмеген', partial: (a, n) => `толық емес (${a}/${n} жауап)`,
       no: 'Әзірге жоқ:', unsure: 'Ата-ана білмейді:', allYes: 'Барлық белгілер бар.', flags: 'Ата-ананы алаңдатқан белгілер:', none: 'жоқ', foot: 'Ата-ана толтырған сауалнама (CDC 2022 негізінде). Диагноз емес.' },
     legal: ['Даму белгілері АҚШ-тың CDC «Learn the Signs. Act Early.» (2022) бағдарламасы бойынша қысқартылған.', 'Қосымша диагноз қоймайды және дәрігерді алмастырмайды. Деректер тек осы құрылғыда сақталады.'],
     theme: 'Тақырып', themes: ['Авто', 'Ақшыл', 'Қараңғы'],
@@ -313,7 +313,7 @@ const T = {
     whereT: 'Куда обращаться', takeT: 'Что взять к врачу',
     reportT: 'Отчёт для врача', reportNote: 'Скопируйте текст и отправьте в WhatsApp или сделайте скриншот и покажите врачу.',
     copy: 'Скопировать текст', copied: 'Скопировано', selected: 'Текст выделен — скопируйте',
-    rep: { head: 'ERTE KOMEK — проверка развития ребёнка', child: 'Ребёнок', born: 'дата рождения', stage: 'Этап', checked: 'проверено', notChecked: 'ещё не проверен',
+    rep: { head: 'ERTE KOMEK — проверка развития ребёнка', child: 'Ребёнок', born: 'дата рождения', stage: 'Этап', checked: 'проверено', notChecked: 'ещё не проверен', partial: (a, n) => `не завершён (отвечено ${a} из ${n})`,
       no: 'Пока нет:', unsure: 'Родитель не знает:', allYes: 'Все признаки есть.', flags: 'Признаки, которые беспокоят родителя:', none: 'нет', foot: 'Опросник заполнен родителем (по CDC 2022). Не является диагнозом.' },
     legal: ['Признаки развития сокращены по программе CDC (США) «Learn the Signs. Act Early.» (2022).', 'Приложение не ставит диагноз и не заменяет врача. Данные хранятся только на этом устройстве.'],
     theme: 'Тема', themes: ['Авто', 'Светлая', 'Тёмная'],
@@ -1027,7 +1027,8 @@ function reportText(c) {
   const stages = STAGES.filter((s, i) => i <= si && (A[s.min] && Object.keys(A[s.min]).length || i === si)).reverse().slice(0, 3);
   stages.forEach(s => {
     const a = A[s.min] || {}, no = s.items.filter((_, i) => a[i] === 'no'), un = s.items.filter((_, i) => a[i] === 'unsure');
-    lines.push('', `${r.stage} ${s.label[li()]} — ${D[s.min] ? r.checked + ' ' + fmtDate(D[s.min]) : r.notChecked}`);
+    const na = s.items.filter((_, i) => a[i]).length;
+    lines.push('', `${r.stage} ${s.label[li()]} — ${D[s.min] ? r.checked + ' ' + fmtDate(D[s.min]) : na ? r.partial(na, s.items.length) : r.notChecked}`);
     if (no.length) { lines.push(r.no); no.forEach(x => lines.push('  • ' + x[k])); }
     if (un.length) { lines.push(r.unsure); un.forEach(x => lines.push('  • ' + x[k])); }
     if (D[s.min] && !no.length && !un.length) lines.push(r.allYes);
