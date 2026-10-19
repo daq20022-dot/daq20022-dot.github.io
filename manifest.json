@@ -1,0 +1,17 @@
+{
+  "name": "Ерте көмек",
+  "short_name": "Ерте көмек",
+  "description": "Бала дамуының күнделігі / Дневник развития ребёнка",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#eef3f8",
+  "theme_color": "#0b5cad",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

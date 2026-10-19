@@ -1,0 +1,896 @@
+<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg"><link rel="apple-touch-icon" href="icon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>Ерте көмек</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#0b5cad">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap">
+<style>
+  /* Layout: app shell — white top bar, one 600px content column of clinical cards, fixed bottom tab bar with five sections.
+     Palette: public-health blue on a cool paper ground; semantic green / amber / red only for results. */
+  :root {
+    --bg: #eef3f8; --surface: #ffffff; --surface-2: #f6f9fc; --fg: #14243a; --muted: #5b6b80; --line: #d9e2ec;
+    --accent: #0b5cad; --accent-fg: #ffffff; --accent-soft: #e3eefb; --teal: #0f8a83; --teal-soft: #dff3f1;
+    --ok: #1b7a43; --ok-bg: #e3f4ea; --warn: #9a5b00; --warn-bg: #fdf1dc; --bad: #b42318; --bad-bg: #fdecea;
+    --font: "Golos Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --nav-h: 64px;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #0d1522; --surface: #142033; --surface-2: #192840; --fg: #e4ecf6; --muted: #98a9bf; --line: #24364f;
+    --accent: #6aa8ff; --accent-fg: #0b1626; --accent-soft: #1b2f4d; --teal: #4fd1c5; --teal-soft: #15343a;
+    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8a80; --bad-bg: #3d1a17; color-scheme: dark } }
+  :root[data-theme="dark"] {
+    --bg: #0d1522; --surface: #142033; --surface-2: #192840; --fg: #e4ecf6; --muted: #98a9bf; --line: #24364f;
+    --accent: #6aa8ff; --accent-fg: #0b1626; --accent-soft: #1b2f4d; --teal: #4fd1c5; --teal-soft: #15343a;
+    --ok: #6fd69a; --ok-bg: #14321f; --warn: #f2b85b; --warn-bg: #3a2a10; --bad: #ff8a80; --bad-bg: #3d1a17; color-scheme: dark }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); -webkit-tap-highlight-color: transparent; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface); }
+  h1, h2, h3, h4 { margin: 0; text-wrap: balance; line-height: 1.25; }
+  p { margin: 0; }
+  ul, ol { margin: 0; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .bar-in { max-width: 600px; margin: 0 auto; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand svg { width: 34px; height: 34px; flex: none; }
+  .brand b { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+  .brand small { display: block; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  .seg { display: flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; flex: none; }
+  .seg button { border: 0; background: transparent; padding: 6px 10px; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+
+  main { max-width: 600px; margin: 0 auto; padding-block: 16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 14px; }
+
+  nav.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+  .tabbar-in { max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); height: var(--nav-h); }
+  .tabbar button { border: 0; background: transparent; display: grid; place-items: center; align-content: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--muted); padding: 4px 2px; }
+  .tabbar svg { width: 24px; height: 24px; }
+  .tabbar button[aria-current="page"] { color: var(--accent); }
+  .tabbar button[aria-current="page"] .pill { background: var(--accent-soft); }
+  .tabbar .pill { padding: 2px 14px; border-radius: 999px; display: grid; place-items: center; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; min-width: 0; }
+  .card.flat { background: var(--surface-2); }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .h1 { font-size: 22px; font-weight: 800; }
+  .h2 { font-size: 18px; font-weight: 700; }
+  .h3 { font-size: 15px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; }
+  .tiny { font-size: 12px; }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .between { justify-content: space-between; }
+  .stack { display: grid; gap: 10px; }
+
+  .btn { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: var(--accent); color: var(--accent-fg); }
+  .btn.soft { background: var(--accent-soft); color: var(--accent); }
+  .btn.line { background: transparent; border: 1px solid var(--line); color: var(--fg); }
+  .btn.block { width: 100%; }
+  .btn.sm { padding: 8px 12px; font-size: 14px; border-radius: 10px; }
+  .link { border: 0; background: none; color: var(--accent); font-weight: 700; padding: 0; }
+
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .chip { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--teal-soft); color: var(--teal); display: grid; place-items: center; font-weight: 800; font-size: 22px; flex: none; }
+
+  .kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .kv div { background: var(--surface-2); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+  .kv b { display: block; font-size: 15px; }
+  .kv span { font-size: 12px; color: var(--muted); }
+
+  .banner { border-radius: 12px; padding: 12px 14px; display: grid; gap: 4px; font-size: 14px; }
+  .banner.ok { background: var(--ok-bg); color: var(--ok); }
+  .banner.warn { background: var(--warn-bg); color: var(--warn); }
+  .banner.bad { background: var(--bad-bg); color: var(--bad); }
+  .banner.info { background: var(--accent-soft); color: var(--accent); }
+  .banner b { font-size: 15px; }
+  .banner p { color: var(--fg); }
+
+  .status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; border-radius: 999px; padding: 3px 10px; }
+  .status.ok { background: var(--ok-bg); color: var(--ok); }
+  .status.warn { background: var(--warn-bg); color: var(--warn); }
+  .status.todo { background: var(--accent-soft); color: var(--accent); }
+  .status.bad { background: var(--bad-bg); color: var(--bad); }
+
+  .q { border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; background: var(--surface); }
+  .q.yes { border-left-color: var(--ok); }
+  .q.no { border-left-color: var(--warn); }
+  .q.unsure { border-left-color: var(--accent); }
+  .q p { font-weight: 600; }
+  .ans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .ans button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 8px 4px; font-size: 14px; font-weight: 700; color: var(--muted); }
+  .ans button[aria-pressed="true"][data-v="yes"] { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+  .ans button[aria-pressed="true"][data-v="no"] { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+  .ans button[aria-pressed="true"][data-v="unsure"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .domain-t { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
+  .domain-t i { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+
+  .bar-p { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .bar-p i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .25s; }
+
+  .timeline { display: grid; gap: 0; }
+  .tl { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .tl:last-child { border-bottom: 0; }
+  .tl .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); justify-self: center; }
+  .tl .dot.ok { background: var(--ok); border-color: var(--ok); }
+  .tl .dot.warn { background: var(--warn); border-color: var(--warn); }
+  .tl .dot.cur { border-color: var(--accent); background: var(--accent-soft); }
+  .tl button { border: 0; background: none; text-align: left; padding: 0; font-weight: 600; }
+
+  .check { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .check:last-child { border-bottom: 0; }
+  .check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--bad); }
+  .check label { font-size: 15px; }
+
+  .steps { list-style: none; padding: 0; display: grid; gap: 10px; counter-reset: s; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+  .steps li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 800; display: grid; place-items: center; font-size: 14px; }
+  .steps .card { padding: 12px 14px; gap: 4px; }
+
+  details.art { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  details.art summary { list-style: none; padding: 14px 16px; display: grid; grid-template-columns: 40px 1fr 20px; gap: 12px; align-items: center; cursor: pointer; }
+  details.art summary::-webkit-details-marker { display: none; }
+  details.art .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--teal-soft); color: var(--teal); display: grid; place-items: center; }
+  details.art .ic svg { width: 22px; height: 22px; }
+  details.art .chev { transition: transform .2s; color: var(--muted); }
+  details.art[open] .chev { transform: rotate(90deg); }
+  details.art .body { padding: 0 16px 16px; display: grid; gap: 10px; }
+  details.art ul { padding-left: 20px; display: grid; gap: 6px; }
+  .src { font-size: 12px; color: var(--muted); }
+
+  .act { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+  .tick { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; color: transparent; }
+  .tick[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+  .week div { display: grid; gap: 4px; justify-items: center; font-size: 12px; color: var(--muted); }
+  .week i { width: 28px; height: 28px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; font-style: normal; font-weight: 700; color: var(--fg); font-size: 12px; }
+  .week i.on { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .week i.today { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .myth { display: grid; gap: 6px; }
+  .myth .m { font-weight: 700; color: var(--bad); display: flex; gap: 8px; }
+  .myth .t { display: flex; gap: 8px; }
+  .myth .t::before { content: "✓"; color: var(--ok); font-weight: 800; }
+  .myth .m::before { content: "✕"; font-weight: 800; }
+
+  .report { font-family: inherit; white-space: pre-wrap; background: var(--surface-2); border: 1px dashed var(--line); border-radius: 12px; padding: 14px; font-size: 14px; overflow-wrap: anywhere; }
+
+  form.f { display: grid; gap: 12px; }
+  .field { display: grid; gap: 5px; }
+  .field label { font-size: 14px; font-weight: 600; color: var(--muted); }
+  .field input, .field select { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 11px 12px; min-width: 0; width: 100%; }
+  .err { color: var(--bad); font-size: 14px; font-weight: 600; }
+  .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--nav-h) + 14px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; z-index: 40; }
+  footer.legal { font-size: 12px; color: var(--muted); display: grid; gap: 4px; padding-top: 4px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head><body><header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--accent)"/>
+        <path d="M20 31V19" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M20 22c-6 0-9-3.5-9-8.5 6 0 9 3.5 9 8.5z" fill="#fff"/>
+        <path d="M20 19c0-5 3-8 9-8 0 5-3 8-9 8z" fill="#9fe3db"/>
+        <path d="M29 26h6M32 23v6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div><b>Ерте көмек</b><small id="sub"></small></div>
+    </div>
+    <div class="seg" role="group" aria-label="Тіл / Язык">
+      <button type="button" id="lang-kk" data-lang="kk">ҚАЗ</button>
+      <button type="button" id="lang-ru" data-lang="ru">РУС</button>
+    </div>
+  </div>
+</header>
+
+<main id="view" aria-live="polite"></main>
+
+<nav class="tabbar" aria-label="Menu"><div class="tabbar-in" id="tabbar"></div></nav>
+
+<script>
+/* ---------- text ---------- */
+const T = {
+  kk: {
+    sub: 'Бала дамуының күнделігі',
+    nav: ['Басты', 'Тексеру', 'Ойындар', 'Білім', 'Көмек'],
+    example: 'Бұл — мысал. Өз балаңызды қосыңыз, сонда деректер тек сіздің телефоныңызда сақталады.',
+    addChild: 'Бала қосу', editChild: 'Өңдеу', delChild: 'Өшіру', save: 'Сақтау', cancel: 'Болдырмау',
+    confirmDel: n => `${n} туралы барлық деректер өшеді. Өшіру керек пе?`, yesDel: 'Иә, өшіру',
+    name: 'Баланың аты', dob: 'Туған күні', weeks: 'Неше аптада туды (міндетті емес)', weeksHint: '37 аптадан ерте туса, 2 жасқа дейін түзетілген жас есептеледі.',
+    errName: 'Баланың атын жазыңыз.', errDob: 'Туған күнін тексеріңіз: бала 0–6 жас аралығында болуы керек.',
+    age: 'Жасы', corrected: 'Түзетілген жас', nextCheck: 'Келесі тексеру', now: 'қазір', inM: m => `${m} айдан соң`,
+    y: 'жас', m: 'ай', newborn: 'жаңа туған',
+    stageStatus: { ok: 'Қалыпты', warn: 'Назар керек', todo: 'Тексерілмеген', part: 'Аяқталмаған' },
+    startCheck: 'Тексеруді бастау', continueCheck: 'Тексеруді жалғастыру', viewResult: 'Нәтижені көру',
+    todayPlay: 'Бүгінгі ойын', tip: 'Күн кеңесі', allPlays: 'Барлық ойындар',
+    stageFor: a => `${a}: көп балалар мынаны істей алады`,
+    note: 'Әр сұраққа жауап беріңіз. Бұл диагноз емес — дәрігермен сөйлесуге көмекші сауалнама.',
+    early: 'Балаңыз әлі 2 айға толмаған. Бұл 2 айлық кезеңнің белгілері — алдағы айда бақылаңыз.',
+    yes: 'Иә', no: 'Әзірге жоқ', unsure: 'Білмеймін',
+    domains: { social: 'Қарым-қатынас', lang: 'Сөйлеу', cog: 'Ойлау', motor: 'Қозғалыс' },
+    answered: (a, n) => `${a} / ${n} жауап`,
+    res: {
+      ok: ['Бәрі жақсы', 'Балаңыз осы жастың белгілерін орындап жүр. Келесі кезеңде қайта тексеріңіз.'],
+      warn: [n => `${n} белгі әзірге жоқ`, 'Күтпеңіз: жақын арада учаскелік педиатрға барып, «Дәрігерге есеп» бетін көрсетіңіз.'],
+      unsure: ['Кейбір белгілерді білмейсіз', 'Бір апта бақылап, қайта белгілеңіз. Күмәніңіз қалса, педиатрдан сұраңыз.'],
+      todo: ['Сұрақтарға жауап беріңіз', 'Нәтиже барлық сұраққа жауап бергенде шығады.']
+    },
+    allStages: 'Барлық кезеңдер', current: 'қазіргі', reset: 'Жауаптарды тазалау', toReport: 'Дәрігерге есеп',
+    checkedOn: d => `Тексерілген: ${d}`,
+    mchat: '16–30 айлық балаға педиатрдан аутизмге скрининг (M-CHAT-R) жасауды сұраңыз: 18 және 24 айда ұсынылады.',
+    playT: 'Күнде 10 минут ойын', playNote: 'Ең пайдалы «сабақ» — бетпе-бет ойын мен сөйлесу. Ойнасаңыз, белгі қойыңыз.',
+    week: 'Осы апта', days: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], streak: n => `Осы аптада ${n} күн ойнадыңыз`,
+    learnT: 'Ата-аналарға арналған сабақтар', mythsT: 'Мифтер мен шындық',
+    helpT: 'Көмек', flagsT: 'Бірден дәрігерге бару керек белгілер', flagsNote: 'Балаңызда бар белгіні белгілеңіз.',
+    flagsHit: n => `${n} белгі белгіленді — дәрігерге жақын күндері барыңыз`, flagsHitP: 'Тексеруді күтпеңіз. «Дәрігерге есеп» бетін көрсетіңіз.',
+    whereT: 'Қайда бару керек', takeT: 'Дәрігерге не апарасыз',
+    reportT: 'Дәрігерге есеп', reportNote: 'Мәтінді көшіріп, WhatsApp-қа жіберіңіз немесе экранды суретке түсіріп, дәрігерге көрсетіңіз.',
+    copy: 'Мәтінді көшіру', copied: 'Көшірілді', selected: 'Мәтін белгіленді — көшіріңіз',
+    rep: { head: 'ЕРТЕ КӨМЕК — бала дамуының тексеруі', child: 'Бала', born: 'туған күні', stage: 'Кезең', checked: 'тексерілді', notChecked: 'әлі тексерілмеген',
+      no: 'Әзірге жоқ:', unsure: 'Ата-ана білмейді:', allYes: 'Барлық белгілер бар.', flags: 'Ата-ананы алаңдатқан белгілер:', none: 'жоқ', foot: 'Ата-ана толтырған сауалнама (CDC 2022 негізінде). Диагноз емес.' },
+    legal: ['Даму белгілері АҚШ-тың CDC «Learn the Signs. Act Early.» (2022) бағдарламасы бойынша қысқартылған.', 'Қосымша диагноз қоймайды және дәрігерді алмастырмайды. Деректер тек осы құрылғыда сақталады.'],
+    theme: 'Тақырып', themes: ['Авто', 'Ақшыл', 'Қараңғы']
+  },
+  ru: {
+    sub: 'Дневник развития ребёнка',
+    nav: ['Главная', 'Проверка', 'Игры', 'Знания', 'Помощь'],
+    example: 'Это пример. Добавьте своего ребёнка — данные будут храниться только на вашем телефоне.',
+    addChild: 'Добавить ребёнка', editChild: 'Изменить', delChild: 'Удалить', save: 'Сохранить', cancel: 'Отмена',
+    confirmDel: n => `Все данные о ребёнке ${n} будут удалены. Удалить?`, yesDel: 'Да, удалить',
+    name: 'Имя ребёнка', dob: 'Дата рождения', weeks: 'На какой неделе родился (необязательно)', weeksHint: 'Если ребёнок родился раньше 37 недель, до 2 лет считается скорректированный возраст.',
+    errName: 'Напишите имя ребёнка.', errDob: 'Проверьте дату рождения: ребёнку должно быть от 0 до 6 лет.',
+    age: 'Возраст', corrected: 'Скорр. возраст', nextCheck: 'След. проверка', now: 'сейчас', inM: m => `через ${m} мес.`,
+    y: 'г.', m: 'мес.', newborn: 'новорождённый',
+    stageStatus: { ok: 'Норма', warn: 'Нужно внимание', todo: 'Не проверено', part: 'Не завершено' },
+    startCheck: 'Начать проверку', continueCheck: 'Продолжить проверку', viewResult: 'Смотреть результат',
+    todayPlay: 'Игра на сегодня', tip: 'Совет дня', allPlays: 'Все игры',
+    stageFor: a => `${a}: большинство детей умеют`,
+    note: 'Ответьте на каждый вопрос. Это не диагноз — это опросник, чтобы поговорить с врачом.',
+    early: 'Ребёнку ещё нет 2 месяцев. Это признаки 2-месячного возраста — понаблюдайте в ближайший месяц.',
+    yes: 'Да', no: 'Пока нет', unsure: 'Не знаю',
+    domains: { social: 'Общение', lang: 'Речь', cog: 'Мышление', motor: 'Движение' },
+    answered: (a, n) => `${a} / ${n} ответов`,
+    res: {
+      ok: ['Всё хорошо', 'Ребёнок делает то, что ожидается в этом возрасте. Проверьте снова на следующем этапе.'],
+      warn: [n => `${n} ${n === 1 ? 'признак' : n < 5 ? 'признака' : 'признаков'} пока нет`, 'Не ждите: в ближайшее время сходите к участковому педиатру и покажите страницу «Отчёт для врача».'],
+      unsure: ['Некоторые признаки вы не знаете', 'Понаблюдайте неделю и отметьте снова. Если сомнения останутся, спросите педиатра.'],
+      todo: ['Ответьте на вопросы', 'Итог появится, когда вы ответите на все вопросы.']
+    },
+    allStages: 'Все этапы', current: 'сейчас', reset: 'Сбросить ответы', toReport: 'Отчёт для врача',
+    checkedOn: d => `Проверено: ${d}`,
+    mchat: 'В 16–30 месяцев попросите педиатра провести скрининг на аутизм (M-CHAT-R): его рекомендуют в 18 и 24 месяца.',
+    playT: '10 минут игры каждый день', playNote: 'Самое полезное «занятие» — игра и разговор лицом к лицу. Поиграли — отметьте.',
+    week: 'Эта неделя', days: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], streak: n => `На этой неделе вы играли ${n} дн.`,
+    learnT: 'Уроки для родителей', mythsT: 'Мифы и правда',
+    helpT: 'Помощь', flagsT: 'Признаки, с которыми идти к врачу сразу', flagsNote: 'Отметьте то, что есть у вашего ребёнка.',
+    flagsHit: n => `Отмечено признаков: ${n} — сходите к врачу в ближайшие дни`, flagsHitP: 'Не ждите следующей проверки. Покажите врачу «Отчёт для врача».',
+    whereT: 'Куда обращаться', takeT: 'Что взять к врачу',
+    reportT: 'Отчёт для врача', reportNote: 'Скопируйте текст и отправьте в WhatsApp или сделайте скриншот и покажите врачу.',
+    copy: 'Скопировать текст', copied: 'Скопировано', selected: 'Текст выделен — скопируйте',
+    rep: { head: 'ЕРТЕ КӨМЕК — проверка развития ребёнка', child: 'Ребёнок', born: 'дата рождения', stage: 'Этап', checked: 'проверено', notChecked: 'ещё не проверен',
+      no: 'Пока нет:', unsure: 'Родитель не знает:', allYes: 'Все признаки есть.', flags: 'Признаки, которые беспокоят родителя:', none: 'нет', foot: 'Опросник заполнен родителем (по CDC 2022). Не является диагнозом.' },
+    legal: ['Признаки развития сокращены по программе CDC (США) «Learn the Signs. Act Early.» (2022).', 'Приложение не ставит диагноз и не заменяет врача. Данные хранятся только на этом устройстве.'],
+    theme: 'Тема', themes: ['Авто', 'Светлая', 'Тёмная']
+  }
+};
+
+/* ---------- content ---------- */
+// CDC 2022 milestones (shortened); min = age in months at which most children (~75%) can do it.
+const STAGES = [
+  { min: 2, label: ['2 айлық', '2 месяца'], items: [
+    ['social', 'Сөйлегенде немесе қолға алғанда тынышталады', 'Успокаивается, когда с ним говорят или берут на руки'],
+    ['social', 'Бетіңізге қарайды', 'Смотрит на ваше лицо'],
+    ['lang', 'Жылаудан басқа дыбыс шығарады (гулейді)', 'Издаёт звуки, кроме плача (гулит)'],
+    ['lang', 'Қатты дыбысқа елең етеді', 'Реагирует на громкие звуки'],
+    ['motor', 'Етпетінен жатқанда басын көтереді', 'Лёжа на животе, приподнимает голову'] ] },
+  { min: 4, label: ['4 айлық', '4 месяца'], items: [
+    ['social', 'Назарыңызды аудару үшін өзі күледі', 'Сам улыбается, чтобы привлечь ваше внимание'],
+    ['lang', 'Сіз сөйлегенде жауап ретінде гулейді', 'Гулит в ответ, когда вы с ним говорите'],
+    ['lang', 'Дауысыңызға басын бұрады', 'Поворачивает голову на ваш голос'],
+    ['cog', 'Қолын аузына апарады', 'Тянет руки ко рту'],
+    ['motor', 'Қолға алғанда басын өзі тік ұстайды', 'Сам держит голову, когда его держат на руках'] ] },
+  { min: 6, label: ['6 айлық', '6 месяцев'], items: [
+    ['social', 'Таныс адамдарды таниды', 'Узнаёт знакомых людей'],
+    ['social', 'Сықылықтап күледі', 'Смеётся'],
+    ['lang', 'Кезектесіп дыбыспен «сөйлеседі»', 'По очереди с вами «разговаривает» звуками'],
+    ['cog', 'Қалаған ойыншығына қол созады', 'Тянется к игрушке, которую хочет'],
+    ['motor', 'Етпетінен шалқасына аунайды', 'Переворачивается с живота на спину'] ] },
+  { min: 9, label: ['9 айлық', '9 месяцев'], items: [
+    ['social', 'Бөтен адамдардан қысылады', 'Стесняется или настораживается с незнакомыми'],
+    ['lang', 'Атын атағанда қарайды', 'Оборачивается, когда зовут по имени'],
+    ['lang', '«Ма-ма», «ба-ба» деп былдырлайды', 'Лепечет «ма-ма», «ба-ба»'],
+    ['cog', 'Түсіп кеткен ойыншықты көзімен іздейді', 'Ищет глазами упавшую игрушку'],
+    ['motor', 'Өз бетімен отырады', 'Сидит без поддержки'] ] },
+  { min: 12, label: ['1 жас', '1 год'], items: [
+    ['social', '«Ку-ку», «алақай» сияқты ойындарды ойнайды', 'Играет в «ку-ку», «ладушки»'],
+    ['lang', '«Сау бол» деп қол бұлғайды', 'Машет рукой «пока»'],
+    ['lang', '«Мама», «папа» сияқты сөзді нақты адамға айтады', 'Говорит «мама», «папа», обращаясь к конкретному человеку'],
+    ['cog', '«Болмайды» дегенді түсінеді', 'Понимает «нельзя»'],
+    ['motor', 'Сүйеніп тұрады, бірдеңені ұстап жүреді', 'Встаёт у опоры, ходит держась'] ] },
+  { min: 15, label: ['1 жас 3 ай', '1 год 3 месяца'], items: [
+    ['social', 'Ұнаған затын әкеліп сізге көрсетеді', 'Приносит и показывает вам то, что ему нравится'],
+    ['lang', 'Бірдеңе сұрау үшін саусағымен нұсқайды', 'Показывает пальцем, чтобы что-то попросить'],
+    ['lang', '«Мама», «пападан» басқа 1–2 сөз айтады', 'Говорит 1–2 слова, кроме «мама» и «папа»'],
+    ['cog', 'Заттарды дұрыс қолдануға тырысады (телефон, кесе)', 'Пытается пользоваться вещами по назначению (телефон, чашка)'],
+    ['motor', 'Өзі бірнеше қадам басады', 'Делает несколько шагов сам'] ] },
+  { min: 18, label: ['1 жас 6 ай', '1,5 года'], items: [
+    ['social', 'Сізден ұзап кетсе де, артына қарап қояды', 'Отходит от вас, но оглядывается'],
+    ['social', 'Қызық нәрсені сізге көрсету үшін нұсқайды', 'Показывает пальцем, чтобы поделиться интересным'],
+    ['lang', '«Мама», «пападан» басқа 3 не одан көп сөз айтады', 'Говорит 3 и больше слов, кроме «мама» и «папа»'],
+    ['lang', 'Ымсыз қарапайым өтінішті орындайды («бер»)', 'Выполняет простую просьбу без жеста («дай»)'],
+    ['motor', 'Өзі жүреді, қасықпен жеуге тырысады', 'Ходит сам, пытается есть ложкой'] ] },
+  { min: 24, label: ['2 жас', '2 года'], items: [
+    ['social', 'Біреу ренжісе немесе жыласа, байқайды', 'Замечает, когда кто-то расстроен или плачет'],
+    ['lang', 'Сұрағанда кітаптағы суретті көрсетеді', 'Показывает картинку в книге, когда вы просите'],
+    ['lang', 'Екі сөзді тіркес айтады («тағы сүт»)', 'Говорит фразы из 2 слов («ещё молоко»)'],
+    ['cog', 'Дене мүшесінің кемінде екеуін көрсетеді', 'Показывает хотя бы 2 части тела'],
+    ['motor', 'Жүгіреді, допты тебеді', 'Бегает, пинает мяч'] ] },
+  { min: 30, label: ['2 жас 6 ай', '2,5 года'], items: [
+    ['social', 'Басқа балалардың қасында, кейде бірге ойнайды', 'Играет рядом с другими детьми, иногда вместе'],
+    ['lang', 'Шамамен 50 сөз айтады', 'Говорит около 50 слов'],
+    ['lang', '«Мен», «менікі» сияқты сөздерді қолданады', 'Говорит «я», «моё» и подобные слова'],
+    ['cog', 'Ойыншықпен ойдан ойнайды (қуыршақты тамақтандырады)', 'Играет «понарошку» (кормит куклу)'],
+    ['motor', 'Екі аяғымен бірге секіреді', 'Прыгает на двух ногах'] ] },
+  { min: 36, label: ['3 жас', '3 года'], items: [
+    ['social', 'Басқа балалармен бірге ойнайды', 'Играет вместе с другими детьми'],
+    ['lang', 'Сізбен кезектесіп әңгімелеседі', 'Поддерживает с вами разговор по очереди'],
+    ['lang', '«Кім? Не? Қайда?» деп сұрайды', 'Задаёт вопросы «кто? что? где?»'],
+    ['lang', 'Оның сөзін бөтен адамдар көбіне түсінеді', 'Его речь чаще всего понятна посторонним'],
+    ['motor', 'Көрсеткен соң шеңбер сызады', 'Рисует круг, если ему показать'] ] },
+  { min: 48, label: ['4 жас', '4 года'], items: [
+    ['social', 'Ренжіген адамды жұбатады', 'Утешает того, кто расстроен'],
+    ['lang', 'Ертегінің бір бөлігін айтып береді', 'Пересказывает часть сказки'],
+    ['lang', '4 және одан көп сөзден сөйлем құрайды', 'Говорит предложениями из 4 и более слов'],
+    ['cog', 'Бірнеше түсті атайды', 'Называет несколько цветов'],
+    ['motor', 'Үлкен допты қағып алады', 'Ловит большой мяч'] ] },
+  { min: 60, label: ['5 жас', '5 лет'], items: [
+    ['social', 'Ойын ережесін сақтайды', 'Соблюдает правила в игре'],
+    ['lang', 'Кемінде екі оқиғадан тұратын әңгіме айтады', 'Рассказывает историю хотя бы из двух событий'],
+    ['cog', '10-ға дейін санайды', 'Считает до 10'],
+    ['cog', 'Атының кейбір әріптерін жазады', 'Пишет некоторые буквы своего имени'],
+    ['motor', 'Бір аяқпен секіреді', 'Прыгает на одной ноге'] ] }
+];
+
+const PLAY = [
+  { max: 6, label: ['0–6 ай', '0–6 месяцев'], items: [
+    ['Бетпе-бет сөйлесу', 'Баланың бетінен 25–30 см қашықтықта сөйлеңіз. Ол дыбыс шығарса, күтіп, жауап беріңіз.', 'Разговор лицом к лицу', 'Говорите на расстоянии 25–30 см от лица малыша. Когда он издаёт звук, подождите и ответьте.'],
+    ['Етпетінен жату', 'Ояу кезінде күніне бірнеше рет етпетінен жатқызыңыз, алдына ашық түсті ойыншық қойыңыз.', 'Время на животе', 'Несколько раз в день, пока малыш бодрствует, выкладывайте его на живот с яркой игрушкой впереди.'],
+    ['Бесік жыры', 'Ән айтыңыз, тақпақ оқыңыз — ырғақ сөйлеуге дайындайды.', 'Колыбельные', 'Пойте, читайте стишки — ритм готовит к речи.'] ] },
+  { max: 12, label: ['6–12 ай', '6–12 месяцев'], items: [
+    ['«Ку-ку»', 'Бетіңізді орамалмен жауып, ашыңыз. Бала заттың жоғалмайтынын үйренеді.', '«Ку-ку»', 'Закрывайте лицо платком и открывайте. Ребёнок учится, что предметы не исчезают.'],
+    ['Атын атау', 'Заттарды көрсетіп, атын қайталаңыз: «Мынау — доп. Доп!»', 'Называйте всё вокруг', 'Показывайте предметы и повторяйте названия: «Это мяч. Мяч!»'],
+    ['Салу-шығару', 'Кесеге текше салып, қайта шығаруды ойнаңыз.', 'Положи — достань', 'Играйте: класть кубики в чашку и доставать обратно.'] ] },
+  { max: 24, label: ['1–2 жас', '1–2 года'], items: [
+    ['Кітап оқу', 'Суретті кітапты бірге қарап, «Мысық қайда?» деп сұраңыз.', 'Книжки', 'Смотрите книжку с картинками и спрашивайте: «Где кошка?»'],
+    ['Таңдау беру', '«Алма ма, банан ба?» — баланы сөйлеуге ынталандырады.', 'Давайте выбор', '«Яблоко или банан?» — это побуждает ребёнка говорить.'],
+    ['Сөзін ұзарту', 'Бала «доп» десе, «Үлкен доп!» деп бір сөз қосыңыз.', 'Добавляйте слово', 'Ребёнок говорит «мяч» — вы: «Большой мяч!»'] ] },
+  { max: 36, label: ['2–3 жас', '2–3 года'], items: [
+    ['Рөлдік ойын', 'Қуыршақты тамақтандырып, ұйықтатыңыз. Не істеп жатқаныңызды сөзбен айтыңыз.', 'Сюжетная игра', 'Кормите и укладывайте куклу вместе, проговаривая действия.'],
+    ['Үй шаруасы', 'Шұлықты жұптау, ыдыс жинау — түс пен санды үйретеді.', 'Помощь по дому', 'Разбирать носки по парам, собирать посуду — учит цветам и счёту.'],
+    ['Далада ойын', 'Жүгіру, секіру, доп лақтыру — күнде кемінде 1 сағат.', 'Игры на улице', 'Бег, прыжки, мяч — не меньше часа в день.'] ] },
+  { max: 72, label: ['3–5 жас', '3–5 лет'], items: [
+    ['Ертегі құрау', 'Ертегіні бірге айтыңыз: «Сосын не болды?» деп сұраңыз.', 'Сочиняйте истории', 'Рассказывайте сказку вместе, спрашивая: «А что было потом?»'],
+    ['Ережелі ойындар', 'Асық, жасырынбақ, үстел ойындары кезек күтуге үйретеді.', 'Игры с правилами', 'Асыки, прятки, настольные игры учат ждать своей очереди.'],
+    ['Сурет пен қайшы', 'Сурет салу, ермексаз, қайшымен кесу қолды жазуға дайындайды.', 'Рисование и ножницы', 'Рисование, пластилин, вырезание готовят руку к письму.'] ] }
+];
+
+const FLAGS = [
+  ['Бұрын істей алған нәрсесін (сөз, күлу, ойын) істемей қалды — қай жаста болса да', 'Перестал делать то, что уже умел (слова, улыбка, игра) — в любом возрасте'],
+  ['12 айда былдырламайды, саусағымен нұсқамайды, қол бұлғамайды', 'В 12 месяцев не лепечет, не показывает пальцем, не машет рукой'],
+  ['16 айда бірде-бір сөз айтпайды', 'В 16 месяцев не говорит ни одного слова'],
+  ['2 жаста екі сөзді өз тіркесін құрмайды (жай қайталау емес)', 'В 2 года не строит свои фразы из двух слов (не повтор за взрослым)'],
+  ['Атын атағанда қарамайды, көзге сирек қарайды', 'Не откликается на имя, редко смотрит в глаза'],
+  ['Дыбысқа елең етпейді немесе заттарды көзімен бақыламайды', 'Не реагирует на звуки или не следит глазами за предметами'],
+  ['Дененің бір жағын ғана қолданады немесе бұлшықеті тым жұмсақ/қатты', 'Пользуется только одной стороной тела или мышцы слишком вялые/напряжённые']
+];
+
+const WHERE = [
+  ['Учаскелік педиатр', 'Тіркелген емханаңызға жазылыңыз (eGov, Damumed немесе тіркеу бөлімі). Қай белгі жоқ екенін айтып, «Дәрігерге есепті» көрсетіңіз. Педиатр невролог, сурдолог, офтальмолог, логопедке тегін жолдама береді.',
+   'Участковый педиатр', 'Запишитесь в свою поликлинику (eGov, Damumed или регистратура). Назовите, каких признаков нет, и покажите «Отчёт для врача». Педиатр бесплатно направит к неврологу, сурдологу, офтальмологу, логопеду.'],
+  ['ПМПК', 'Психологиялық-медициналық-педагогикалық консультация баланың дамуын кешенді тексеріп, қандай көмек керегін анықтайды. Тегін. Жолдамасыз да жазылуға болады.',
+   'ПМПК', 'Психолого-медико-педагогическая консультация комплексно обследует развитие ребёнка и определяет, какая помощь нужна. Бесплатно. Можно записаться и без направления.'],
+  ['ППТК — түзету кабинеті', 'Психологиялық-педагогикалық түзету кабинетінде логопед, дефектолог, психолог 0–18 жастағы балалармен тегін айналысады. ПМПК қорытындысы бойынша қабылдайды.',
+   'КППК — кабинет коррекции', 'В кабинете психолого-педагогической коррекции логопед, дефектолог и психолог бесплатно занимаются с детьми от 0 до 18 лет. Принимают по заключению ПМПК.'],
+  ['Балабақша', 'Тәрбиешінің байқағанын тыңдаңыз. Түзету топтары мен инклюзивті балабақшалар бар.',
+   'Детский сад', 'Прислушайтесь к тому, что замечает воспитатель. Есть коррекционные группы и инклюзивные сады.']
+];
+const TAKE = [
+  ['Осы қосымшадағы «Дәрігерге есеп»', '«Отчёт для врача» из этого приложения'],
+  ['Баланың не істейтіні туралы 1–2 минуттық бейне', 'Видео на 1–2 минуты о том, что делает ребёнок'],
+  ['Туу туралы куәлік, екпе паспорты', 'Свидетельство о рождении, прививочный паспорт'],
+  ['Жүктілік пен босану туралы құжаттар (бар болса)', 'Выписки о беременности и родах (если есть)']
+];
+
+const ICONS = {
+  home: '<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  check: '<rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 4h6v3H9z" fill="currentColor"/><path d="M8.5 13l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  play: '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4.5 9.5c3 1 6 1 7.5-5.4M19.5 14.5c-3-1-6-1-7.5 5.4M12 4c-1 5 1 11 0 16" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+  learn: '<path d="M3 6c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 7v13" stroke="currentColor" stroke-width="2"/>',
+  help: '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M9.5 12.5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  speech: '<path d="M4 5h16v11H9l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  screen: '<rect x="6" y="3" width="12" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="2"/>',
+  langs: '<path d="M3 5h9M7.5 3v2M5 5c0 4 3 7 6 8M10 5c0 4-3 7-6 8M13 21l4-10 4 10M14.5 17.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  sleep: '<path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+  ear: '<path d="M8 9a5 5 0 0 1 10 0c0 4-4 5-4 8a3 3 0 0 1-6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="9.5" r="1.6" fill="currentColor"/>',
+  puzzle: '<path d="M5 5h5a2 2 0 1 1 4 0h5v5a2 2 0 1 1 0 4v5h-5a2 2 0 1 0-4 0H5v-5a2 2 0 1 0 0-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  book: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2"/>',
+  food: '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 3c-2 2-2 6 0 8v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
+};
+
+const ARTICLES = [
+  { ic: 'speech', t: ['Сөйлеуді қалай дамытамыз', 'Как развивать речь'], k: [
+    'Күні бойы не істеп жатқаныңызды дауыстап айтыңыз: «Қазір қолымызды жуамыз».',
+    'Бала дыбыс шығарса немесе сөз айтса, кідіріп, жауап беріңіз — бұл нағыз әңгіме.',
+    'Баланың сөзін дұрыс түрде қайталап, тағы бір сөз қосыңыз.',
+    'Таңдау беретін сұрақ қойыңыз: «Сүт пе, су ма?»',
+    'Бала сөйлемей тұрса, оның орнына бірден айтып жібермеңіз — 5 секунд күтіңіз.'], r: [
+    'В течение дня проговаривайте, что делаете: «Сейчас моем руки».',
+    'Когда ребёнок издаёт звук или говорит слово, сделайте паузу и ответьте — это и есть настоящий разговор.',
+    'Повторяйте слово ребёнка правильно и добавляйте ещё одно.',
+    'Задавайте вопросы с выбором: «Молоко или вода?»',
+    'Не договаривайте за ребёнка сразу — подождите 5 секунд.'], src: 'ASHA; CDC' },
+  { ic: 'screen', t: ['Экран және бала', 'Экраны и ребёнок'], k: [
+    '2 жасқа дейін экран ұсынылмайды. Туыстармен бейнеқоңырау — болады.',
+    '2–4 жас: күніне 1 сағаттан аспасын, азырақ болса — жақсырақ.',
+    'Мультфильмді бірге көріп, не болып жатқанын талқылаңыз.',
+    'Тамақ кезінде және ұйқыдан 1 сағат бұрын — экрансыз.',
+    'Телефонды баланы тыныштандырудың басты жолына айналдырмаңыз.'], r: [
+    'До 2 лет экраны не рекомендуются. Видеозвонки с родными — можно.',
+    '2–4 года: не больше 1 часа в день, меньше — лучше.',
+    'Смотрите мультфильмы вместе и обсуждайте, что происходит.',
+    'Во время еды и за час до сна — без экранов.',
+    'Не делайте телефон главным способом успокоить ребёнка.'], src: 'ВОЗ / WHO 2019; AAP' },
+  { ic: 'langs', t: ['Екі тілде өсу', 'Два языка в семье'], k: [
+    'Екі тіл сөйлеудің кешігуіне себеп болмайды — бұл зерттеулерде дәлелденген.',
+    'Әр ата-ана өзі ең жақсы білетін тілде сөйлегені дұрыс.',
+    'Басында екі тілдің сөздерін араластыру — қалыпты.',
+    'Екі тілдегі сөздерін бірге санаңыз: жалпы сөз қоры маңызды.',
+    'Сөйлеу кешіксе, оны екі тілге жаппаңыз — тексеріңіз.'], r: [
+    'Два языка не вызывают задержку речи — это доказано исследованиями.',
+    'Каждому родителю лучше говорить на том языке, который он знает лучше всего.',
+    'Смешивать слова двух языков в начале — нормально.',
+    'Считайте слова на обоих языках вместе: важен общий словарный запас.',
+    'Если речь задерживается, не списывайте это на двуязычие — проверьте.'], src: 'ASHA' },
+  { ic: 'sleep', t: ['Ұйқы нормасы', 'Нормы сна'], k: [
+    '4–12 ай: тәулігіне 12–16 сағат (күндізгі ұйқымен бірге).',
+    '1–2 жас: 11–14 сағат.',
+    '3–5 жас: 10–13 сағат.',
+    'Күнде бір тәртіп: шомылу, кітап, ұйқы.',
+    'Жатын бөлмеде экран болмағаны дұрыс.'], r: [
+    '4–12 месяцев: 12–16 часов в сутки (вместе с дневным сном).',
+    '1–2 года: 11–14 часов.',
+    '3–5 лет: 10–13 часов.',
+    'Каждый вечер один ритуал: купание, книга, сон.',
+    'В спальне лучше без экранов.'], src: 'AASM 2016; ВОЗ / WHO 2019' },
+  { ic: 'ear', t: ['Есту мен көру', 'Слух и зрение'], k: [
+    'Перзентханада есту скринингі жасалғанын тексеріңіз.',
+    'Қатты дыбысқа селт етпесе, атын атағанда қарамаса — сурдологқа жолдама сұраңыз.',
+    'Көзі қыли болса, заттарды бақыламаса, көзін жиі уқаласа — офтальмологқа барыңыз.',
+    'Құлақтың жиі қабынуы уақытша есту мен сөйлеуге әсер етуі мүмкін.',
+    'Есту мен көру тексеруі тегін және ауыртпайды.'], r: [
+    'Уточните, был ли сделан скрининг слуха в роддоме.',
+    'Если ребёнок не вздрагивает от громких звуков и не откликается на имя — попросите направление к сурдологу.',
+    'Если косит глаз, не следит за предметами, часто трёт глаза — к офтальмологу.',
+    'Частые отиты могут временно влиять на слух и речь.',
+    'Проверка слуха и зрения бесплатная и безболезненная.'], src: 'ВОЗ / WHO; AAP' },
+  { ic: 'puzzle', t: ['Аутизм: ерте белгілер', 'Аутизм: ранние признаки'], k: [
+    'Аутизм — мидың даму ерекшелігі. Ол тәрбиеден немесе екпеден болмайды.',
+    'Ерте белгілері: атына қарамау, нұсқамау, көзге сирек қарау, қызығын бөліспеу, бұрынғы дағдыны жоғалту.',
+    '18 және 24 айда педиатрдан аутизмге скрининг (M-CHAT-R) жасауды сұраңыз.',
+    'Ерте анықталса, көмек те ерте басталады — нәтижесі жақсырақ.',
+    'Дәлелденген көмек: логопед, дефектолог, психологпен жүйелі сабақ және ата-аналарды оқыту.'], r: [
+    'Аутизм — особенность развития мозга. Он не возникает из-за воспитания или прививок.',
+    'Ранние признаки: не откликается на имя, не показывает пальцем, редко смотрит в глаза, не делится интересным, теряет навыки.',
+    'В 18 и 24 месяца попросите педиатра провести скрининг на аутизм (M-CHAT-R).',
+    'Чем раньше выявлено, тем раньше начинается помощь — и тем лучше результат.',
+    'Доказанная помощь: регулярные занятия с логопедом, дефектологом, психологом и обучение родителей.'], src: 'CDC; AAP 2020' },
+  { ic: 'book', t: ['Кітап оқу', 'Чтение книг'], k: [
+    'Кітапты туғаннан бастап оқуға болады.',
+    'Күнде 10–15 минут — ұйқы алдында ыңғайлы.',
+    'Бір кітапты қайта-қайта оқу пайдалы.',
+    'Суретті көрсетіп, «Бұл не?» деп сұраңыз.',
+    'Қазақ ертегілері мен тақпақтары ырғақ пен сөз қорына жақсы.'], r: [
+    'Читать можно с рождения.',
+    '10–15 минут каждый день — удобно перед сном.',
+    'Перечитывать одну и ту же книгу полезно.',
+    'Показывайте на картинку и спрашивайте: «Что это?»',
+    'Сказки и стишки развивают ритм и словарный запас.'], src: 'AAP' },
+  { ic: 'food', t: ['Тамақ және даму', 'Питание и развитие'], k: [
+    '6 айға дейін тек емшек сүті немесе қоспа.',
+    '6 айдан бастап қосымша тамақ енгізіледі, темірге бай тағам маңызды.',
+    'Бала қасықпен өзі жеуге тырыссын — бұл қол мен ауыз бұлшықетін дамытады.',
+    'Тәтті сусын мен шырынды шектеңіз.',
+    'Ерекше диетаны (глютенсіз т.б.) тек дәрігер тағайындайды.'], r: [
+    'До 6 месяцев — только грудное молоко или смесь.',
+    'С 6 месяцев вводится прикорм, важна пища, богатая железом.',
+    'Пусть ребёнок пробует есть ложкой сам — это развивает мышцы рук и рта.',
+    'Ограничивайте сладкие напитки и соки.',
+    'Особые диеты (безглютеновую и др.) назначает только врач.'], src: 'ВОЗ / WHO' }
+];
+
+const MYTHS = [
+  ['«Ұл бала кеш сөйлейді, күте тұр»', 'Кейбір балалар шынымен кешірек сөйлейді, бірақ тексерген дұрыс. Тексеру зиян келтірмейді, ал кешіккен уақытты қайтару қиын.',
+   '«Мальчики говорят позже, подождите»', 'Некоторые дети правда начинают говорить позже, но лучше проверить. Проверка не вредит, а упущенное время вернуть трудно.'],
+  ['«Глютенсіз диета аутизмді емдейді»', 'Ғылыми дәлел жоқ. Целиакия болмаса, диета дамуды өзгертпейді. Тиімдісі — ерте түзету сабақтары.',
+   '«Безглютеновая диета лечит аутизм»', 'Научных доказательств нет. Если нет целиакии, диета не меняет развитие. Работают ранние коррекционные занятия.'],
+  ['«Аутизм екпеден болады»', 'Миллиондаған баланы қамтыған зерттеулер бұл байланысты жоққа шығарды. Екпе балаңызды қауіпті аурулардан қорғайды.',
+   '«Аутизм бывает от прививок»', 'Исследования на миллионах детей опровергли эту связь. Прививки защищают ребёнка от опасных болезней.'],
+  ['«Мультфильм сөйлеуге үйретеді»', '2 жасқа дейін бала экраннан сөз үйренбейді. Ол тірі адаммен сөйлесіп үйренеді.',
+   '«Мультики учат говорить»', 'До 2 лет дети не учатся словам с экрана. Они учатся, разговаривая с живым человеком.'],
+  ['«Екі тіл баланы шатастырады»', 'Екі тіл сөйлеуді кешіктірмейді. Екі тілдегі сөздері бірге есептеледі.',
+   '«Два языка путают ребёнка»', 'Два языка не задерживают речь. Слова на обоих языках считаются вместе.'],
+  ['«Диагноз — үкім»', 'Ерте көмек алған балалар көп нәрсеге үйренеді. Неғұрлым ерте бастасаңыз, соғұрлым жақсы.',
+   '«Диагноз — это приговор»', 'Дети, получившие помощь рано, многому учатся. Чем раньше начать, тем лучше.']
+];
+
+/* ---------- state ---------- */
+const KEY = 'erte-komek-v2';
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+let S = Object.assign({ lang: 'kk', theme: 'auto', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {} }, load());
+const EX_DOB = (() => { const d = new Date(); d.setMonth(d.getMonth() - 19); d.setDate(d.getDate() - 5); return iso(d); })();
+const EXAMPLE = { id: 'example', name: 'Айым', dob: EX_DOB, weeks: '' };
+let ui = { form: null, err: '', confirmDel: false, stage: null, toast: '' };
+
+function iso(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const L = () => T[S.lang];
+const li = () => (S.lang === 'kk' ? 0 : 1);
+const isEx = () => !S.children.length;
+const child = () => S.children.find(c => c.id === S.cur) || S.children[0] || EXAMPLE;
+const bucket = (o, id) => (o[id] = o[id] || {});
+const fmtDate = s => { const [y, m, d] = s.split('-'); return `${d}.${m}.${y}`; };
+
+/* example answers so the first screen shows a working check */
+const EX_ANS = { 18: { 0: 'yes', 1: 'yes', 2: 'no', 3: 'yes', 4: 'yes' }, 15: { 0: 'yes', 1: 'yes', 2: 'yes', 3: 'yes', 4: 'yes' } };
+const EX_DONE = { 15: iso(new Date(Date.now() - 120 * 864e5)) };
+const ansOf = id => (id === 'example' ? EX_ANS : (S.ans[id] || {}));
+const doneOf = id => (id === 'example' ? EX_DONE : (S.done[id] || {}));
+
+function monthsBetween(a, b) {
+  let m = (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth());
+  if (b.getDate() < a.getDate()) m--;
+  return m;
+}
+function ageM(c) {
+  const b = new Date(c.dob + 'T00:00:00');
+  if (isNaN(b)) return NaN;
+  return monthsBetween(b, new Date());
+}
+function corrM(c) {
+  const m = ageM(c), w = parseInt(c.weeks, 10);
+  if (w && w < 37 && m < 24) return Math.max(0, m - Math.round((40 - w) / 4.35));
+  return m;
+}
+function ageTxt(m) {
+  const t = L();
+  if (isNaN(m)) return '—';
+  if (m < 1) return t.newborn;
+  const y = Math.floor(m / 12), r = m % 12;
+  return [y ? `${y} ${t.y}` : '', r ? `${r} ${t.m}` : ''].filter(Boolean).join(' ');
+}
+const stageIdx = m => { let i = 0; STAGES.forEach((s, k) => { if (m >= s.min) i = k; }); return i; };
+function stageState(c, st) {
+  const a = ansOf(c.id)[st.min] || {}, n = st.items.length;
+  const vals = st.items.map((_, i) => a[i]);
+  const done = vals.filter(Boolean).length, no = vals.filter(v => v === 'no').length, uns = vals.filter(v => v === 'unsure').length;
+  let k = 'todo';
+  if (no) k = 'warn'; else if (done === n) k = uns ? 'unsure' : 'ok'; else if (done) k = 'part';
+  return { a, done, n, no, uns, k };
+}
+
+/* ---------- shell ---------- */
+const NAV = ['home', 'check', 'play', 'learn', 'help'];
+function renderShell() {
+  document.documentElement.lang = S.lang;
+  if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', S.theme);
+  $('#sub').textContent = L().sub;
+  document.querySelectorAll('.seg button[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === S.lang));
+  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${S.tab === i ? 'aria-current="page"' : ''}>
+    <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().nav[i]}</button>`).join('');
+  NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(i)));
+}
+function go(i, stage) { S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
+function toast(msg) {
+  ui.toast = msg; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1800);
+}
+
+/* ---------- child card + form ---------- */
+function childPicker() {
+  if (S.children.length < 2) return '';
+  return `<div class="chips">${S.children.map(c => `<button type="button" class="chip" data-child="${c.id}" aria-pressed="${c.id === child().id}">${esc(c.name)}</button>`).join('')}</div>`;
+}
+function childForm() {
+  const t = L(), c = ui.form === 'new' ? { name: '', dob: '', weeks: '' } : child();
+  return `<div class="card"><form class="f" id="cform" novalidate>
+    <h2 class="h2">${ui.form === 'new' ? t.addChild : t.editChild}</h2>
+    <div class="field"><label for="f-name">${t.name}</label><input id="f-name" maxlength="40" autocomplete="off" value="${esc(c.name)}"></div>
+    <div class="field"><label for="f-dob">${t.dob}</label><input id="f-dob" type="date" max="${iso(new Date())}" value="${esc(c.dob)}"></div>
+    <div class="field"><label for="f-weeks">${t.weeks}</label><input id="f-weeks" type="number" inputmode="numeric" min="22" max="42" placeholder="40" value="${esc(c.weeks)}"><span class="tiny muted">${t.weeksHint}</span></div>
+    ${ui.err ? `<p class="err">${ui.err}</p>` : ''}
+    <div class="row"><button class="btn primary" type="submit">${t.save}</button><button class="btn line" type="button" id="f-cancel">${t.cancel}</button></div>
+  </form></div>`;
+}
+function bindChildForm() {
+  const f = $('#cform'); if (!f) return;
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    const t = L(), name = $('#f-name').value.trim(), dob = $('#f-dob').value, weeks = $('#f-weeks').value.trim();
+    const m = dob ? monthsBetween(new Date(dob + 'T00:00:00'), new Date()) : NaN;
+    if (!name) { ui.err = t.errName; return render(); }
+    if (!dob || isNaN(m) || m < 0 || m > 72) { ui.err = t.errDob; return render(); }
+    if (ui.form === 'new') { const id = 'c' + Date.now().toString(36); S.children.push({ id, name, dob, weeks }); S.cur = id; }
+    else Object.assign(child(), { name, dob, weeks });
+    ui.form = null; ui.err = ''; save(); render(); toast(t.save + ' ✓');
+  });
+  $('#f-cancel').addEventListener('click', () => { ui.form = null; ui.err = ''; render(); });
+}
+function bindCommon() {
+  document.querySelectorAll('[data-child]').forEach(b => b.addEventListener('click', () => { S.cur = b.dataset.child; ui.stage = null; save(); render(); }));
+  document.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => { ui.form = 'new'; ui.err = ''; S.tab = 0; render(); $('#f-name')?.focus(); }));
+  bindChildForm();
+}
+
+/* ---------- screens ---------- */
+function home() {
+  const t = L(), c = child(), m = ageM(c), cm = corrM(c), si = stageIdx(cm), st = STAGES[si], ss = stageState(c, st);
+  const next = STAGES[si + 1];
+  const nextTxt = ss.k === 'todo' || ss.k === 'part' ? t.now : next ? `${next.label[li()]} · ${t.inM(Math.max(1, next.min - cm))}` : '—';
+  const pg = PLAY.find(p => cm < p.max) || PLAY[PLAY.length - 1];
+  const dayN = Math.floor(Date.now() / 864e5);
+  const pi = pg.items[dayN % pg.items.length];
+  const tipA = ARTICLES[dayN % ARTICLES.length], tip = (S.lang === 'kk' ? tipA.k : tipA.r)[Math.floor(dayN / ARTICLES.length) % 5];
+  const flagsN = (S.flags[c.id] || []).length;
+  const statusCls = { ok: 'ok', warn: 'warn', unsure: 'todo', todo: 'todo', part: 'todo' }[ss.k];
+  const statusTxt = { ok: t.stageStatus.ok, warn: t.stageStatus.warn, unsure: t.stageStatus.part, todo: t.stageStatus.todo, part: t.stageStatus.part }[ss.k];
+  const btnTxt = ss.k === 'todo' ? t.startCheck : ss.k === 'part' ? t.continueCheck : t.viewResult;
+  return `
+    ${ui.form ? childForm() : ''}
+    ${isEx() && !ui.form ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
+    ${childPicker()}
+    <div class="card">
+      <div class="row between">
+        <div class="row" style="flex-wrap:nowrap;min-width:0">
+          <div class="avatar">${esc(c.name.slice(0, 1).toUpperCase())}</div>
+          <div style="min-width:0"><div class="h1">${esc(c.name)}</div><div class="small muted num">${fmtDate(c.dob)}</div></div>
+        </div>
+        ${isEx() ? '' : `<button class="btn line sm" type="button" id="edit">${t.editChild}</button>`}
+      </div>
+      <div class="kv num">
+        <div><span>${t.age}</span><b>${ageTxt(m)}</b></div>
+        <div><span>${cm !== m ? t.corrected : t.nextCheck}</span><b>${cm !== m ? ageTxt(cm) : (ss.k === 'todo' || ss.k === 'part' ? t.now : next ? next.label[li()] : '—')}</b></div>
+        <div><span>${L().nav[1]}</span><b>${st.label[li()]}</b></div>
+      </div>
+      ${!isEx() && S.children.length ? `<div class="row"><button class="link small" type="button" data-add>＋ ${t.addChild}</button></div>` : ''}
+    </div>
+    ${flagsN ? `<div class="banner bad"><b>${t.flagsHit(flagsN)}</b><p>${t.flagsHitP}</p></div>` : ''}
+    <div class="card">
+      <div class="row between"><span class="eyebrow">${st.label[li()]}</span><span class="status ${statusCls}">${statusTxt}</span></div>
+      <h2 class="h2">${t.stageFor(st.label[li()])}</h2>
+      <div class="bar-p"><i style="width:${ss.done / ss.n * 100}%"></i></div>
+      <p class="small muted num">${t.answered(ss.done, ss.n)}${doneOf(c.id)[st.min] ? ' · ' + t.checkedOn(fmtDate(doneOf(c.id)[st.min])) : ''}</p>
+      <button class="btn primary block" type="button" id="go-check">${btnTxt}</button>
+      <p class="tiny muted">${t.nextCheck}: ${nextTxt}</p>
+    </div>
+    <div class="card">
+      <span class="eyebrow">${t.todayPlay} · ${pg.label[li()]}</span>
+      <h3 class="h3">${S.lang === 'kk' ? pi[0] : pi[2]}</h3>
+      <p class="small">${S.lang === 'kk' ? pi[1] : pi[3]}</p>
+      <button class="link small" type="button" id="go-play" style="justify-self:start">${t.allPlays} →</button>
+    </div>
+    <div class="card flat">
+      <span class="eyebrow">${t.tip}</span>
+      <p>${tip}</p>
+      <p class="src">${tipA.t[li()]}</p>
+    </div>
+    ${ui.form || isEx() ? '' : `<div class="card flat">
+      <div class="row between"><span class="small muted">${t.theme}</span>
+        <div class="seg" role="group">${['auto', 'light', 'dark'].map((v, i) => `<button type="button" id="th-${v}" data-theme-set="${v}" aria-pressed="${S.theme === v}">${t.themes[i]}</button>`).join('')}</div></div>
+      ${ui.confirmDel
+        ? `<div class="banner bad"><p>${t.confirmDel(esc(c.name))}</p><div class="row"><button class="btn sm" style="background:var(--bad);color:#fff" type="button" id="del-yes">${t.yesDel}</button><button class="btn line sm" type="button" id="del-no">${t.cancel}</button></div></div>`
+        : `<button class="link small" type="button" id="del" style="justify-self:start;color:var(--bad)">${t.delChild}: ${esc(c.name)}</button>`}
+    </div>`}
+    ${legal()}`;
+}
+function bindHome() {
+  $('#go-check')?.addEventListener('click', () => go(1));
+  $('#go-play')?.addEventListener('click', () => go(2));
+  $('#edit')?.addEventListener('click', () => { ui.form = 'edit'; ui.err = ''; render(); window.scrollTo(0, 0); });
+  document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
+  $('#del')?.addEventListener('click', () => { ui.confirmDel = true; render(); });
+  $('#del-no')?.addEventListener('click', () => { ui.confirmDel = false; render(); });
+  $('#del-yes')?.addEventListener('click', () => {
+    const id = child().id; S.children = S.children.filter(c => c.id !== id);
+    [S.ans, S.done, S.play, S.flags].forEach(o => delete o[id]);
+    S.cur = S.children[0]?.id || null; ui.confirmDel = false; save(); render();
+  });
+}
+
+function check() {
+  const t = L(), c = child(), cm = corrM(c), cur = stageIdx(cm);
+  const si = ui.stage ?? cur, st = STAGES[si], ss = stageState(c, st), k = li() + 1;
+  const res = t.res[ss.k === 'part' ? 'todo' : ss.k];
+  const title = typeof res[0] === 'function' ? res[0](ss.no) : res[0];
+  const cls = { ok: 'ok', warn: 'warn', unsure: 'info', todo: 'info', part: 'info' }[ss.k];
+  const groups = {}; st.items.forEach((it, i) => (groups[it[0]] = groups[it[0]] || []).push(i));
+  const D = doneOf(c.id);
+  return `
+    ${childPicker()}
+    <div class="card">
+      <div class="row between"><span class="eyebrow">${esc(c.name)} · ${ageTxt(cm)}</span>${si === cur ? `<span class="status todo">${t.current}</span>` : ''}</div>
+      <h1 class="h1">${t.stageFor(st.label[li()])}</h1>
+      <p class="small muted">${cm < 2 && si === 0 ? t.early : t.note}</p>
+      <div class="bar-p"><i style="width:${ss.done / ss.n * 100}%"></i></div>
+      <p class="small muted num">${t.answered(ss.done, ss.n)}${D[st.min] ? ' · ' + t.checkedOn(fmtDate(D[st.min])) : ''}</p>
+    </div>
+    ${isEx() ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
+    ${Object.entries(groups).map(([d, idx]) => `
+      <div class="domain-t"><i></i>${t.domains[d]}</div>
+      ${idx.map(i => `<div class="q ${ss.a[i] || ''}">
+        <p>${st.items[i][k]}</p>
+        <div class="ans" role="group">${['yes', 'no', 'unsure'].map(v => `<button type="button" id="a-${st.min}-${i}-${v}" data-i="${i}" data-v="${v}" aria-pressed="${ss.a[i] === v}">${t[v]}</button>`).join('')}</div>
+      </div>`).join('')}`).join('')}
+    <div class="banner ${cls}"><b>${title}</b><p>${res[1]}</p>
+      ${ss.k === 'warn' ? `<button class="btn primary sm" type="button" id="to-report" style="justify-self:start">${t.toReport} →</button>` : ''}</div>
+    ${cm >= 16 && cm <= 30 ? `<div class="banner info"><p>${t.mchat}</p></div>` : ''}
+    ${ss.done && !isEx() ? `<button class="btn line sm" type="button" id="reset" style="justify-self:start">${t.reset}</button>` : ''}
+    <div class="card">
+      <h2 class="h3">${t.allStages}</h2>
+      <div class="timeline">${STAGES.map((s, i) => {
+        const x = stageState(c, s), future = s.min > cm && i > cur;
+        const dot = i === si ? 'cur' : x.k === 'ok' ? 'ok' : x.k === 'warn' ? 'warn' : '';
+        const lab = future ? '' : x.k === 'ok' ? t.stageStatus.ok : x.k === 'warn' ? t.stageStatus.warn : x.done ? t.stageStatus.part : i === cur ? t.stageStatus.todo : '—';
+        return `<div class="tl"><span class="dot ${dot}"></span>
+          ${future ? `<span class="muted">${s.label[li()]}</span>` : `<button type="button" data-stage="${i}">${s.label[li()]}${i === cur ? ` · <span class="muted">${t.current}</span>` : ''}</button>`}
+          <span class="tiny muted">${lab}</span></div>`;
+      }).join('')}</div>
+    </div>
+    ${legal()}`;
+}
+function bindCheck() {
+  const c = child(), si = ui.stage ?? stageIdx(corrM(c)), st = STAGES[si];
+  document.querySelectorAll('.ans button').forEach(b => b.addEventListener('click', () => {
+    if (isEx()) { ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); $('#f-name')?.focus(); return; }
+    const a = bucket(bucket(S.ans, c.id), st.min), i = b.dataset.i;
+    if (a[i] === b.dataset.v) delete a[i]; else a[i] = b.dataset.v;
+    const ss = stageState(c, st);
+    if (ss.done === ss.n) bucket(S.done, c.id)[st.min] = iso(new Date()); else delete bucket(S.done, c.id)[st.min];
+    save(); const y = window.scrollY; render(); window.scrollTo(0, y); document.getElementById(b.id)?.focus({ preventScroll: true });
+  }));
+  document.querySelectorAll('[data-stage]').forEach(b => b.addEventListener('click', () => { ui.stage = +b.dataset.stage; render(); window.scrollTo(0, 0); }));
+  $('#reset')?.addEventListener('click', () => { delete bucket(S.ans, c.id)[st.min]; delete bucket(S.done, c.id)[st.min]; save(); render(); });
+  $('#to-report')?.addEventListener('click', () => { go(4); setTimeout(() => $('#report')?.scrollIntoView({ block: 'start' }), 50); });
+}
+
+function weekDays() {
+  const now = new Date(), dow = (now.getDay() + 6) % 7, out = [];
+  for (let i = 0; i < 7; i++) { const d = new Date(now); d.setDate(now.getDate() - dow + i); out.push(iso(d)); }
+  return out;
+}
+function play() {
+  const t = L(), c = child(), cm = corrM(c), today = iso(new Date());
+  const P = (isEx() ? {} : S.play[c.id]) || {}, wk = weekDays();
+  const n = wk.filter(d => (P[d] || []).length).length;
+  return `
+    ${childPicker()}
+    <div class="card">
+      <span class="eyebrow">${esc(c.name)} · ${ageTxt(cm)}</span>
+      <h1 class="h1">${t.playT}</h1>
+      <p class="small muted">${t.playNote}</p>
+      <div class="week num">${wk.map((d, i) => `<div><i class="${(P[d] || []).length ? 'on' : ''} ${d === today ? 'today' : ''}">${+d.slice(8)}</i>${t.days[i]}</div>`).join('')}</div>
+      <p class="small"><b>${t.streak(n)}</b></p>
+    </div>
+    ${isEx() ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
+    ${PLAY.map(g => {
+      const mine = g === (PLAY.find(p => cm < p.max) || PLAY[PLAY.length - 1]);
+      if (!mine) return '';
+      return `<span class="eyebrow">${g.label[li()]}</span>` + g.items.map((it, i) => {
+        const on = (P[today] || []).includes(i);
+        return `<div class="card act"><div class="stack" style="gap:4px"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
+          <button type="button" class="tick" id="pl-${i}" data-play="${i}" aria-pressed="${on}" aria-label="✓"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
+      }).join('');
+    }).join('')}
+    ${legal()}`;
+}
+function bindPlay() {
+  const c = child(), today = iso(new Date());
+  document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => {
+    if (isEx()) { ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return; }
+    const P = bucket(S.play, c.id), arr = P[today] = P[today] || [], i = +b.dataset.play;
+    P[today] = arr.includes(i) ? arr.filter(x => x !== i) : arr.concat(i);
+    if (!P[today].length) delete P[today];
+    save(); const y = window.scrollY; render(); window.scrollTo(0, y);
+  }));
+}
+
+function learn() {
+  const t = L(), k = S.lang === 'kk';
+  return `
+    <div class="card"><h1 class="h1">${t.learnT}</h1></div>
+    ${ARTICLES.map((a, i) => `<details class="art" id="art-${i}">
+      <summary><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[a.ic]}</svg></span><span class="h3">${a.t[li()]}</span>
+        <svg class="chev" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>
+      <div class="body"><ul>${(k ? a.k : a.r).map(x => `<li>${x}</li>`).join('')}</ul><p class="src">${a.src}</p></div>
+    </details>`).join('')}
+    <div class="card"><h2 class="h2">${t.mythsT}</h2>
+      ${MYTHS.map(m => `<div class="myth"><p class="m">${k ? m[0] : m[2]}</p><p class="t small">${k ? m[1] : m[3]}</p></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:4px 0">')}
+    </div>
+    ${legal()}`;
+}
+
+function reportText(c) {
+  const t = L(), r = t.rep, k = li() + 1, cm = corrM(c), si = stageIdx(cm), D = doneOf(c.id), A = ansOf(c.id);
+  const lines = [r.head, '', `${r.child}: ${c.name}, ${ageTxt(ageM(c))} (${r.born} ${fmtDate(c.dob)})` + (parseInt(c.weeks, 10) < 37 ? ` — ${c.weeks} wk, ${t.corrected.toLowerCase()} ${ageTxt(cm)}` : '')];
+  const stages = STAGES.filter((s, i) => i <= si && (A[s.min] && Object.keys(A[s.min]).length || i === si)).reverse().slice(0, 3);
+  stages.forEach(s => {
+    const a = A[s.min] || {}, no = s.items.filter((_, i) => a[i] === 'no'), un = s.items.filter((_, i) => a[i] === 'unsure');
+    lines.push('', `${r.stage} ${s.label[li()]} — ${D[s.min] ? r.checked + ' ' + fmtDate(D[s.min]) : r.notChecked}`);
+    if (no.length) { lines.push(r.no); no.forEach(x => lines.push('  • ' + x[k])); }
+    if (un.length) { lines.push(r.unsure); un.forEach(x => lines.push('  • ' + x[k])); }
+    if (D[s.min] && !no.length && !un.length) lines.push(r.allYes);
+  });
+  const F = (S.flags[c.id] || []).map(i => FLAGS[i][li()]);
+  lines.push('', r.flags + (F.length ? '' : ' ' + r.none));
+  F.forEach(x => lines.push('  • ' + x));
+  lines.push('', r.foot, `${fmtDate(iso(new Date()))}`);
+  return lines.join('\n');
+}
+function help() {
+  const t = L(), c = child(), F = S.flags[c.id] || [], k = S.lang === 'kk';
+  return `
+    ${childPicker()}
+    <div class="card"><h1 class="h1">${t.flagsT}</h1><p class="small muted">${t.flagsNote}</p>
+      <div>${FLAGS.map((f, i) => `<div class="check"><input type="checkbox" id="fl-${i}" data-flag="${i}" ${F.includes(i) ? 'checked' : ''}><label for="fl-${i}">${f[li()]}</label></div>`).join('')}</div>
+    </div>
+    ${F.length ? `<div class="banner bad"><b>${t.flagsHit(F.length)}</b><p>${t.flagsHitP}</p></div>` : ''}
+    <div class="card"><h2 class="h2">${t.whereT}</h2>
+      <ol class="steps">${WHERE.map(w => `<li><div class="card flat"><h3 class="h3">${k ? w[0] : w[2]}</h3><p class="small">${k ? w[1] : w[3]}</p></div></li>`).join('')}</ol>
+    </div>
+    <div class="card"><h2 class="h3">${t.takeT}</h2><ul style="padding-left:20px;display:grid;gap:6px">${TAKE.map(x => `<li>${x[li()]}</li>`).join('')}</ul></div>
+    <div class="card" id="report"><h2 class="h2">${t.reportT}</h2><p class="small muted">${t.reportNote}</p>
+      <div class="report num" id="rep-text">${esc(reportText(c))}</div>
+      <button class="btn primary" type="button" id="copy">${t.copy}</button>
+    </div>
+    ${legal()}`;
+}
+function bindHelp() {
+  const c = child();
+  document.querySelectorAll('[data-flag]').forEach(b => b.addEventListener('change', () => {
+    if (isEx()) { b.checked = false; ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return; }
+    const i = +b.dataset.flag, F = S.flags[c.id] || [];
+    S.flags[c.id] = b.checked ? [...new Set(F.concat(i))].sort() : F.filter(x => x !== i);
+    save(); const y = window.scrollY; render(); window.scrollTo(0, y); document.getElementById(b.id)?.focus({ preventScroll: true });
+  }));
+  $('#copy')?.addEventListener('click', () => {
+    const txt = $('#rep-text').innerText, t = L();
+    const sel = () => { const r = document.createRange(); r.selectNodeContents($('#rep-text')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast(t.selected); };
+    try { navigator.clipboard.writeText(txt).then(() => toast(t.copied), sel); } catch (e) { sel(); }
+  });
+}
+
+function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
+
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp]];
+function render() {
+  if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
+  renderShell();
+  const [view, bind] = SCREENS[S.tab] || SCREENS[0];
+  $('#view').innerHTML = view();
+  bind(); bindCommon();
+}
+document.querySelectorAll('.seg button[data-lang]').forEach(b => b.addEventListener('click', () => { S.lang = b.dataset.lang; save(); render(); }));
+render();
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body></html>
