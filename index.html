@@ -878,11 +878,12 @@ const loadVoices = () => { try { VOICES = speechSynthesis.getVoices(); } catch (
 try { loadVoices(); speechSynthesis.onvoiceschanged = () => { loadVoices(); if (S.tab === 1 || S.tab === 2) render(); }; } catch (e) {}
 const voiceFor = lang => VOICES.find(v => v.lang && v.lang.toLowerCase().startsWith(lang === 'kk' ? 'kk' : 'ru'));
 function speak(text) { try { const v = voiceFor(S.lang); if (!v) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.voice = v; u.lang = v.lang; u.rate = 0.95; speechSynthesis.speak(u); } catch (e) {} }
-// recorded clips (ElevenLabs) for the milestone questions: audio/{kk|ru}/{stageMin}_{i}.mp3; device voice for everything else
+// recorded clips (ElevenLabs): milestone questions audio/{kk|ru}/{stageMin}_{i}.mp3, games audio/{kk|ru}/g{group}_{i}.mp3; device voice only as a fallback
 let CLIP = null;
 function playClip(url, text) {
   try { if (CLIP) { CLIP.pause(); CLIP = null; } speechSynthesis.cancel(); } catch (e) {}
-  CLIP = new Audio(url); CLIP.play().catch(() => speak(text));
+  CLIP = new Audio(url); SND.duck(true); CLIP.onended = CLIP.onpause = () => SND.duck(false);
+  CLIP.play().catch(() => { SND.duck(false); speak(text); });
 }
 const clipBtn = (id, url, text) => `<button type="button" class="say" id="say-${id}" data-clip="${url}" data-say="${esc(text)}" aria-label="${L().listen}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>`;
 const sayBtn = (id, text) => voiceFor(S.lang) ? `<button type="button" class="say" id="say-${id}" data-say="${esc(text)}" aria-label="${L().listen}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>` : '';
@@ -1003,6 +1004,7 @@ const SND = (() => {
     if (!bg) return;
     if (on) bg.play().then(() => { unlocked = true; }).catch(() => {}); else bg.pause();
   }
+  function duck(on) { if (bg) bg.volume = on ? 0.06 : 0.32; }
   function sync() { const b = $('#snd'); if (b) b.setAttribute('aria-pressed', S.music !== false); music(); }
   /* browsers allow sound only after the first touch: try at once, then start on the first tap anywhere */
   document.addEventListener('pointerdown', e => {
@@ -1010,7 +1012,7 @@ const SND = (() => {
     if (!unlocked && !e.target.closest('#snd')) music();
   }, true);
   document.addEventListener('visibilitychange', music);
-  return { tap, sync };
+  return { tap, sync, duck };
 })();
 $('#snd').addEventListener('click', () => { S.music = S.music === false; save(); SND.sync(); });
 SND.sync();
@@ -1944,7 +1946,7 @@ function play() {
     <span class="eyebrow">${g.label[li()]}</span>
     ${order.map((i, pos) => {
       const it = g.items[i], on = (P[selIso] || []).includes(i);
-      return `<div class="card game"><div class="pic">${PICS[gi * 5 + i]}</div>${pos === 0 ? `<span class="status todo" style="justify-self:start">${t.gameOfDay}</span>` : ''}<div class="act"><div class="stack" style="gap:4px"><div class="qrow"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3>${sayBtn('g' + i, (S.lang === 'kk' ? it[0] + '. ' + it[1] : it[2] + '. ' + it[3]))}</div><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
+      return `<div class="card game"><div class="pic">${PICS[gi * 5 + i]}</div>${pos === 0 ? `<span class="status todo" style="justify-self:start">${t.gameOfDay}</span>` : ''}<div class="act"><div class="stack" style="gap:4px"><div class="qrow"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3>${clipBtn('g' + i, `audio/${S.lang}/g${gi}_${i}.mp3`, (S.lang === 'kk' ? it[0] + '. ' + it[1] : it[2] + '. ' + it[3]))}</div><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
         ${canTick ? `<button type="button" class="tick" id="pl-${i}" data-play="${i}" aria-pressed="${on}" aria-label="✓"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`
           : `<span class="tick ${on ? 'done' : 'locked'}" aria-hidden="true">${on ? '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="11" width="12" height="9" rx="2" fill="currentColor"/><path d="M9 11V8a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>'}</span>`}</div></div>`;
     }).join('')}
