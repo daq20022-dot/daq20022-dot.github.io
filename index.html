@@ -155,6 +155,11 @@
   .week i { width: 28px; height: 28px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; font-style: normal; font-weight: 700; color: var(--fg); font-size: 12px; }
   .week i.on { background: var(--ok); border-color: var(--ok); color: #fff; }
   .week i.today { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .week .wd { border: 0; background: none; padding: 0; display: grid; gap: 4px; justify-items: center; font-size: 12px; color: var(--muted); }
+  .week .wd[aria-pressed="true"] { color: var(--accent); font-weight: 700; }
+  .week i.sel { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .tick.locked { color: var(--muted); background: var(--surface-2); border-style: dashed; }
+  .tick.done { background: var(--ok); border-color: var(--ok); color: #fff; }
 
   .pic { border-radius: 12px; overflow: hidden; line-height: 0; }
   .pic svg { width: 100%; height: auto; display: block; }
@@ -250,7 +255,8 @@ const T = {
       no: 'Әзірге жоқ:', unsure: 'Ата-ана білмейді:', allYes: 'Барлық белгілер бар.', flags: 'Ата-ананы алаңдатқан белгілер:', none: 'жоқ', foot: 'Ата-ана толтырған сауалнама (CDC 2022 негізінде). Диагноз емес.' },
     legal: ['Даму белгілері АҚШ-тың CDC «Learn the Signs. Act Early.» (2022) бағдарламасы бойынша қысқартылған.', 'Қосымша диагноз қоймайды және дәрігерді алмастырмайды. Деректер тек осы құрылғыда сақталады.'],
     theme: 'Тақырып', themes: ['Авто', 'Ақшыл', 'Қараңғы'],
-    watch: 'Видеоны көру', ytSearch: 'YouTube-та видео', stageVidT: 'Әр кезең туралы видео', stageVidNote: 'Әр жастағы даму туралы түсіндірме видеолар. YouTube-тағы видеоларды өзіңіз тексеріңіз: дәрігерлер мен ресми ұйымдардың арналарына сеніңіз.', example2: 'Мысал'
+    watch: 'Видеоны көру', today: 'Бүгін', tomorrow: 'Ертең', yesterday: 'Кеше', backToday: 'Бүгінге оралу', gameOfDay: 'Күн ойыны',
+    futureNote: 'Бұл күннің ойындарын алдын ала көре аласыз. Белгіні сол күні ғана қоюға болады.', pastNote: 'Өткен күн: белгілерді өзгертуге болмайды.', ytSearch: 'YouTube-та видео', stageVidT: 'Әр кезең туралы видео', stageVidNote: 'Әр жастағы даму туралы түсіндірме видеолар. YouTube-тағы видеоларды өзіңіз тексеріңіз: дәрігерлер мен ресми ұйымдардың арналарына сеніңіз.', example2: 'Мысал'
   },
   ru: {
     sub: 'Дневник развития ребёнка',
@@ -292,7 +298,8 @@ const T = {
       no: 'Пока нет:', unsure: 'Родитель не знает:', allYes: 'Все признаки есть.', flags: 'Признаки, которые беспокоят родителя:', none: 'нет', foot: 'Опросник заполнен родителем (по CDC 2022). Не является диагнозом.' },
     legal: ['Признаки развития сокращены по программе CDC (США) «Learn the Signs. Act Early.» (2022).', 'Приложение не ставит диагноз и не заменяет врача. Данные хранятся только на этом устройстве.'],
     theme: 'Тема', themes: ['Авто', 'Светлая', 'Тёмная'],
-    watch: 'Смотреть видео', ytSearch: 'Видео на YouTube', stageVidT: 'Видео по этапам развития', stageVidNote: 'Пояснительные видео о развитии в каждом возрасте. Ролики на YouTube проверяйте сами: доверяйте каналам врачей и официальных организаций.', example2: 'Пример'
+    watch: 'Смотреть видео', today: 'Сегодня', tomorrow: 'Завтра', yesterday: 'Вчера', backToday: 'Вернуться к сегодня', gameOfDay: 'Игра дня',
+    futureNote: 'Игры этого дня можно посмотреть заранее. Отметить их можно только в сам день.', pastNote: 'Прошедший день: отметки изменить нельзя.', ytSearch: 'Видео на YouTube', stageVidT: 'Видео по этапам развития', stageVidNote: 'Пояснительные видео о развитии в каждом возрасте. Ролики на YouTube проверяйте сами: доверяйте каналам врачей и официальных организаций.', example2: 'Пример'
   }
 };
 
@@ -595,13 +602,13 @@ function monthsBetween(a, b) {
   if (b.getDate() < a.getDate()) m--;
   return m;
 }
-function ageM(c) {
+function ageM(c, at) {
   const b = new Date(c.dob + 'T00:00:00');
   if (isNaN(b)) return NaN;
-  return monthsBetween(b, new Date());
+  return monthsBetween(b, at || new Date());
 }
-function corrM(c) {
-  const m = ageM(c), w = parseInt(c.weeks, 10);
+function corrM(c, at) {
+  const m = ageM(c, at), w = parseInt(c.weeks, 10);
   if (w && w < 37 && m < 24) return Math.max(0, m - Math.round((40 - w) / 4.35));
   return m;
 }
@@ -633,7 +640,7 @@ function renderShell() {
     <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().nav[i]}</button>`).join('');
   NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(i)));
 }
-function go(i, stage) { S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
+function go(i, stage) { ui.dayOff = 0; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
 function toast(msg) {
   ui.toast = msg; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
   document.body.appendChild(el); setTimeout(() => el.remove(), 1800);
@@ -680,9 +687,8 @@ function home() {
   const t = L(), c = child(), m = ageM(c), cm = corrM(c), si = stageIdx(cm), st = STAGES[si], ss = stageState(c, st);
   const next = STAGES[si + 1];
   const nextTxt = ss.k === 'todo' || ss.k === 'part' ? t.now : next ? `${next.label[li()]} · ${t.inM(Math.max(1, next.min - cm))}` : '—';
-  const pg = PLAY.find(p => cm < p.max) || PLAY[PLAY.length - 1];
   const dayN = Math.floor(Date.now() / 864e5);
-  const pi = pg.items[dayN % pg.items.length];
+  const gf = gamesFor(c, dayDate(0)), pg = gf.g, pi = pg.items[gf.order[0]];
   const tipA = ARTICLES[dayN % ARTICLES.length], tip = (S.lang === 'kk' ? tipA.k : tipA.r)[Math.floor(dayN / ARTICLES.length) % 5];
   const flagsN = (S.flags[c.id] || []).length;
   const statusCls = { ok: 'ok', warn: 'warn', unsure: 'todo', todo: 'todo', part: 'todo' }[ss.k];
@@ -717,7 +723,7 @@ function home() {
       <p class="tiny muted">${t.nextCheck}: ${nextTxt}</p>
     </div>
     <div class="card">
-      <div class="pic">${PICS[PLAY.indexOf(pg) * 3 + dayN % pg.items.length]}</div>
+      <div class="pic">${PICS[PLAY.indexOf(pg) * 3 + gf.order[0]]}</div>
       <span class="eyebrow">${t.todayPlay} · ${pg.label[li()]}</span>
       <h3 class="h3">${S.lang === 'kk' ? pi[0] : pi[2]}</h3>
       <p class="small">${S.lang === 'kk' ? pi[1] : pi[3]}</p>
@@ -808,40 +814,64 @@ function bindCheck() {
   $('#to-report')?.addEventListener('click', () => { go(4); setTimeout(() => $('#report')?.scrollIntoView({ block: 'start' }), 50); });
 }
 
-function weekDays() {
-  const now = new Date(), dow = (now.getDay() + 6) % 7, out = [];
-  for (let i = 0; i < 7; i++) { const d = new Date(now); d.setDate(now.getDate() - dow + i); out.push(iso(d)); }
+const DAY = 864e5;
+const dayDate = off => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + off); return d; };
+function weekOf(d) {
+  const dow = (d.getDay() + 6) % 7, out = [];
+  for (let i = 0; i < 7; i++) { const x = new Date(d); x.setDate(d.getDate() - dow + i); out.push(x); }
   return out;
 }
+// games of a given day: the age group at that date, rotated so each day starts with its own "game of the day"
+function gamesFor(c, d) {
+  const g = PLAY.find(p => corrM(c, d) < p.max) || PLAY[PLAY.length - 1];
+  const k = Math.floor(d.getTime() / DAY) % g.items.length;
+  return { g, order: g.items.map((_, i) => (i + k) % g.items.length) };
+}
 function play() {
-  const t = L(), c = child(), cm = corrM(c), today = iso(new Date());
-  const P = (isEx() ? {} : S.play[c.id]) || {}, wk = weekDays();
-  const n = wk.filter(d => (P[d] || []).length).length;
+  const t = L(), c = child(), off = ui.dayOff || 0, sel = dayDate(off), selIso = iso(sel), today = iso(new Date());
+  const P = (isEx() ? {} : S.play[c.id]) || {}, wk = weekOf(sel), thisWk = weekOf(dayDate(0)).map(iso);
+  const n = thisWk.filter(d => (P[d] || []).length).length;
+  const { g, order } = gamesFor(c, sel), gi = PLAY.indexOf(g);
+  const canTick = off === 0, future = off > 0;
+  const dateTxt = `${t.days[(sel.getDay() + 6) % 7]}, ${fmtDate(selIso)}`;
+  const rel = off === 0 ? t.today : off === 1 ? t.tomorrow : off === -1 ? t.yesterday : '';
   return `
     ${childPicker()}
     <div class="card">
-      <span class="eyebrow">${esc(c.name)} · ${ageTxt(cm)}</span>
+      <span class="eyebrow">${esc(c.name)} · ${ageTxt(corrM(c))}</span>
       <h1 class="h1">${t.playT}</h1>
       <p class="small muted">${t.playNote}</p>
-      <div class="week num">${wk.map((d, i) => `<div><i class="${(P[d] || []).length ? 'on' : ''} ${d === today ? 'today' : ''}">${+d.slice(8)}</i>${t.days[i]}</div>`).join('')}</div>
+      <div class="row between" style="flex-wrap:nowrap">
+        <button type="button" class="btn line sm" id="day-prev" aria-label="‹">‹</button>
+        <div style="text-align:center;min-width:0"><b>${rel ? rel + ' · ' : ''}${dateTxt}</b></div>
+        <button type="button" class="btn line sm" id="day-next" aria-label="›">›</button>
+      </div>
+      <div class="week num">${wk.map((d, i) => { const di = iso(d), o = Math.round((d - dayDate(0)) / DAY);
+        return `<button type="button" class="wd" data-off="${o}" aria-pressed="${di === selIso}"><i class="${(P[di] || []).length ? 'on' : ''} ${di === today ? 'today' : ''} ${di === selIso ? 'sel' : ''}">${d.getDate()}</i>${t.days[i]}</button>`; }).join('')}</div>
+      ${off !== 0 ? `<button type="button" class="link small" id="day-today" style="justify-self:start">← ${t.backToday}</button>` : ''}
       <p class="small"><b>${t.streak(n)}</b></p>
     </div>
     ${isEx() ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
-    ${PLAY.map(g => {
-      const mine = g === (PLAY.find(p => cm < p.max) || PLAY[PLAY.length - 1]);
-      if (!mine) return '';
-      return `<span class="eyebrow">${g.label[li()]}</span>` + g.items.map((it, i) => {
-        const on = (P[today] || []).includes(i);
-        return `<div class="card game"><div class="pic">${PICS[PLAY.indexOf(g) * 3 + i]}</div><div class="act"><div class="stack" style="gap:4px"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
-          <button type="button" class="tick" id="pl-${i}" data-play="${i}" aria-pressed="${on}" aria-label="✓"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>`;
-      }).join('');
+    ${future ? `<div class="banner info"><p>${t.futureNote}</p></div>` : off < 0 ? `<div class="banner info"><p>${t.pastNote}</p></div>` : ''}
+    <span class="eyebrow">${g.label[li()]}</span>
+    ${order.map((i, pos) => {
+      const it = g.items[i], on = (P[selIso] || []).includes(i);
+      return `<div class="card game"><div class="pic">${PICS[gi * 3 + i]}</div>${pos === 0 ? `<span class="status todo" style="justify-self:start">${t.gameOfDay}</span>` : ''}<div class="act"><div class="stack" style="gap:4px"><h3 class="h3">${S.lang === 'kk' ? it[0] : it[2]}</h3><p class="small">${S.lang === 'kk' ? it[1] : it[3]}</p></div>
+        ${canTick ? `<button type="button" class="tick" id="pl-${i}" data-play="${i}" aria-pressed="${on}" aria-label="✓"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`
+          : `<span class="tick ${on ? 'done' : 'locked'}" aria-hidden="true">${on ? '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="11" width="12" height="9" rx="2" fill="currentColor"/><path d="M9 11V8a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>'}</span>`}</div></div>`;
     }).join('')}
     ${legal()}`;
 }
 function bindPlay() {
   const c = child(), today = iso(new Date());
+  const setOff = o => { ui.dayOff = Math.max(-60, Math.min(60, o)); const y = window.scrollY; render(); window.scrollTo(0, y); };
+  $('#day-prev')?.addEventListener('click', () => setOff((ui.dayOff || 0) - 1));
+  $('#day-next')?.addEventListener('click', () => setOff((ui.dayOff || 0) + 1));
+  $('#day-today')?.addEventListener('click', () => setOff(0));
+  document.querySelectorAll('[data-off]').forEach(b => b.addEventListener('click', () => setOff(+b.dataset.off)));
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => {
     if (isEx()) { ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return; }
+    if ((ui.dayOff || 0) !== 0) return;
     const P = bucket(S.play, c.id), arr = P[today] = P[today] || [], i = +b.dataset.play;
     P[today] = arr.includes(i) ? arr.filter(x => x !== i) : arr.concat(i);
     if (!P[today].length) delete P[today];
