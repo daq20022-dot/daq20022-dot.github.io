@@ -1,4 +1,4 @@
-<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="Quşaq"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>Quşaq</title>
+<!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="QUŞAQ"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>QUŞAQ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#C64A37">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,7 +225,7 @@
   body { background: var(--bg); }
   body::before { background: var(--bg); }
   header.bar { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 0; }
-  .brand b { font-family: var(--script); font-weight: 700; font-size: 22px; letter-spacing: -.01em; text-transform: lowercase; color: var(--fg); }
+  .brand b { font-family: var(--script); font-weight: 700; font-size: 21px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg); }
   .brand small, p:empty, span.small:empty, .tiny:empty { display: none; }
   .h1, .h2, #mom h1, #mom h2, #mom .week, #mom .ringtext .big, #mom .stat b, .tear-date b { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
   .h1 { font-size: 24px !important; } .h2 { font-size: 20px !important; } #mom h1 { font-size: 28px; } #mom h2 { font-size: 22px; }
@@ -265,6 +265,7 @@
   #mom .card[style*="gradient"] { background: var(--accent-soft) !important; border: 0 !important; }
   #mom .stat { background: var(--butter) !important; border-radius: 22px; }
   #mom .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+
 
 
 
@@ -367,7 +368,7 @@
   <div class="bar-in">
     <div class="brand">
       <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3c9 0 17 6 17 16s-7 18-17 18S3 30 3 20 11 3 20 3z" fill="#FFB4A2"/><path d="M20 30c-6-3.5-9-7-9-11a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 4-3 7.5-9 11z" fill="#C64A37"/><path d="M20 15c0-4 3-7 7-7 0 4-3 7-7 7z" fill="#3E9C80"/></svg>
-      <div><b>Quşaq</b><small id="sub"></small></div>
+      <div><b>QUŞAQ</b><small id="sub"></small></div>
     </div>
     <div class="row" style="flex-wrap:nowrap;gap:8px">
     <button type="button" class="sndbtn" id="snd" aria-pressed="true" aria-label="Music">🎵</button>
@@ -433,11 +434,11 @@ const T = {
     watch: 'Видеоны көру', months: ['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'], wdays: ['Жексенбі','Дүйсенбі','Сейсенбі','Сәрсенбі','Бейсенбі','Жұма','Сенбі'],
     tipDone: 'Жасадық ✓', tipDid: 'Бүгін жасадыңыз! 🎉', tipNext: 'Тағы бір идея', tipShare: 'Бөлісу', tipCount: n => `Осы айда ${n} идея жасалды`,
     nT: 'Хабарландырулар', nNote: '', nOn: 'Хабарландыруды қосу', nOff: 'Өшіру', nTest: 'Тексеріп көру',
-    nEnabled: 'Хабарландырулар қосулы ✓', nDenied: 'Телефон рұқсат бермеді. Браузер баптауларынан Quşaq үшін хабарландыруды қосыңыз.',
+    nEnabled: 'Хабарландырулар қосулы ✓', nDenied: 'Телефон рұқсат бермеді. Браузер баптауларынан QUŞAQ үшін хабарландыруды қосыңыз.',
     nNoBg: 'Бұл телефонда қосымша жабық кезде хабарлама келмеуі мүмкін (әсіресе iPhone-да). Сенімді болу үшін төмендегі күнтізбені де қосыңыз.',
     nIos: 'iPhone-да хабарландыру үшін алдымен қосымшаны басты экранға қосыңыз (Бөлісу → «На экран Домой») және сол иконкадан ашыңыз.',
     nUnsupported: 'Бұл терезеде хабарландыру жұмыс істемейді. Қосымшаны daq20022-dot.github.io сайтынан ашыңыз.',
-    nTestTitle: 'Quşaq', nTestBody: 'Хабарландырулар жұмыс істеп тұр! 💙', nDue: (n, st) => `${n} — ${st} тексеру уақыты келді`, nDueBody: '5 сұраққа жауап беріңіз — 2 минут.',
+    nTestTitle: 'QUŞAQ', nTestBody: 'Хабарландырулар жұмыс істеп тұр! 💙', nDue: (n, st) => `${n} — ${st} тексеру уақыты келді`, nDueBody: '5 сұраққа жауап беріңіз — 2 минут.',
     diaryT: 'Күнделік', diaryNote: '', openDiary: 'Күнделікті ашу', addEntry: 'Жазба қосу',
     etypes: { word: 'Алғашқы сөз', step: 'Алғашқы қадам', growth: 'Бойы мен салмағы', tooth: 'Тіс шықты', note: 'Жазба' },
     eType: 'Түрі', eDate: 'Күні', eText: 'Не болды?', eTextPh: 'Мысалы: «апа» деді', eH: 'Бойы, см', eW: 'Салмағы, кг', ePhoto: 'Сурет (міндетті емес)',
@@ -446,7 +447,7 @@ const T = {
     remT: 'Еске салғыштар', remNote: '',
     remDaily: 'Күн сайын 19:00-де ойын туралы еске салу', remBtn: 'Күнтізбеге қосу', remDone: 'Файл дайын — ашып, «Қосу» батырмасын басыңыз',
     remSandbox: 'Бұл терезеде файл жүктелмейді. Қосымшаны daq20022-dot.github.io сайтынан ашыңыз.',
-    remEv: (n, st) => `Quşaq: ${n} — ${st} тексеру`, remEvD: 'Quşaq қосымшасын ашып, осы жастағы 5 сұраққа жауап беріңіз.', remPlay: n => `Quşaq: ${n}мен 10 минут ойын`,
+    remEv: (n, st) => `QUŞAQ: ${n} — ${st} тексеру`, remEvD: 'QUŞAQ қосымшасын ашып, осы жастағы 5 сұраққа жауап беріңіз.', remPlay: n => `QUŞAQ: ${n}мен 10 минут ойын`,
     imgBtn: 'Сурет ретінде сақтау', imgNote: 'Суретті басып тұрып сақтаңыз немесе WhatsApp-қа жіберіңіз.', share: 'Бөлісу',
     listen: 'Тыңдау', mapT: 'Жақын ПМПК мен ППТК-ны табу', mapNote: '', city: 'Қала', today: 'Бүгін', tomorrow: 'Ертең', yesterday: 'Кеше', backToday: 'Бүгінге оралу', gameOfDay: 'Күн ойыны',
     futureNote: '', pastNote: 'Өткен күн: белгілерді өзгертуге болмайды.', ytSearch: 'YouTube-та видео', stageVidT: 'Әр кезең туралы видео', stageVidNote: '', example2: 'Мысал'
@@ -498,11 +499,11 @@ const T = {
     watch: 'Смотреть видео', months: ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'], wdays: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
     tipDone: 'Сделали ✓', tipDid: 'Сегодня сделано! 🎉', tipNext: 'Ещё идея', tipShare: 'Поделиться', tipCount: n => `В этом месяце сделано идей: ${n}`,
     nT: 'Уведомления', nNote: '', nOn: 'Включить уведомления', nOff: 'Выключить', nTest: 'Проверить',
-    nEnabled: 'Уведомления включены ✓', nDenied: 'Телефон не дал разрешения. Включите уведомления для Quşaq в настройках браузера.',
+    nEnabled: 'Уведомления включены ✓', nDenied: 'Телефон не дал разрешения. Включите уведомления для QUŞAQ в настройках браузера.',
     nNoBg: 'На этом телефоне уведомления могут не приходить, когда приложение закрыто (особенно на iPhone). Для надёжности добавьте и календарь ниже.',
     nIos: 'На iPhone сначала добавьте приложение на главный экран (Поделиться → «На экран Домой») и откройте его с иконки.',
     nUnsupported: 'В этом окне уведомления не работают. Откройте приложение на сайте daq20022-dot.github.io.',
-    nTestTitle: 'Quşaq', nTestBody: 'Уведомления работают! 💙', nDue: (n, st) => `${n}: пора пройти проверку «${st}»`, nDueBody: 'Ответьте на 5 вопросов — это 2 минуты.',
+    nTestTitle: 'QUŞAQ', nTestBody: 'Уведомления работают! 💙', nDue: (n, st) => `${n}: пора пройти проверку «${st}»`, nDueBody: 'Ответьте на 5 вопросов — это 2 минуты.',
     diaryT: 'Дневник', diaryNote: '', openDiary: 'Открыть дневник', addEntry: 'Добавить запись',
     etypes: { word: 'Первое слово', step: 'Первые шаги', growth: 'Рост и вес', tooth: 'Прорезался зуб', note: 'Заметка' },
     eType: 'Тип', eDate: 'Дата', eText: 'Что произошло?', eTextPh: 'Например: сказал «мама»', eH: 'Рост, см', eW: 'Вес, кг', ePhoto: 'Фото (необязательно)',
@@ -511,7 +512,7 @@ const T = {
     remT: 'Напоминания', remNote: '',
     remDaily: 'Каждый день в 19:00 напоминать об игре', remBtn: 'Добавить в календарь', remDone: 'Файл готов — откройте его и нажмите «Добавить»',
     remSandbox: 'В этом окне файлы не скачиваются. Откройте приложение на сайте daq20022-dot.github.io.',
-    remEv: (n, st) => `Quşaq: ${n} — проверка ${st}`, remEvD: 'Откройте Quşaq и ответьте на 5 вопросов для этого возраста.', remPlay: n => `Quşaq: 10 минут игры с ${n}`,
+    remEv: (n, st) => `QUŞAQ: ${n} — проверка ${st}`, remEvD: 'Откройте QUŞAQ и ответьте на 5 вопросов для этого возраста.', remPlay: n => `QUŞAQ: 10 минут игры с ${n}`,
     imgBtn: 'Сохранить картинкой', imgNote: 'Нажмите и удерживайте картинку, чтобы сохранить, или отправьте в WhatsApp.', share: 'Поделиться',
     listen: 'Прослушать', mapT: 'Найти ближайшие ПМПК и КППК', mapNote: '', city: 'Город', today: 'Сегодня', tomorrow: 'Завтра', yesterday: 'Вчера', backToday: 'Вернуться к сегодня', gameOfDay: 'Игра дня',
     futureNote: '', pastNote: 'Прошедший день: отметки изменить нельзя.', ytSearch: 'Видео на YouTube', stageVidT: 'Видео по этапам развития', stageVidNote: '', example2: 'Пример'
@@ -905,7 +906,7 @@ function buildIcs(c, daily) {
   const t = L(), pad = n => String(n).padStart(2, '0'), stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
   const dt = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
   const escI = x => String(x).replace(/[,;\\]/g, m => '\\' + m);
-  const L2 = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Quşaq//KZ', 'CALSCALE:GREGORIAN'];
+  const L2 = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//QUŞAQ//KZ', 'CALSCALE:GREGORIAN'];
   const b = new Date(c.dob + 'T10:00:00'), w = parseInt(c.weeks, 10), shiftDays = w && w < 37 ? (40 - w) * 7 : 0, now = new Date();
   STAGES.forEach(st => {
     const d = new Date(b); d.setMonth(d.getMonth() + st.min); if (st.min < 24) d.setDate(d.getDate() + shiftDays);
@@ -1023,7 +1024,7 @@ SND.sync();
 /*MOM-JS*/
 /* ---------- «Ана»: women's health module (cycle, ovulation, pregnancy) — own storage key, mounted into #mom ---------- */
 const MOM = (HOST => {
-/* ================= Quşaq — women's health tracker (cycle, fertility, pregnancy). Data stays on this device. ================= */
+/* ================= QUŞAQ — women's health tracker (cycle, fertility, pregnancy). Data stays on this device. ================= */
 const KEY = 'erte-komek-ana-v1';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1089,7 +1090,7 @@ const T = {
     disclaimer: 'Не контрацепция · Не диагноз',
     pregWeek: 'неделя беременности', trimester: n => `${n}-й триместр`, due: 'Предполагаемая дата родов', baby: 'Размер малыша',
     pregLeft: 'Осталось', pregTips: PREG_RU(), fruit: FRUIT_RU(),
-    partnerMsg: (ph, d) => `Привет! У меня сейчас ${ph.toLowerCase()}. ${d}\nОтправлено из Quşaq`,
+    partnerMsg: (ph, d) => `Привет! У меня сейчас ${ph.toLowerCase()}. ${d}\nОтправлено из QUŞAQ`,
     periodsIn: n => `Месячные через ${n} ${plural(n, 'день', 'дня', 'дней')}`, periodToday: 'Месячные ожидаются сегодня',
     yes: 'Да', no: 'Нет', result: 'Результат', recheck: 'Пройти снова', clear: 'Очистить',
   },
@@ -1134,7 +1135,7 @@ const T = {
     disclaimer: 'Контрацепция емес · Диагноз емес',
     pregWeek: 'жүктілік аптасы', trimester: n => `${n}-триместр`, due: 'Болжамды босану күні', baby: 'Нәрестенің көлемі',
     pregLeft: 'Қалды', pregTips: PREG_KK(), fruit: FRUIT_KK(),
-    partnerMsg: (ph, d) => `Сәлем! Менде қазір ${ph.toLowerCase()}. ${d}\nQuşaq қосымшасынан жіберілді`,
+    partnerMsg: (ph, d) => `Сәлем! Менде қазір ${ph.toLowerCase()}. ${d}\nQUŞAQ қосымшасынан жіберілді`,
     periodsIn: n => `Етеккір ${n} күннен кейін`, periodToday: 'Етеккір бүгін күтіледі',
     yes: 'Иә', no: 'Жоқ', result: 'Нәтиже', recheck: 'Қайта тексеру', clear: 'Тазалау',
   }
@@ -1176,7 +1177,7 @@ const ARTS = [
 const FAQ = [
   [/задерж|кешік|не пришл|келмеді/i, ['Задержка до 7 дней бывает от стресса, болезни, перелётов. Если была незащищённая близость — сделайте тест на беременность. Задержка больше 7 дней или отрицательный тест при отсутствии месячных — к гинекологу.', 'Стресс, ауру, ұшу 7 күнге дейінгі кешігуге әкелуі мүмкін. Қорғалмаған жақындық болса — жүктілік тестін жасаңыз. 7 күннен астам кешігу не тест теріс болып, етеккір келмесе — гинекологқа.']],
   [/боль|болит|ауыр|спазм|түйіл/i, ['При месячных помогают тепло, движение и обезболивающие (по инструкции). Если боль сильная, с температурой или мешает жить — обратитесь к врачу.', 'Етеккір кезінде жылу, қозғалыс және ауруды басатын дәрі (нұсқаулық бойынша) көмектеседі. Ауру қатты, қызумен бірге не өмірге кедергі келтірсе — дәрігерге.']],
-  [/овуляц/i, ['Овуляция обычно за 12–16 дней до месячных. Посмотрите на главном экране — Quşaq считает её по вашему циклу. Точнее подскажут тесты на ЛГ и базальная температура.', 'Овуляция әдетте етеккірге 12–16 күн қалғанда болады. Басты экранды қараңыз — Quşaq оны сіздің циклыңыз бойынша есептейді. ЛГ тесті мен базальды температура нақтырақ көрсетеді.']],
+  [/овуляц/i, ['Овуляция обычно за 12–16 дней до месячных. Посмотрите на главном экране — QUŞAQ считает её по вашему циклу. Точнее подскажут тесты на ЛГ и базальная температура.', 'Овуляция әдетте етеккірге 12–16 күн қалғанда болады. Басты экранды қараңыз — QUŞAQ оны сіздің циклыңыз бойынша есептейді. ЛГ тесті мен базальды температура нақтырақ көрсетеді.']],
   [/беремен|жүкті|зачат/i, ['Шанс зачатия выше всего за 2–3 дня до овуляции и в её день. Если беременность не наступает 12 месяцев (6 после 35 лет) — к врачу вдвоём.', 'Жүкті болу мүмкіндігі овуляцияға 2–3 күн қалғанда және сол күні ең жоғары. 12 ай бойы жүктілік болмаса (35 жастан кейін 6 ай) — екеуіңіз дәрігерге.']],
   [/выделен|бөлін/i, ['Прозрачные тягучие выделения перед овуляцией — норма. Зуд, запах, творожистые или зелёные выделения — повод к врачу.', 'Овуляция алдындағы мөлдір созылмалы бөлініс — қалыпты. Қышу, иіс, ірімшік тәрізді не жасыл бөлініс — дәрігерге бару себебі.']],
   [/пмс|настроен|көңіл|еас/i, ['Перепады настроения за 3–10 дней до месячных — ПМС. Помогают сон, движение, меньше соли и кофе. Если сильно мешает жить — это лечится, обратитесь к врачу.', 'Етеккірге 3–10 күн қалғандағы көңіл-күй құбылуы — ЕАС. Ұйқы, қозғалыс, тұз бен кофені азайту көмектеседі. Өмірге қатты кедергі келтірсе — бұл емделеді, дәрігерге барыңыз.']],
@@ -1263,7 +1264,7 @@ function render() {
 
 function pinScreen() {
   return `<div class="pin"><div class="stack" style="justify-items:center"><div class="logo" style="width:64px;height:64px;font-size:34px;border-radius:22px">🌸</div>
-    <h1>Quşaq</h1><p class="muted">${t().pinEnter}</p>
+    <h1>QUŞAQ</h1><p class="muted">${t().pinEnter}</p>
     <input id="pin-in" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="${t().pinEnter}">
     <p id="pin-err" class="small" style="color:var(--accent)"></p></div></div>`;
 }
@@ -1488,8 +1489,8 @@ function openReport() {
   const sc = {}; Object.values(S.logs).forEach(l => (l.sym || []).forEach(i => sc[i] = (sc[i] || 0) + 1));
   const sym = Object.entries(sc).sort((a, b) => b[1] - a[1]).map(([i, n]) => `${x.sym[i]} (${n})`).join(', ') || x.none;
   const w = window.open('', '_blank');
-  const html = `<!doctype html><meta charset="utf-8"><title>Quşaq — ${x.report}</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#222}h1{color:#C64A37}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}</style>
-    <h1>Quşaq — ${x.report}</h1><p>${S.name ? esc(S.name) + ' · ' : ''}${fmtLong(today())}</p>
+  const html = `<!doctype html><meta charset="utf-8"><title>QUŞAQ — ${x.report}</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#222}h1{color:#C64A37}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}</style>
+    <h1>QUŞAQ — ${x.report}</h1><p>${S.name ? esc(S.name) + ' · ' : ''}${fmtLong(today())}</p>
     <p><b>${x.avgCycle}:</b> ${avgCycle()} · <b>${x.avgPeriod}:</b> ${avgPeriod()} · <b>${x.cycles}:</b> ${st.length}</p>
     <table><tr><th>${x.lastStart}</th><th>${x.cycleLen}</th><th>${x.periodLen}</th></tr>${rows}</table>
     <p><b>${x.topSym}:</b> ${esc(sym)}</p><p style="color:#777;font-size:12px">${x.disclaimer}</p><script>print()<\/script>`;
@@ -1544,10 +1545,10 @@ function buildIcs() {
   const push = (d, sum, rr) => ev.push(`BEGIN:VEVENT\r\nUID:${dt(d)}-${ev.length}@aisulu\r\nDTSTAMP:${dt(today())}T090000Z\r\nDTSTART;VALUE=DATE:${dt(d)}\r\nSUMMARY:${sum}\r\n${rr || ''}BEGIN:VALARM\r\nTRIGGER:-PT15H\r\nACTION:DISPLAY\r\nDESCRIPTION:${sum}\r\nEND:VALARM\r\nEND:VEVENT`);
   if (S.mode === 'preg') { const p = pregInfo(); if (p) push(p.due, x.due); }
   else if (c) {
-    for (let k = 0; k < 6; k++) { const s = add(c.next, c.C * k); push(add(s, -2), `Quşaq: ${x.periodsIn(2)}`); push(add(s, -14), `Quşaq: ${x.lgOvu}`); push(add(s, -19), `Quşaq: ${x.fertWin}`); }
-    if (Object.values(S.logs).some(l => l.pill)) push(add(today(), 1), `Quşaq: 💊 ${x.pill}`, 'RRULE:FREQ=DAILY\r\n');
+    for (let k = 0; k < 6; k++) { const s = add(c.next, c.C * k); push(add(s, -2), `QUŞAQ: ${x.periodsIn(2)}`); push(add(s, -14), `QUŞAQ: ${x.lgOvu}`); push(add(s, -19), `QUŞAQ: ${x.fertWin}`); }
+    if (Object.values(S.logs).some(l => l.pill)) push(add(today(), 1), `QUŞAQ: 💊 ${x.pill}`, 'RRULE:FREQ=DAILY\r\n');
   }
-  return `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Quşaq//RU\r\n${ev.join('\r\n')}\r\nEND:VCALENDAR\r\n`;
+  return `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//QUŞAQ//RU\r\n${ev.join('\r\n')}\r\nEND:VCALENDAR\r\n`;
 }
 function download(name, text, type) {
   const blob = new Blob([text], { type });
@@ -1691,7 +1692,7 @@ function bindTip() {
   $('#tip-done')?.addEventListener('click', () => { S.tipsDone = S.tipsDone || {}; S.tipsDone[iso(new Date())] = tipIndex(new Date(), ui.tipShift || 0); save(); render(); toast(L().tipDid); });
   $('#tip-next')?.addEventListener('click', () => { ui.tipShift = ((ui.tipShift || 0) + 1) % TIPS.length; const y = window.scrollY; render(); window.scrollTo(0, y); $('#tip')?.classList.add('flip'); });
   $('#tip-share')?.addEventListener('click', () => {
-    const tp = TIPS[tipIndex(new Date(), ui.tipShift || 0)], k = S.lang === 'kk', txt = `${tp[0]} ${k ? tp[1] : tp[3]}\n${k ? tp[2] : tp[4]}\n\nQuşaq — https://daq20022-dot.github.io`;
+    const tp = TIPS[tipIndex(new Date(), ui.tipShift || 0)], k = S.lang === 'kk', txt = `${tp[0]} ${k ? tp[1] : tp[3]}\n${k ? tp[2] : tp[4]}\n\nQUŞAQ — https://daq20022-dot.github.io`;
     try { if (navigator.share) { navigator.share({ text: txt }).catch(() => {}); return; } } catch (e) {}
     try { navigator.clipboard.writeText(txt).then(() => toast(L().copied), () => {}); } catch (e) {}
   });
