@@ -318,6 +318,15 @@
 
 
 
+  .avatar { overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .chip-ph { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; margin-left: -4px; }
+  .ph-row { display: flex; align-items: center; gap: 16px; }
+  .ph-pick { width: 84px; height: 84px; border-radius: 50%; flex: none; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; overflow: hidden; cursor: pointer; transition: transform .18s cubic-bezier(.3,.7,.4,1.5); }
+  .ph-pick:active { transform: scale(.94); }
+  .ph-pick img { width: 100%; height: 100%; object-fit: cover; }
+  .ph-pick svg { width: 34px; height: 34px; }
+  label.link { cursor: pointer; font-size: 17px; }
   /*MOM-CSS*/
   #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
   #mom h1 { font-size: 30px; line-height: 1.15; }
@@ -439,7 +448,7 @@ const T = {
     nav: ['Басты', 'Тексеру', 'Ойындар', 'Білім', 'Көмек', 'Ана'],
     momT: 'Ана денсаулығы', momNote: '', openMom: 'Ашу',
     example: 'Мысал. Өз балаңызды қосыңыз.',
-    addChild: 'Бала қосу', editChild: 'Өңдеу', delChild: 'Өшіру', save: 'Сақтау', cancel: 'Болдырмау',
+    addChild: 'Бала профилін ашу', addMore: 'Тағы бір бала', newTitle: 'Бала профилі', photoAdd: 'Сурет қосу', photoChange: 'Суретті ауыстыру', photoDel: 'Өшіру', editChild: 'Өңдеу', delChild: 'Өшіру', save: 'Сақтау', cancel: 'Болдырмау',
     confirmDel: n => `${n} туралы барлық деректер өшеді. Өшіру керек пе?`, yesDel: 'Иә, өшіру',
     name: 'Баланың аты', dob: 'Туған күні', weeks: 'Неше аптада туды (міндетті емес)', weeksHint: '37 аптадан ерте туса, 2 жасқа дейін түзетілген жас есептеледі.',
     errName: 'Баланың атын жазыңыз.', errDob: 'Туған күнін тексеріңіз: бала 0–6 жас аралығында болуы керек.',
@@ -504,7 +513,7 @@ const T = {
     nav: ['Главная', 'Проверка', 'Игры', 'Знания', 'Помощь', 'Мама'],
     momT: 'Здоровье мамы', momNote: '', openMom: 'Открыть',
     example: 'Это пример. Добавьте ребёнка.',
-    addChild: 'Добавить ребёнка', editChild: 'Изменить', delChild: 'Удалить', save: 'Сохранить', cancel: 'Отмена',
+    addChild: 'Создать профиль малыша', addMore: 'Ещё один малыш', newTitle: 'Профиль малыша', photoAdd: 'Добавить фото', photoChange: 'Сменить фото', photoDel: 'Убрать', editChild: 'Изменить', delChild: 'Удалить', save: 'Сохранить', cancel: 'Отмена',
     confirmDel: n => `Все данные о ребёнке ${n} будут удалены. Удалить?`, yesDel: 'Да, удалить',
     name: 'Имя ребёнка', dob: 'Дата рождения', weeks: 'На какой неделе родился (необязательно)', weeksHint: 'Если ребёнок родился раньше 37 недель, до 2 лет считается скорректированный возраст.',
     errName: 'Напишите имя ребёнка.', errDob: 'Проверьте дату рождения: ребёнку должно быть от 0 до 6 лет.',
@@ -914,6 +923,18 @@ const PDB = (() => {
   const tx = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction('photos', mode), st = t.objectStore('photos'), q = fn(st); t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); }));
   return { put: (k, v) => tx('readwrite', s => s.put(v, k)), get: k => tx('readonly', s => s.get(k)), del: k => tx('readwrite', s => s.delete(k)) };
 })();
+// child's profile photo: centre-cropped square, 256 px JPEG (about 15–25 KB) kept with the child's data
+function avatarPhoto(file) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => { const im = new Image(); im.onload = () => {
+      const s = Math.min(im.width, im.height), c = document.createElement('canvas'); c.width = c.height = 256;
+      c.getContext('2d').drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, 256, 256);
+      res(c.toDataURL('image/jpeg', 0.82)); }; im.onerror = rej; im.src = fr.result; };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+const avatarHtml = c => c.photo ? `<img src="${c.photo}" alt="">` : esc(c.name.slice(0, 1).toUpperCase());
 function shrinkPhoto(file) {
   return new Promise((res, rej) => {
     const fr = new FileReader();
@@ -1692,12 +1713,25 @@ function toast(msg) {
 /* ---------- child card + form ---------- */
 function childPicker() {
   if (S.children.length < 2) return '';
-  return `<div class="chips">${S.children.map(c => `<button type="button" class="chip" data-child="${c.id}" aria-pressed="${c.id === child().id}">${esc(c.name)}</button>`).join('')}</div>`;
+  return `<div class="chips">${S.children.map(c => `<button type="button" class="chip" data-child="${c.id}" aria-pressed="${c.id === child().id}">${c.photo ? `<img class="chip-ph" src="${c.photo}" alt="">` : ''}${esc(c.name)}</button>`).join('')}</div>`;
 }
 function childForm() {
   const t = L(), c = ui.form === 'new' ? { name: '', dob: '', weeks: '' } : child();
+  const key = ui.form === 'new' ? 'new' : c.id;
+  if (ui.photoKey !== key) { ui.photoKey = key; ui.photo = c.photo || ''; }
   return `<div class="card"><form class="f" id="cform" novalidate>
-    <h2 class="h2">${ui.form === 'new' ? t.addChild : t.editChild}</h2>
+    <h2 class="h2">${ui.form === 'new' ? t.newTitle : t.editChild}</h2>
+    <div class="ph-row">
+      <label class="ph-pick" for="f-photo" aria-label="${ui.photo ? t.photoChange : t.photoAdd}">
+        <img id="f-photo-img" alt="" ${ui.photo ? `src="${ui.photo}"` : 'hidden'}>
+        <svg id="f-photo-ic" viewBox="0 0 24 24" ${ui.photo ? 'hidden' : ''} aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      </label>
+      <input id="f-photo" type="file" accept="image/*" hidden>
+      <div class="stack" style="gap:6px">
+        <label class="link" for="f-photo" id="f-photo-lbl">${ui.photo ? t.photoChange : t.photoAdd}</label>
+        <button class="link small" type="button" id="f-photo-del" style="color:var(--muted)" ${ui.photo ? '' : 'hidden'}>${t.photoDel}</button>
+      </div>
+    </div>
     <div class="field"><label for="f-name">${t.name}</label><input id="f-name" maxlength="40" autocomplete="off" value="${esc(c.name)}"></div>
     <div class="field"><label for="f-dob">${t.dob}</label><input id="f-dob" type="date" max="${iso(new Date())}" value="${esc(c.dob)}"></div>
     <div class="field"><label for="f-weeks">${t.weeks}</label><input id="f-weeks" type="number" inputmode="numeric" min="22" max="42" placeholder="40" value="${esc(c.weeks)}"><span class="tiny muted">${t.weeksHint}</span></div>
@@ -1713,11 +1747,20 @@ function bindChildForm() {
     const m = dob ? monthsBetween(new Date(dob + 'T00:00:00'), new Date()) : NaN;
     if (!name) { ui.err = t.errName; return render(); }
     if (!dob || isNaN(m) || m < 0 || m > 72) { ui.err = t.errDob; return render(); }
-    if (ui.form === 'new') { const id = 'c' + Date.now().toString(36); S.children.push({ id, name, dob, weeks }); S.cur = id; }
-    else Object.assign(child(), { name, dob, weeks });
-    ui.form = null; ui.err = ''; save(); render(); toast(t.save + ' ✓');
+    const photo = ui.photo || '';
+    if (ui.form === 'new') { const id = 'c' + Date.now().toString(36); S.children.push({ id, name, dob, weeks, photo }); S.cur = id; }
+    else Object.assign(child(), { name, dob, weeks, photo });
+    ui.form = null; ui.err = ''; ui.photoKey = null; save(); render(); toast(t.save + ' ✓');
   });
-  $('#f-cancel').addEventListener('click', () => { ui.form = null; ui.err = ''; render(); });
+  $('#f-cancel').addEventListener('click', () => { ui.form = null; ui.err = ''; ui.photoKey = null; render(); });
+  const showPhoto = src => {
+    ui.photo = src; const t = L();
+    $('#f-photo-img').hidden = !src; if (src) $('#f-photo-img').src = src;
+    $('#f-photo-ic').hidden = !!src; $('#f-photo-del').hidden = !src;
+    $('#f-photo-lbl').textContent = src ? t.photoChange : t.photoAdd;
+  };
+  $('#f-photo').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { showPhoto(await avatarPhoto(f)); } catch (err) {} e.target.value = ''; });
+  $('#f-photo-del').addEventListener('click', () => showPhoto(''));
 }
 function bindCommon() {
   document.querySelectorAll('[data-child]').forEach(b => b.addEventListener('click', () => { S.cur = b.dataset.child; ui.stage = null; save(); render(); }));
@@ -1824,7 +1867,7 @@ function home() {
     <div class="card">
       <div class="row between">
         <div class="row" style="flex-wrap:nowrap;min-width:0">
-          <div class="avatar">${esc(c.name.slice(0, 1).toUpperCase())}</div>
+          <div class="avatar">${avatarHtml(c)}</div>
           <div style="min-width:0"><div class="h1">${esc(c.name)}</div><div class="small muted num">${fmtDate(c.dob)}</div></div>
         </div>
         ${isEx() ? '' : `<button class="btn line sm" type="button" id="edit">${t.editChild}</button>`}
@@ -1834,7 +1877,7 @@ function home() {
         <div><span>${cm !== m ? t.corrected : t.nextCheck}</span><b>${cm !== m ? ageTxt(cm) : (ss.k === 'todo' || ss.k === 'part' ? t.now : next ? next.label[li()] : '—')}</b></div>
         <div><span>${L().nav[1]}</span><b>${st.label[li()]}</b></div>
       </div>
-      ${!isEx() && S.children.length ? `<div class="row"><button class="link small" type="button" data-add>＋ ${t.addChild}</button></div>` : ''}
+      ${!isEx() && S.children.length ? `<div class="row"><button class="link small" type="button" data-add>＋ ${t.addMore}</button></div>` : ''}
     </div>
     ${flagsN ? `<div class="banner warn"><b>${t.flagsHit(flagsN)}</b><p>${t.flagsHitP}</p></div>` : ''}
     <div class="card">
