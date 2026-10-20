@@ -1005,7 +1005,9 @@ function reportCanvas(txt) {
 const KEY = 'erte-komek-v2';
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (S.notif) setTimeout(() => syncNotifSchedule(), 0); };
-let S = Object.assign({ lang: 'kk', theme: 'auto', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {}, diary: {} }, load());
+let S = Object.assign({ lang: 'kk', theme: 'light', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {}, diary: {} }, load());
+// light by default: older saves that followed the phone's dark mode switch to light once; dark stays a choice in settings
+if (S.theme === 'auto' && !S.themeV2) { S.theme = 'light'; S.themeV2 = 1; }
 // names typed as «айым» or «АЙЫМ» become «Айым»; each part of «айша-бибі» or «әли нұр» is capitalised, mixed case is kept
 function capName(v) {
   return String(v || '').trim().replace(/\s+/g, ' ').split(/([ -])/).map(w => {
