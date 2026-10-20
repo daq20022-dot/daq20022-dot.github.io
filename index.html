@@ -284,6 +284,40 @@
   #mom .sheet { border-radius: 14px 14px 0 0; background: var(--bg); }
   #mom .eyebrow { color: var(--muted); letter-spacing: .02em; }
 
+  /* motion: iOS-like springs; entrance only on screen change (#view.enter), presses everywhere */
+  @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes grow { from { width: 0; } }
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+  @keyframes logoIn { 0% { opacity: 0; transform: scale(.6) rotate(-12deg); } 70% { transform: scale(1.08) rotate(3deg); } 100% { opacity: 1; transform: none; } }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 16px) scale(.96); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  @keyframes ringIn { from { opacity: 0; transform: rotate(-90deg) scale(.85); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  #view.enter > *, #mom-app.enter > .stack > * { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  #view.enter > *:nth-child(2), #mom-app.enter > .stack > *:nth-child(2) { animation-delay: .05s; }
+  #view.enter > *:nth-child(3), #mom-app.enter > .stack > *:nth-child(3) { animation-delay: .1s; }
+  #view.enter > *:nth-child(4), #mom-app.enter > .stack > *:nth-child(4) { animation-delay: .15s; }
+  #view.enter > *:nth-child(5), #mom-app.enter > .stack > *:nth-child(5) { animation-delay: .2s; }
+  #view.enter > *:nth-child(6), #mom-app.enter > .stack > *:nth-child(6) { animation-delay: .25s; }
+  #view.enter > *:nth-child(n+7), #mom-app.enter > .stack > *:nth-child(n+7) { animation-delay: .3s; }
+  #view.enter .bar-p i { animation: grow .9s cubic-bezier(.2,.8,.2,1) .25s both; }
+  #mom-app.enter .ringwrap svg { animation: ringIn .8s cubic-bezier(.2,.8,.2,1) .1s both; }
+  #tabbar.switch button[aria-current="page"] .pill svg { animation: pop .4s cubic-bezier(.3,.7,.4,1.5); }
+  .brand svg { animation: logoIn .8s cubic-bezier(.3,.7,.4,1.3) .1s both; }
+  .sndbtn[aria-pressed="true"] { animation: float 3s ease-in-out infinite; }
+  .toast { animation: toastIn .35s cubic-bezier(.2,.8,.2,1); }
+  #mom .sheet-bg { animation: fadeIn .25s ease; }
+  #mom .sheet { animation: sheetUp .4s cubic-bezier(.2,.8,.2,1); }
+  .btn, .chip, .ans button, .tick, .say, .seg button, .tabbar button, .sndbtn, details.art summary, #mom .chip, #mom .btn, #mom .cal button, #mom .mtabs button, .wd {
+    transition: transform .18s cubic-bezier(.3,.7,.4,1.5), background-color .2s, color .2s, opacity .2s; }
+  .btn:active, .chip:active, .ans button:active, .tick:active, .say:active, .seg button:active, .sndbtn:active, details.art summary:active, #mom .chip:active, #mom .btn:active, #mom .cal button:active, #mom .mtabs button:active, .wd:active { transform: scale(.95); }
+  .tabbar button:active .pill { transform: scale(.88); transition: transform .15s; }
+  .card { transition: transform .2s cubic-bezier(.3,.7,.4,1.5); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+
+
   /*MOM-CSS*/
   #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
   #mom h1 { font-size: 30px; line-height: 1.15; }
@@ -1283,6 +1317,7 @@ function render() {
   tabs.querySelectorAll('[data-mtab]').forEach(b => b.onclick = () => { S.tab = +b.dataset.mtab; save(); render(); scrollTo(0, 0); });
   const V = [home, calendar, analysis, learn, profile][S.tab] || home;
   app.innerHTML = V(); bindAll();
+  if (ui.lastTab !== S.tab) { ui.lastTab = S.tab; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); } else app.classList.remove('enter');
 }
 
 function pinScreen() {
@@ -2170,6 +2205,16 @@ function render() {
   const [view, bind] = SCREENS[S.tab] || SCREENS[0];
   $('#view').innerHTML = view();
   bind(); bindCommon();
+  animateEnter($('#view'), 'tab' + S.tab + (S.tab === 1 ? ':' + (ui.stage ?? '') : ''));
+}
+// screen entrance plays only when the screen changes, not on every tap that re-renders it
+let LAST_SCREEN = null;
+function animateEnter(el, key) {
+  if (!el) return;
+  if (key === LAST_SCREEN) { el.classList.remove('enter'); $('#tabbar').classList.remove('switch'); return; }
+  LAST_SCREEN = key;
+  el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter');
+  const tb = $('#tabbar'); tb.classList.remove('switch'); void tb.offsetWidth; tb.classList.add('switch');
 }
 document.querySelectorAll('.seg button[data-lang]').forEach(b => b.addEventListener('click', () => { S.lang = b.dataset.lang; save(); render(); }));
 render();
