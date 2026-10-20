@@ -1076,6 +1076,7 @@ const SND = (() => {
   let ctx = null, bg = null, unlocked = false;
   const ac = () => { try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) { ctx = null; } return ctx; };
   function tap() {   /* «Пузырёк»: a short upward sine sweep, the pick from tap_sounds/3_puzyrek.mp3 */
+    if (window.Capacitor?.isNativePlatform?.()) try { (Capacitor.Plugins?.Haptics || Capacitor.registerPlugin('Haptics')).impact({ style: 'LIGHT' }); } catch (e) {}
     if (S.sfx === false) return; const c = ac(); if (!c) return;
     const t = c.currentTime + 0.005, o = c.createOscillator(), g = c.createGain();
     o.type = 'sine'; o.frequency.setValueAtTime(280, t); o.frequency.exponentialRampToValueAtTime(900, t + 0.054);
@@ -1803,14 +1804,21 @@ function bindTip() {
 
 /* ---------- notifications ---------- */
 const IOS = /iphone|ipad|ipod/i.test(navigator.userAgent), STANDALONE = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
-const notifOK = () => !SANDBOX && 'Notification' in window && 'serviceWorker' in navigator;
+/* inside the iOS app (Capacitor) reminders are native local notifications instead of the service worker */
+const CAP = window.Capacitor, NATIVE = !!(CAP && CAP.isNativePlatform && CAP.isNativePlatform());
+const plug = n => NATIVE ? (CAP.Plugins?.[n] || CAP.registerPlugin(n)) : null;
+const LN = () => plug('LocalNotifications');
+const notifOK = () => NATIVE || (!SANDBOX && 'Notification' in window && 'serviceWorker' in navigator);
+const notifPerm = () => NATIVE ? (ui.nPerm || 'prompt') : Notification.permission;
+if (NATIVE) LN().checkPermissions().then(r => { ui.nPerm = r.display; }).catch(() => {});
+async function nativeNotify(title, body, at, id) { await LN().schedule({ notifications: [{ id, title, body, schedule: at ? { at, allowWhileIdle: true } : undefined }] }); }
 function notifBlock() {
   const t = L();
   if (!notifOK()) return `<p class="small muted">${IOS && !STANDALONE ? t.nIos : t.nUnsupported}</p>`;
-  if (Notification.permission === 'denied') return `<p class="small" style="color:var(--bad)">${t.nDenied}</p>`;
-  if (S.notif && Notification.permission === 'granted') return `<div class="row"><span class="status ok">${t.nEnabled}</span><button class="btn line sm" type="button" id="n-test">${t.nTest}</button><button class="link small" type="button" id="n-off">${t.nOff}</button></div>
+  if (notifPerm() === 'denied') return `<p class="small" style="color:var(--bad)">${t.nDenied}</p>`;
+  if (S.notif && notifPerm() === 'granted') return `<div class="row"><span class="status ok">${t.nEnabled}</span><button class="btn line sm" type="button" id="n-test">${t.nTest}</button><button class="link small" type="button" id="n-off">${t.nOff}</button></div>
     ${ui.noBg ? `<p class="tiny muted">${t.nNoBg}</p>` : ''}`;
-  return `<button class="btn primary" type="button" id="n-on">🔔 ${t.nOn}</button>${IOS && !STANDALONE ? `<p class="tiny muted">${t.nIos}</p>` : ''}`;
+  return `<button class="btn primary" type="button" id="n-on">🔔 ${t.nOn}</button>${IOS && !STANDALONE && !NATIVE ? `<p class="tiny muted">${t.nIos}</p>` : ''}`;
 }
 // the service worker cannot read localStorage, so the app writes the next 21 days of messages into Cache Storage
 async function syncNotifSchedule() {
@@ -1827,12 +1835,25 @@ async function syncNotifSchedule() {
       if (!msg) { const tp = TIPS[tipIndex(d)]; msg = { title: `${tp[0]} ${S.lang === 'kk' ? tp[1] : tp[3]}`, body: S.lang === 'kk' ? tp[2] : tp[4], tag: 'ek-tip' }; }
       days.push({ date: di, ...msg });
     }
+    if (NATIVE) { // replace the whole 21-day plan: one reminder a day at 10:00
+      const ln = LN(), pend = await ln.getPending(); if (pend.notifications.length) await ln.cancel({ notifications: pend.notifications.map(n => ({ id: n.id })) });
+      if (!S.notif) return;
+      const list = days.map((d, i) => { const at = new Date(d.date + 'T10:00:00'); return { id: 1000 + i, title: d.title, body: d.body, schedule: { at, allowWhileIdle: true } }; }).filter(n => n.schedule.at > new Date());
+      if (list.length) await ln.schedule({ notifications: list });
+      return;
+    }
     const cache = await caches.open('ek-data');
     await cache.put('ek-schedule.json', new Response(JSON.stringify({ on: !!S.notif, days }), { headers: { 'Content-Type': 'application/json' } }));
   } catch (e) {}
 }
 async function enableNotif() {
   const t = L();
+  if (NATIVE) {
+    try { const r = await LN().requestPermissions(); ui.nPerm = r.display; if (r.display !== 'granted') { render(); return; }
+      S.notif = true; save(); await syncNotifSchedule(); await nativeNotify(t.nTestTitle, t.nTestBody, new Date(Date.now() + 1500), 1);
+    } catch (e) {}
+    render(); return;
+  }
   try {
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') { render(); return; }
@@ -1847,6 +1868,11 @@ async function enableNotif() {
 }
 function bindNotif() {
   $('#n-on')?.addEventListener('click', enableNotif);
+  if (NATIVE) {
+    $('#n-off')?.addEventListener('click', async () => { S.notif = false; save(); await syncNotifSchedule(); render(); });
+    $('#n-test')?.addEventListener('click', () => nativeNotify(L().nTestTitle, L().nTestBody, new Date(Date.now() + 1500), 1).catch(() => {}));
+    return;
+  }
   $('#n-off')?.addEventListener('click', async () => { S.notif = false; save(); await syncNotifSchedule(); try { const reg = await navigator.serviceWorker.ready; await reg.periodicSync?.unregister('ek-daily'); } catch (e) {} render(); });
   $('#n-test')?.addEventListener('click', async () => { try { const reg = await navigator.serviceWorker.ready; reg.showNotification(L().nTestTitle, { body: L().nTestBody, icon: 'icon-192.png', tag: 'ek-test' }); } catch (e) {} });
 }
