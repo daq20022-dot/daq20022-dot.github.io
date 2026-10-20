@@ -1,32 +1,31 @@
 <!doctype html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="QUŞAQ"><meta name="apple-mobile-web-app-capable" content="yes"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style><title>QUŞAQ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="theme-color" content="#C64A37">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@600;700&family=Josefin+Sans:wght@600&family=Nunito:wght@400;600;700;800&display=swap">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <style>
   /* Layout: app shell — translucent top bar, one 600px column of soft rounded cards, fixed bottom tab bar with six sections.
      Palette: rose and lavender on a blush ground (Flo-like); serif headings; semantic green / amber / red only for results. */
   :root {
-    --bg: #FFF8F2; --surface: #ffffff; --surface-2: #FFF1E8; --fg: #3B2F4A; --muted: #6E6178; --line: #F2E3D8;
-    --accent: #C64A37; --accent-fg: #ffffff; --accent-soft: #FFE1D9; --teal: #2E7D66; --teal-soft: #D9F1E8;
-    --ok: #2E7D66; --ok-bg: #D9F1E8; --warn: #8A5A00; --warn-bg: #FFE7A8; --bad: #B23A2A; --bad-bg: #FFE1D9;
-    --bg2: #FFF1E8; --lav: #2E7D66; --lav-soft: #D9F1E8; --period: #C64A37; --period-soft: #FFE1D9; --fert: #3E9C80; --fert-soft: #D9F1E8; --ovu: #23604E;
-    --butter: #FFE7A8; --peach: #FFB4A2; --shadow: none;
-    --font: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif; --serif: "Montserrat Alternates", "Nunito", sans-serif; --script: "Montserrat Alternates", "Nunito", sans-serif;
+    --bg: #F2F2F7; --surface: #FFFFFF; --surface-2: #F2F2F7; --fg: #1C1C1E; --muted: #6C6C70; --line: #E5E5EA;
+    --accent: #E8473A; --accent-fg: #FFFFFF; --accent-soft: #FFE9E6; --teal: #00897B; --teal-soft: #DDF5F2;
+    --ok: #248A3D; --ok-bg: #E3F6E8; --warn: #B25000; --warn-bg: #FFF1E0; --bad: #D70015; --bad-bg: #FFE5E7;
+    --bg2: #F2F2F7; --lav: #5E5CE6; --lav-soft: #ECECFD; --period: #FF2D55; --period-soft: #FFE3EA; --fert: #5E5CE6; --fert-soft: #E8E8FC; --ovu: #3634A3;
+    --butter: #FFF4D6; --peach: #FFE9E6; --shadow: none;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --serif: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --script: var(--serif);
     --nav-h: 64px;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg: #241C2C; --surface: #2F2539; --surface-2: #382C44; --fg: #FFF1E8; --muted: #C9B9CF; --line: #4A3C55;
-    --accent: #FF9A86; --accent-fg: #2A1410; --accent-soft: #4A2C30; --teal: #8FD6BE; --teal-soft: #1F3B34;
-    --ok: #8FD6BE; --ok-bg: #1F3B34; --warn: #FFD27A; --warn-bg: #3F3318; --bad: #FF9A86; --bad-bg: #4A2C30;
-    --bg2: #2F2539; --lav: #8FD6BE; --lav-soft: #1F3B34; --period: #FF9A86; --period-soft: #4A2C30; --fert: #8FD6BE; --fert-soft: #1F3B34; --ovu: #BDEBDB;
-    --butter: #4A4024; --peach: #5A3A36; --shadow: none; color-scheme: dark } }
+    --bg: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --fg: #FFFFFF; --muted: #98989F; --line: #38383A;
+    --accent: #FF453A; --accent-fg: #FFFFFF; --accent-soft: #3A1A16; --teal: #66D4CF; --teal-soft: #0E2E2C;
+    --ok: #30D158; --ok-bg: #0F2E18; --warn: #FF9F0A; --warn-bg: #33240A; --bad: #FF453A; --bad-bg: #3A1311;
+    --bg2: #1C1C1E; --lav: #7D7AFF; --lav-soft: #1F1E3D; --period: #FF375F; --period-soft: #3D1520; --fert: #7D7AFF; --fert-soft: #1F1E3D; --ovu: #A5A3FF;
+    --butter: #3A3220; --peach: #3A1E1A; --shadow: none; color-scheme: dark } }
   :root[data-theme="dark"] {
-    --bg: #241C2C; --surface: #2F2539; --surface-2: #382C44; --fg: #FFF1E8; --muted: #C9B9CF; --line: #4A3C55;
-    --accent: #FF9A86; --accent-fg: #2A1410; --accent-soft: #4A2C30; --teal: #8FD6BE; --teal-soft: #1F3B34;
-    --ok: #8FD6BE; --ok-bg: #1F3B34; --warn: #FFD27A; --warn-bg: #3F3318; --bad: #FF9A86; --bad-bg: #4A2C30;
-    --bg2: #2F2539; --lav: #8FD6BE; --lav-soft: #1F3B34; --period: #FF9A86; --period-soft: #4A2C30; --fert: #8FD6BE; --fert-soft: #1F3B34; --ovu: #BDEBDB;
-    --butter: #4A4024; --peach: #5A3A36; --shadow: none; color-scheme: dark }
+    --bg: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --fg: #FFFFFF; --muted: #98989F; --line: #38383A;
+    --accent: #FF453A; --accent-fg: #FFFFFF; --accent-soft: #3A1A16; --teal: #66D4CF; --teal-soft: #0E2E2C;
+    --ok: #30D158; --ok-bg: #0F2E18; --warn: #FF9F0A; --warn-bg: #33240A; --bad: #FF453A; --bad-bg: #3A1311;
+    --bg2: #1C1C1E; --lav: #7D7AFF; --lav-soft: #1F1E3D; --period: #FF375F; --period-soft: #3D1520; --fert: #7D7AFF; --fert-soft: #1F1E3D; --ovu: #A5A3FF;
+    --butter: #3A3220; --peach: #3A1E1A; --shadow: none; color-scheme: dark }
 
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); -webkit-tap-highlight-color: transparent; }
@@ -221,55 +220,69 @@
   footer.legal { font-size: 12px; color: var(--muted); display: grid; gap: 4px; padding-top: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-  /* brand D «Тәтті»: coral, peach, mint, butter; Montserrat Alternates + Nunito; big soft radii, flat colour cards */
-  body { background: var(--bg); }
-  body::before { background: var(--bg); }
-  header.bar { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 0; }
-  .brand b { font-family: "Josefin Sans", "Nunito", sans-serif; font-weight: 600; font-size: 24px; line-height: 1; letter-spacing: .08em; padding-top: 3px; text-transform: uppercase; color: var(--fg); }
+  /* Apple / iOS look: system font, grouped grey ground with white inset cards, translucent bars, segmented controls */
+  html { -webkit-text-size-adjust: 100%; }
+  body { background: var(--bg); font-size: 17px; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+  body::before { background: color-mix(in srgb, var(--bg) 80%, transparent); }
+  header.bar { background: color-mix(in srgb, var(--surface) 78%, transparent); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 0.5px solid var(--line); }
+  .brand svg { width: 30px; height: 30px; }
+  .brand b { font-family: var(--serif); font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg); }
   .brand small, p:empty, span.small:empty, .tiny:empty { display: none; }
-  .h1, .h2, #mom h1, #mom h2, #mom .week, #mom .ringtext .big, #mom .stat b, .tear-date b { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; }
-  .h1 { font-size: 24px !important; } .h2 { font-size: 20px !important; } #mom h1 { font-size: 28px; } #mom h2 { font-size: 22px; }
-  .h3, #mom h3 { font-weight: 800; }
-  .eyebrow { color: var(--accent); font-weight: 800; }
-  .sndbtn { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--butter); display: grid; place-items: center; font-size: 17px; padding: 0; flex: none; }
-  .sndbtn[aria-pressed="false"] { opacity: .45; filter: grayscale(1); }
-  main { gap: 14px; }
+  .h1, .h2, #mom h1, #mom h2, #mom .week, #mom .ringtext .big, #mom .stat b, .tear-date b { font-family: var(--serif); font-weight: 700; letter-spacing: -0.02em; }
+  .h1 { font-size: 28px !important; line-height: 1.15; } .h2 { font-size: 22px !important; } .h3, #mom h3 { font-size: 17px; font-weight: 600; }
+  #mom h1 { font-size: 30px; } #mom h2 { font-size: 22px; }
+  .small { font-size: 15px; } .tiny { font-size: 13px; }
+  .eyebrow { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
+  main { gap: 20px; }
   .card, .card.flat, details.art, .tear, .q { box-shadow: none; border: 0; }
-  .card { border-radius: 30px; padding: 20px; }
-  .card.flat { background: var(--surface-2); }
-  .btn, .btn.sm { border-radius: 999px; font-weight: 800; }
-  .btn.primary { background: var(--accent); }
-  .btn.soft { background: var(--teal-soft); color: var(--teal); }
-  .seg { border-radius: 999px; padding: 3px; background: var(--surface); border: 0; }
-  .seg button { border-radius: 999px; }
-  .chip { border-width: 1.5px; }
-  .chip[aria-pressed="true"] { background: var(--butter); border-color: var(--butter); color: var(--fg); }
-  .avatar { background: var(--peach); color: var(--fg); font-family: var(--serif); }
-  .kv div { border-radius: 20px; }
-  .banner, .q { border-radius: 22px; }
-  .banner.info { background: var(--butter); color: var(--fg); }
-  details.art { border-radius: 24px; }
-  .pic { border-radius: 22px; }
-  .bar-p { background: var(--accent-soft); height: 10px; } .bar-p i { background: var(--accent); }
-  nav.tabbar { border-top: 0; box-shadow: none; }
+  .card { border-radius: 14px; padding: 16px; background: var(--surface); }
+  .card.flat { background: var(--surface); }
+  .btn { border-radius: 12px; font-weight: 600; font-size: 17px; padding: 14px 18px; }
+  .btn.sm { border-radius: 10px; font-size: 15px; padding: 9px 14px; }
+  .btn.primary { background: var(--accent); color: var(--accent-fg); }
+  .btn.soft { background: var(--accent-soft); color: var(--accent); }
+  .btn.line { background: var(--surface-2); border: 0; color: var(--accent); }
+  .btn:active { opacity: .7; }
+  .link { color: var(--accent); font-weight: 400; }
+  .seg { border: 0; border-radius: 9px; padding: 2px; background: color-mix(in srgb, var(--muted) 18%, transparent); }
+  .seg button { border-radius: 7px; font-weight: 600; font-size: 13px; color: var(--fg); padding: 5px 12px; }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 3px 8px rgba(0,0,0,.12), 0 3px 1px rgba(0,0,0,.04); }
+  .sndbtn { width: 32px; height: 32px; border-radius: 50%; border: 0; background: color-mix(in srgb, var(--muted) 18%, transparent); display: grid; place-items: center; font-size: 15px; padding: 0; flex: none; }
+  .sndbtn[aria-pressed="false"] { opacity: .45; filter: grayscale(1); }
+  .chip { border: 0; background: var(--surface-2); font-weight: 500; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+  .avatar { background: var(--accent-soft); color: var(--accent); font-family: var(--serif); font-weight: 600; }
+  .kv div { border-radius: 10px; background: var(--surface-2); }
+  .banner, .q { border-radius: 12px; }
+  .banner.info { background: var(--surface); color: var(--fg); }
+  .status { font-size: 12px; font-weight: 600; }
+  details.art, #mom details.art { border-radius: 14px !important; border: 0 !important; }
+  .pic { border-radius: 12px; }
+  .bar-p { background: var(--line); height: 6px; } .bar-p i { background: var(--accent); }
+  .field input, .field select, textarea { border: 0 !important; background: var(--surface-2) !important; border-radius: 10px !important; }
+  .ans button { border: 0; border-radius: 8px; background: var(--surface-2); font-weight: 600; }
+  .say { border: 0; background: var(--accent-soft); color: var(--accent); }
+  nav.tabbar { background: color-mix(in srgb, var(--surface) 78%, transparent); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--line); box-shadow: none; }
   .tabbar-in { grid-template-columns: repeat(6, 1fr); }
-  .tabbar button { font-weight: 800; font-size: 10.5px; }
-  .tabbar .pill { padding: 3px 10px; }
-  .tabbar button[aria-current="page"] .pill { background: var(--accent-soft); }
-  .momcard { background: var(--teal-soft); }
-  .momcard .eyebrow { color: var(--teal); }
-  .tear { border-radius: 30px; transform: none; }
-  .tear-top { background: var(--peach); }
-  footer.legal { text-align: center; opacity: .8; }
-  #mom .card, #mom .card.soft { box-shadow: none !important; border: 0; border-radius: 30px; }
-  #mom .card[style*="gradient"] { background: var(--accent-soft) !important; border: 0 !important; }
-  #mom .stat { background: var(--butter) !important; border-radius: 22px; }
+  .tabbar button { font-weight: 500; font-size: 10px; color: var(--muted); }
+  .tabbar .pill { padding: 2px 8px; background: transparent !important; }
+  .tabbar button[aria-current="page"] { color: var(--accent); }
+  .momcard { background: var(--surface); }
+  .momcard .eyebrow { color: var(--period); }
+  .tear { border-radius: 14px; transform: none; }
+  .tear-top { background: var(--accent); }
+  footer.legal { text-align: center; color: var(--muted); }
+  #mom .card, #mom .card.soft { box-shadow: none !important; border: 0 !important; border-radius: 14px !important; }
+  #mom .card[style*="gradient"] { background: var(--surface) !important; border: 0 !important; }
+  #mom .stat { background: var(--surface) !important; border-radius: 12px !important; }
+  #mom .btn { border-radius: 12px !important; font-weight: 600; }
+  #mom .chip { border: 0; background: var(--surface-2); font-weight: 500; }
   #mom .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
-
-
-
-
-
+  #mom .mtabs button { border: 0; background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--fg); font-weight: 600; border-radius: 9px; }
+  #mom .mtabs button[aria-current="page"] { background: var(--accent); color: var(--accent-fg); }
+  #mom .field input, #mom .field select, #mom .field textarea { border: 0; background: var(--surface-2); border-radius: 10px; }
+  #mom .sheet { border-radius: 14px 14px 0 0; background: var(--bg); }
+  #mom .eyebrow { color: var(--muted); letter-spacing: .02em; }
 
   /*MOM-CSS*/
   #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
