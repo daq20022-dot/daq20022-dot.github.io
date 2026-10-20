@@ -938,6 +938,16 @@ const KEY = 'erte-komek-v2';
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (S.notif) setTimeout(() => syncNotifSchedule(), 0); };
 let S = Object.assign({ lang: 'kk', theme: 'auto', tab: 0, children: [], cur: null, ans: {}, done: {}, play: {}, flags: {}, diary: {} }, load());
+// names typed as «айым» or «АЙЫМ» become «Айым»; each part of «айша-бибі» or «әли нұр» is capitalised, mixed case is kept
+function capName(v) {
+  return String(v || '').trim().replace(/\s+/g, ' ').split(/([ -])/).map(w => {
+    if (w === ' ' || w === '-' || !w) return w;
+    const low = w.toLocaleLowerCase('kk'), up = w.toLocaleUpperCase('kk');
+    const base = (w === low || w === up) ? low : w;
+    return base.charAt(0).toLocaleUpperCase('kk') + base.slice(1);
+  }).join('');
+}
+S.children.forEach(c => { c.name = capName(c.name); });
 S.diary = S.diary || {};
 const EX_DOB = (() => { const d = new Date(); d.setMonth(d.getMonth() - 19); d.setDate(d.getDate() - 5); return iso(d); })();
 const EXAMPLE = { id: 'example', name: 'Айым', dob: EX_DOB, weeks: '' };
@@ -1651,7 +1661,7 @@ function bindChildForm() {
   const f = $('#cform'); if (!f) return;
   f.addEventListener('submit', e => {
     e.preventDefault();
-    const t = L(), name = $('#f-name').value.trim(), dob = $('#f-dob').value, weeks = $('#f-weeks').value.trim();
+    const t = L(), name = capName($('#f-name').value), dob = $('#f-dob').value, weeks = $('#f-weeks').value.trim();
     const m = dob ? monthsBetween(new Date(dob + 'T00:00:00'), new Date()) : NaN;
     if (!name) { ui.err = t.errName; return render(); }
     if (!dob || isNaN(m) || m < 0 || m > 72) { ui.err = t.errDob; return render(); }
