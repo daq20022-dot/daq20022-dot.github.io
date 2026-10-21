@@ -1,4 +1,4 @@
-const C='erte-komek-v30';
+const C='erte-komek-v31';
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','manifest.json','icon.svg','icon-192.png','icon-512.png','apple-touch-icon.png']))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x))))));
 self.addEventListener('fetch',e=>{const req=e.request;if(req.method!=='GET')return;
