@@ -333,6 +333,9 @@
   :root { --bg: #FFF4F6; --surface: #FFFFFF; --surface-2: #FCEEF2; --line: #F4E1E7; --muted: #74636B;
     --accent: #CF3660; --accent-soft: #FFE3EA; --orb1: #FFF0F4; --orb2: #FFD9E3; --orb3: #FFC6D5; --orb-fg: #2A1520; --orb-lbl: #8A3A55; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --orb1: #4A2333; --orb2: #3A1A28; --orb3: #2C141F; --orb-fg: #FFFFFF; --orb-lbl: #FFB3C6; } }
+  /* dark theme keeps the rose brand accent instead of the system red */
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --accent: #E04870; --accent-soft: #3A1826; --bg: #120B0E; --surface: #1F1418; --surface-2: #2A1C21; --line: #3A2A30; } }
+  :root[data-theme="dark"] { --accent: #E04870; --accent-soft: #3A1826; --bg: #120B0E; --surface: #1F1418; --surface-2: #2A1C21; --line: #3A2A30; }
   :root[data-theme="dark"] { --orb1: #4A2333; --orb2: #3A1A28; --orb3: #2C141F; --orb-fg: #FFFFFF; --orb-lbl: #FFB3C6; }
   header.bar { background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 0; }
   .card, details.art, .tear, .q { border-radius: 22px; box-shadow: 0 4px 18px rgba(207,54,96,.06); }
@@ -397,7 +400,8 @@
     transition: transform .18s cubic-bezier(.3,.7,.4,1.5), background-color .2s; }
   .lchip:active { transform: scale(.94); }
   .lchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); box-shadow: none; }
-  .subnav { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--surface); box-shadow: 0 4px 18px rgba(207,54,96,.06); position: sticky; top: calc(env(safe-area-inset-top, 0px) + 58px); z-index: 10; }
+  .subnav { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--surface); position: sticky; top: calc(env(safe-area-inset-top, 0px) + 54px); z-index: 10;
+    box-shadow: 0 -20px 0 6px var(--bg), 0 4px 18px rgba(207,54,96,.08); }   /* the first shadow hides cards scrolling under the gap above */
   .subnav button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 9px 8px; font-size: 15px; font-weight: 600; color: var(--muted); }
   .subnav button[aria-current="page"] { background: var(--accent); color: var(--accent-fg); }
   .tabbar button { font-size: 11px; }
