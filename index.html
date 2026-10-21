@@ -327,6 +327,76 @@
   .ph-pick img { width: 100%; height: 100%; object-fit: cover; }
   .ph-pick svg { width: 34px; height: 34px; }
   label.link { cursor: pointer; font-size: 17px; }
+
+  /* Flo look: blush ground, rose accent, big soft cards and pill buttons.
+     Home = week strip + age ring with one main action + daily stories + tiles; quick log is a bottom sheet of chips. */
+  :root { --bg: #FFF4F6; --surface: #FFFFFF; --surface-2: #FCEEF2; --line: #F4E1E7; --muted: #74636B;
+    --accent: #CF3660; --accent-soft: #FFE3EA; --orb1: #FFF0F4; --orb2: #FFD9E3; --orb3: #FFC6D5; --orb-fg: #2A1520; --orb-lbl: #8A3A55; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --orb1: #4A2333; --orb2: #3A1A28; --orb3: #2C141F; --orb-fg: #FFFFFF; --orb-lbl: #FFB3C6; } }
+  :root[data-theme="dark"] { --orb1: #4A2333; --orb2: #3A1A28; --orb3: #2C141F; --orb-fg: #FFFFFF; --orb-lbl: #FFB3C6; }
+  header.bar { background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 0; }
+  .card, details.art, .tear, .q { border-radius: 22px; box-shadow: 0 4px 18px rgba(207,54,96,.06); }
+  .btn, .btn.sm { border-radius: 999px; }
+  .tabbar .pill { padding: 3px 12px; border-radius: 999px; }
+  .tabbar button[aria-current="page"] .pill { background: var(--accent-soft) !important; }
+  .hero { display: grid; gap: 16px; justify-items: center; text-align: center; }
+  .wstrip { width: 100%; display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .wday { border: 0; background: none; display: grid; justify-items: center; gap: 4px; padding: 2px 0; color: var(--muted); font-size: 12px; font-weight: 600; }
+  .wday b { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; color: var(--fg); background: var(--surface); }
+  .wday.today b { background: var(--accent); color: var(--accent-fg); }
+  .wday i { width: 5px; height: 5px; border-radius: 50%; }
+  .wday i.on { background: var(--accent); }
+  .wday:disabled { opacity: .45; }
+  .orb { position: relative; width: min(80vw, 300px); aspect-ratio: 1; }
+  .orb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .orb-in { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle at 32% 26%, var(--orb1), var(--orb2) 58%, var(--orb3));
+    display: grid; place-content: center; gap: 4px; padding: 22px; box-shadow: 0 18px 40px rgba(207,54,96,.18); }
+  .orb-in .lbl { font-size: 15px; font-weight: 600; color: var(--orb-lbl); }
+  .orb-in .big { font-size: 40px; font-weight: 800; line-height: 1.05; letter-spacing: -.02em; color: var(--orb-fg); }
+  .orb-in .sub { font-size: 15px; font-weight: 700; color: var(--accent); }
+  .orb-in .st { font-size: 13px; color: var(--orb-lbl); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .orb-in .sub { color: #FF8FB1; } }
+  :root[data-theme="dark"] .orb-in .sub { color: #FF8FB1; }
+  .hero-acts { display: flex; gap: 10px; justify-content: center; width: 100%; }
+  .hero-acts .btn.primary { flex: 1; max-width: 320px; box-shadow: 0 8px 20px rgba(207,54,96,.28); }
+  .hero .link { margin: 0 8px; }
+  .stories { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding: 6px 6px 8px; margin: -6px -6px 0; }
+  .stories::-webkit-scrollbar { display: none; }
+  .story-t { width: 104px; height: 148px; flex: none; border: 0; border-radius: 20px; padding: 12px 10px; display: grid; align-content: space-between; justify-items: start;
+    text-align: left; color: #2A1520; font-weight: 700; font-size: 14px; line-height: 1.2; box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px var(--accent); }
+  .story-t.seen { box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px var(--line); }
+  .story-t .e { font-size: 32px; }
+  .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .tile { border: 0; background: var(--surface); border-radius: 22px; padding: 16px; display: grid; gap: 4px; justify-items: start; text-align: left; box-shadow: 0 4px 18px rgba(207,54,96,.06); min-width: 0; }
+  .tile span { font-size: 30px; line-height: 1.1; }
+  .tile b { font-size: 16px; line-height: 1.25; }
+  .tile small { color: var(--muted); font-size: 13px; }
+  .story { position: fixed; inset: 0; z-index: 60; display: grid; grid-template-rows: auto 1fr; color: #2A1520; animation: fadeIn .2s ease;
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) 20px calc(env(safe-area-inset-bottom, 0px) + 28px); }
+  .sbars { display: flex; gap: 4px; position: relative; z-index: 3; }
+  .sbars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(42,21,32,.2); position: relative; overflow: hidden; }
+  .sbars i.full { background: #2A1520; }
+  .sbars i.run::after { content: ""; position: absolute; inset: 0; background: #2A1520; transform-origin: left; animation: sfill 8s linear forwards; }
+  @keyframes sfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .sclose { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 26px); right: 16px; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.6); color: #2A1520; font-size: 18px; }
+  .snav { position: absolute; top: 0; bottom: 0; border: 0; background: transparent; z-index: 1; }
+  .snav.prev { left: 0; width: 35%; } .snav.next { right: 0; width: 65%; }
+  .sbody { align-self: center; justify-self: center; width: 100%; max-width: 520px; display: grid; gap: 14px; position: relative; z-index: 2; pointer-events: none; }
+  .sbody .pic { border-radius: 22px; background: rgba(255,255,255,.55); }
+  .sbody .sic { font-size: 76px; line-height: 1; }
+  .sbody .eyebrow { color: rgba(42,21,32,.72); }
+  .sbody h2 { font-size: 28px; font-weight: 800; line-height: 1.15; }
+  .sbody p { font-size: 18px; line-height: 1.5; }
+  .sbody .btn { pointer-events: auto; justify-self: start; background: #2A1520; color: #FFFFFF; }
+  .lsheet-bg { position: fixed; inset: 0; z-index: 55; background: rgba(42,10,26,.42); display: flex; align-items: flex-end; justify-content: center; animation: fadeIn .2s ease; }
+  .fsheet { background: var(--bg); width: 100%; max-width: 600px; max-height: 90vh; overflow: auto; border-radius: 28px 28px 0 0; display: grid; gap: 14px;
+    padding: 10px 18px calc(env(safe-area-inset-bottom, 0px) + 20px); animation: sheetUp .35s cubic-bezier(.2,.8,.2,1); }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: var(--line); justify-self: center; }
+  .lchips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lchip { border: 0; background: var(--surface); border-radius: 999px; padding: 9px 14px; font-size: 15px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; box-shadow: inset 0 0 0 1.5px var(--line);
+    transition: transform .18s cubic-bezier(.3,.7,.4,1.5), background-color .2s; }
+  .lchip:active { transform: scale(.94); }
+  .lchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); box-shadow: none; }
   /*MOM-CSS*/
   #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
   #mom h1 { font-size: 30px; line-height: 1.15; }
@@ -574,6 +644,18 @@ const T = {
     futureNote: '', pastNote: 'Прошедший день: отметки изменить нельзя.', ytSearch: 'Видео на YouTube', stageVidT: 'Видео по этапам развития', stageVidNote: '', example2: 'Пример'
   }
 };
+
+// strings for the Flo-like home (week strip, stories, quick log)
+Object.assign(T.kk, { wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
+  logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
+  timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
+  entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
+Object.assign(T.ru, { wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
+  logSkills: 'Новые умения', logHealth: 'Самочувствие', logEmpty: 'Выберите хотя бы одну отметку', logSaved: 'Сохранено в дневник ✓',
+  timeCheck: 'Пора пройти проверку', mythT: 'Миф или правда?', knowT: 'Полезно знать', momHint: 'Цикл, беременность, забота о себе', close: 'Закрыть',
+  entriesN: n => `Записей: ${n}`, helpHint: 'Куда обращаться' });
+Object.assign(T.kk.etypes, { skill: 'Жаңа дағды', health: 'Денсаулық' });
+Object.assign(T.ru.etypes, { skill: 'Новое умение', health: 'Самочувствие' });
 
 /* ---------- content ---------- */
 // CDC 2022 milestones (shortened); min = age in months at which most children (~75%) can do it.
@@ -1774,34 +1856,6 @@ function bindCommon() {
 /* ---------- screens ---------- */
 /* ---------- tip of the day: tear-off calendar ---------- */
 function tipIndex(d, shift = 0) { return (Math.floor(d.getTime() / 864e5) + 3 + shift) % TIPS.length; }
-function tipCard(c) {
-  const t = L(), d = new Date(), k = S.lang === 'kk', shift = ui.tipShift || 0, tp = TIPS[tipIndex(d, shift)], today = iso(d);
-  const did = (S.tipsDone || {})[today], month = iso(d).slice(0, 7), cnt = Object.keys(S.tipsDone || {}).filter(x => x.startsWith(month)).length;
-  return `<div class="tear" id="tip">
-    <div class="tear-top"><span class="ring"></span><span class="ring"></span><span class="ring"></span></div>
-    <div class="tear-date"><b class="num">${d.getDate()}</b><span>${t.months[d.getMonth()]}<br><small>${t.wdays[d.getDay()]}</small></span><em>${t.tip}</em></div>
-    <div class="tear-body">
-      <div class="tear-emoji" aria-hidden="true">${tp[0]}</div>
-      <div><h3 class="h3">${k ? tp[1] : tp[3]}</h3><p>${k ? tp[2] : tp[4]}</p></div>
-    </div>
-    <div class="tear-actions">
-      ${did ? `<span class="status ok">${t.tipDid}</span>` : `<button class="btn primary sm" type="button" id="tip-done">${t.tipDone}</button>`}
-      <button class="btn line sm" type="button" id="tip-next">🎲 ${t.tipNext}</button>
-      <button class="btn line sm" type="button" id="tip-share">${t.tipShare}</button>
-    </div>
-    ${cnt ? `<p class="tiny muted">${t.tipCount(cnt)}</p>` : ''}
-  </div>`;
-}
-function bindTip() {
-  $('#tip-done')?.addEventListener('click', () => { S.tipsDone = S.tipsDone || {}; S.tipsDone[iso(new Date())] = tipIndex(new Date(), ui.tipShift || 0); save(); render(); toast(L().tipDid); });
-  $('#tip-next')?.addEventListener('click', () => { ui.tipShift = ((ui.tipShift || 0) + 1) % TIPS.length; const y = window.scrollY; render(); window.scrollTo(0, y); $('#tip')?.classList.add('flip'); });
-  $('#tip-share')?.addEventListener('click', () => {
-    const tp = TIPS[tipIndex(new Date(), ui.tipShift || 0)], k = S.lang === 'kk', txt = `${tp[0]} ${k ? tp[1] : tp[3]}\n${k ? tp[2] : tp[4]}\n\nQUŞAQ — https://daq20022-dot.github.io`;
-    try { if (navigator.share) { navigator.share({ text: txt }).catch(() => {}); return; } } catch (e) {}
-    try { navigator.clipboard.writeText(txt).then(() => toast(L().copied), () => {}); } catch (e) {}
-  });
-}
-
 /* ---------- notifications ---------- */
 const IOS = /iphone|ipad|ipod/i.test(navigator.userAgent), STANDALONE = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
 /* inside the iOS app (Capacitor) reminders are native local notifications instead of the service worker */
@@ -1877,66 +1931,82 @@ function bindNotif() {
   $('#n-test')?.addEventListener('click', async () => { try { const reg = await navigator.serviceWorker.ready; reg.showNotification(L().nTestTitle, { body: L().nTestBody, icon: 'icon-192.png', tag: 'ek-test' }); } catch (e) {} });
 }
 
+/* ---------- home: Flo-like — week strip, age ring with one main action, daily stories, quick-log sheet ---------- */
+const LOG_SKILLS = [['word', '🗣', 'Алғашқы сөз', 'Первое слово'], ['step', '👣', 'Алғашқы қадам', 'Первый шаг'], ['tooth', '🦷', 'Тіс шықты', 'Прорезался зуб'],
+  ['sit', '🪑', 'Өзі отырды', 'Сел сам'], ['crawl', '🧸', 'Еңбектеді', 'Пополз'], ['wave', '👋', 'Қол бұлғады', 'Помахал рукой'],
+  ['point', '👉', 'Саусағымен көрсетті', 'Показал пальцем'], ['laugh', '😄', 'Қарқылдап күлді', 'Засмеялся']];
+const LOG_HEALTH = [['good', '😊', 'Көңілді', 'Хорошее настроение'], ['eat', '🥣', 'Жақсы тамақтанды', 'Хорошо поел'], ['sleep', '😴', 'Нашар ұйықтады', 'Плохо спал'],
+  ['cry', '😢', 'Қыңқылдады', 'Капризничал'], ['temp', '🌡', 'Қызуы көтерілді', 'Температура'], ['cold', '🤧', 'Тұмау', 'Насморк'],
+  ['rash', '🔴', 'Бөртпе', 'Сыпь'], ['tummy', '🤢', 'Іші ауырды', 'Болел животик']];
+function weekStrip(c) {
+  const t = L(), d0 = dayDate(0), mon = new Date(d0); mon.setDate(d0.getDate() - ((d0.getDay() + 6) % 7));
+  const marked = new Set([...(S.diary[c.id] || []).map(e => e.date), ...Object.values(doneOf(c.id))]);
+  return `<div class="wstrip">${[0, 1, 2, 3, 4, 5, 6].map(i => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i); const s = iso(d), td = s === iso(d0);
+    return `<button type="button" class="wday${td ? ' today' : ''}" data-logday="${s}" ${d > d0 ? 'disabled' : ''} aria-label="${t.logT} ${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${marked.has(s) ? 'on' : ''}"></i></button>`;
+  }).join('')}</div>`;
+}
+function ageRing(frac) {
+  const r = 46, C = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="orb-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8FB1"/><stop offset=".5" stop-color="#FFA36C"/><stop offset="1" stop-color="#FFD86B"/></linearGradient></defs>
+    <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--accent-soft)" stroke-width="4"/>
+    <circle cx="50" cy="50" r="${r}" fill="none" stroke="url(#orb-g)" stroke-width="4" stroke-linecap="round" stroke-dasharray="${(C * Math.max(0.03, frac)).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/></svg>`;
+}
+function storiesOf(c) {
+  const t = L(), k = S.lang === 'kk', dayN = Math.floor(Date.now() / 864e5);
+  const gf = gamesFor(c, dayDate(0)), pg = gf.g, pi = pg.items[gf.order[0]];
+  const tp = TIPS[tipIndex(new Date(), ui.tipShift || 0)];
+  const art = ARTICLES[dayN % ARTICLES.length], fact = (k ? art.k : art.r)[Math.floor(dayN / ARTICLES.length) % 5];
+  const my = MYTHS[dayN % MYTHS.length];
+  return [
+    { id: 'play', ic: '🎲', bg: 'linear-gradient(160deg,#FFC9A8,#FF9EB5)', lbl: t.todayPlay, h: k ? pi[0] : pi[2], p: k ? pi[1] : pi[3], pic: PICS[PLAY.indexOf(pg) * 5 + gf.order[0]], act: ['play', t.allPlays] },
+    { id: 'tip', ic: tp[0], bg: 'linear-gradient(160deg,#FFE79A,#FFBE8A)', lbl: t.tip, h: k ? tp[1] : tp[3], p: k ? tp[2] : tp[4], act: (S.tipsDone || {})[iso(new Date())] !== undefined ? null : ['tip', t.tipDone] },
+    { id: 'know', ic: '💡', bg: 'linear-gradient(160deg,#BFE3FF,#B8BEFF)', lbl: t.knowT, h: art.t[li()], p: fact, act: ['learn', t.nav[3]] },
+    { id: 'myth', ic: '🤔', bg: 'linear-gradient(160deg,#DCCBFF,#FFB8CC)', lbl: t.mythT, h: k ? my[0] : my[2], p: '✓ ' + (k ? my[1] : my[3]) },
+    { id: 'mom', ic: '🌸', bg: 'linear-gradient(160deg,#FFC2D3,#FFD9C2)', lbl: t.momT, h: MOM.summary() || t.momT, p: t.momHint, act: ['mom', t.openMom] },
+  ];
+}
+const seenToday = () => (S.seen && S.seen.d === iso(new Date()) ? S.seen.ids : []);
 function home() {
   const t = L(), c = child(), m = ageM(c), cm = corrM(c), si = stageIdx(cm), st = STAGES[si], ss = stageState(c, st);
-  const next = STAGES[si + 1];
-  const nextTxt = ss.k === 'todo' || ss.k === 'part' ? t.now : next ? `${next.label[li()]} · ${t.inM(Math.max(1, next.min - cm))}` : '—';
-  const dayN = Math.floor(Date.now() / 864e5);
-  const gf = gamesFor(c, dayDate(0)), pg = gf.g, pi = pg.items[gf.order[0]];
-  const tipA = ARTICLES[dayN % ARTICLES.length], tip = (S.lang === 'kk' ? tipA.k : tipA.r)[Math.floor(dayN / ARTICLES.length) % 5];
-  const flagsN = (S.flags[c.id] || []).length;
-  const statusCls = { ok: 'ok', warn: 'warn', unsure: 'todo', todo: 'todo', part: 'todo' }[ss.k];
+  const next = STAGES[si + 1], due = ss.k === 'todo' || ss.k === 'part';
+  const frac = next ? Math.min(1, Math.max(0, (cm - st.min) / (next.min - st.min))) : 1;
+  const sub = due ? t.timeCheck : next ? `${t.nextCheck}: ${t.inM(Math.max(1, next.min - cm))}` : t.stageStatus[ss.k] || '';
   const statusTxt = { ok: t.stageStatus.ok, warn: t.stageStatus.warn, unsure: t.stageStatus.part, todo: t.stageStatus.todo, part: t.stageStatus.part }[ss.k];
   const btnTxt = ss.k === 'todo' ? t.startCheck : ss.k === 'part' ? t.continueCheck : t.viewResult;
+  const flagsN = (S.flags[c.id] || []).length, seen = seenToday(), nD = (S.diary[c.id] || []).length;
   return `
     ${ui.form ? childForm() : ''}
     ${isEx() && !ui.form ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
     ${childPicker()}
-    <div class="card">
-      <div class="row between">
-        <div class="row" style="flex-wrap:nowrap;min-width:0">
-          <div class="avatar">${avatarHtml(c)}</div>
-          <div style="min-width:0"><div class="h1">${esc(c.name)}</div><div class="small muted num">${fmtDate(c.dob)}</div></div>
+    <section class="hero" aria-label="${esc(c.name)}">
+      ${weekStrip(c)}
+      <div class="orb">${ageRing(frac)}
+        <div class="orb-in">
+          <span class="lbl">${esc(c.name)}${cm !== m ? ` · ${t.corrected} ${ageTxt(cm)}` : ''}</span>
+          <b class="big num">${ageTxt(m)}</b>
+          <span class="sub">${sub}</span>
+          <span class="st">${st.label[li()]} · ${statusTxt}</span>
         </div>
-        ${isEx() ? '' : `<button class="btn line sm" type="button" id="edit">${t.editChild}</button>`}
       </div>
-      <div class="kv num">
-        <div><span>${t.age}</span><b>${ageTxt(m)}</b></div>
-        <div><span>${cm !== m ? t.corrected : t.nextCheck}</span><b>${cm !== m ? ageTxt(cm) : (ss.k === 'todo' || ss.k === 'part' ? t.now : next ? next.label[li()] : '—')}</b></div>
-        <div><span>${L().nav[1]}</span><b>${st.label[li()]}</b></div>
+      <div class="hero-acts">
+        <button class="btn primary" type="button" id="go-check">${btnTxt}</button>
+        <button class="btn soft" type="button" id="qlog" aria-label="${t.logT}">＋ ${t.quickLog}</button>
       </div>
-      ${!isEx() && S.children.length ? `<div class="row"><button class="link small" type="button" data-add>＋ ${t.addMore}</button></div>` : ''}
-    </div>
+      <div class="row" style="justify-content:center">${isEx() ? '' : `<button class="link small" type="button" id="edit">✎ ${t.editChild}</button><button class="link small" type="button" data-add>＋ ${t.addMore}</button>`}</div>
+    </section>
     ${flagsN ? `<div class="banner warn"><b>${t.flagsHit(flagsN)}</b><p>${t.flagsHitP}</p></div>` : ''}
-    <div class="card">
-      <div class="row between"><span class="eyebrow">${st.label[li()]}</span><span class="status ${statusCls}">${statusTxt}</span></div>
-      <h2 class="h2">${t.stageFor(st.label[li()])}</h2>
-      <div class="bar-p"><i style="width:${ss.done / ss.n * 100}%"></i></div>
-      <p class="small muted num">${t.answered(ss.done, ss.n)}${doneOf(c.id)[st.min] ? ' · ' + t.checkedOn(fmtDate(doneOf(c.id)[st.min])) : ''}</p>
-      <button class="btn primary block" type="button" id="go-check">${btnTxt}</button>
-      <p class="tiny muted">${t.nextCheck}: ${nextTxt}</p>
+    <section class="stack" aria-label="${t.storiesT}">
+      <h2 class="h2">${t.storiesT}</h2>
+      <div class="stories">${storiesOf(c).map((s, i) => `<button type="button" class="story-t${seen.includes(s.id) ? ' seen' : ''}" data-story="${i}" style="background:${s.bg}"><span class="e" aria-hidden="true">${s.ic}</span><b>${esc(s.lbl)}</b></button>`).join('')}</div>
+    </section>
+    <div class="tiles">
+      <button class="tile" type="button" id="go-diary"><span aria-hidden="true">📒</span><b>${t.diaryT}</b><small class="num">${nD ? t.entriesN(nD) : t.addEntry}</small></button>
+      <button class="tile" type="button" id="go-mom"><span aria-hidden="true">🌸</span><b>${t.momT}</b><small>${esc(MOM.summary() || t.openMom)}</small></button>
+      <button class="tile" type="button" id="go-play"><span aria-hidden="true">🎲</span><b>${t.allPlays}</b><small>${t.nav[2]}</small></button>
+      ${corrM(c) < 6 ? `<button class="tile" type="button" id="go-care"><span aria-hidden="true">🍼</span><b>${t.careT}</b><small>${t.openCare}</small></button>`
+        : `<button class="tile" type="button" id="go-help"><span aria-hidden="true">🧭</span><b>${t.nav[4]}</b><small>${t.helpHint}</small></button>`}
     </div>
-    <div class="card">
-      <div class="pic">${PICS[PLAY.indexOf(pg) * 5 + gf.order[0]]}</div>
-      <span class="eyebrow">${t.todayPlay} · ${pg.label[li()]}</span>
-      <h3 class="h3">${S.lang === 'kk' ? pi[0] : pi[2]}</h3>
-      <p class="small">${S.lang === 'kk' ? pi[1] : pi[3]}</p>
-      <button class="link small" type="button" id="go-play" style="justify-self:start">${t.allPlays} →</button>
-    </div>
-    <div class="card">
-      <div class="row between"><h2 class="h3">📒 ${t.diaryT}</h2><span class="small muted num">${(S.diary[c.id] || []).length || ''}</span></div>
-      <p class="small muted">${t.diaryNote}</p>
-      <button class="btn soft" type="button" id="go-diary">${t.openDiary} →</button>
-    </div>
-    <div class="card momcard">
-      <div class="row between"><span class="eyebrow">🌸 ${t.momT}</span>${MOM.summary() ? `<span class="status todo">${esc(MOM.summary())}</span>` : ''}</div>
-      <p class="small">${t.momNote}</p>
-      <button class="btn primary" type="button" id="go-mom" style="justify-self:start">${t.openMom} →</button>
-    </div>
-    ${corrM(c) < 6 ? `<div class="card">
-      <h2 class="h3">🍼 ${t.careT}</h2><p class="small muted">${t.careNote}</p>
-      <button class="btn soft" type="button" id="go-care">${t.openCare} →</button>
-    </div>` : ''}
     ${isEx() ? '' : `<div class="card">
       <h2 class="h3">🔔 ${t.nT}</h2><p class="small muted">${t.nNote}</p>
       ${notifBlock()}
@@ -1946,7 +2016,6 @@ function home() {
       <button class="btn primary" type="button" id="rem-ics">📅 ${t.remBtn}</button>
       <p class="small muted" id="rem-msg" role="status"></p>
     </div>`}
-${tipCard(c)}
     ${ui.form || isEx() ? '' : `<div class="card flat">
       ${[['music', t.musicT], ['sfx', t.tapT]].map(([k, n]) => `<div class="row between"><span class="small muted">${n}</span><div class="seg" role="group">${[true, false].map((v, i) => `<button type="button" data-snd-set="${k}:${v}" aria-pressed="${(S[k] !== false) === v}">${t.onOff[i]}</button>`).join('')}</div></div>`).join('')}
       <div class="row between"><span class="small muted">${t.theme}</span>
@@ -1963,8 +2032,12 @@ function bindHome() {
   $('#go-diary')?.addEventListener('click', () => go(5));
   $('#go-mom')?.addEventListener('click', () => go(7));
   $('#go-care')?.addEventListener('click', () => go(6));
+  $('#go-help')?.addEventListener('click', () => go(4));
+  $('#qlog')?.addEventListener('click', () => openLogSheet(iso(new Date())));
+  document.querySelectorAll('[data-logday]').forEach(b => b.addEventListener('click', () => openLogSheet(b.dataset.logday)));
+  document.querySelectorAll('[data-story]').forEach(b => b.addEventListener('click', () => openStory(+b.dataset.story)));
   $('#rem-daily')?.addEventListener('change', e => { ui.daily = e.target.checked; });
-  bindTip(); bindNotif();
+  bindNotif();
   $('#rem-ics')?.addEventListener('click', () => offerFile('erte-komek.ics', 'text/calendar', buildIcs(child(), ui.daily), $('#rem-msg')));
   $('#edit')?.addEventListener('click', () => { ui.form = 'edit'; ui.err = ''; render(); window.scrollTo(0, 0); });
   document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
@@ -1976,6 +2049,74 @@ function bindHome() {
     (S.diary[id] || []).forEach(e => e.photo && PDB.del(e.id).catch(() => {}));
     [S.ans, S.done, S.play, S.flags, S.diary].forEach(o => delete o[id]);
     S.cur = S.children[0]?.id || null; ui.confirmDel = false; save(); render();
+  });
+}
+
+/* stories: full-screen, tap right = next, left = back, they move on by themselves after 8 s */
+let STORY_T = null;
+function overlayHost() { let h = $('#overlay'); if (!h) { h = document.createElement('div'); h.id = 'overlay'; document.body.appendChild(h); } return h; }
+function openStory(i) {
+  const L5 = storiesOf(child()), t = L();
+  clearTimeout(STORY_T);
+  if (i < 0) i = 0;
+  if (i >= L5.length) return closeStory();
+  const s = L5[i], seen = seenToday();
+  if (!seen.includes(s.id)) { S.seen = { d: iso(new Date()), ids: [...seen, s.id] }; save(); }
+  overlayHost().innerHTML = `<div class="story" role="dialog" aria-modal="true" aria-label="${esc(s.lbl)}" style="background:${s.bg}">
+    <div class="sbars">${L5.map((_, j) => `<i class="${j < i ? 'full' : j === i ? 'run' : ''}"></i>`).join('')}</div>
+    <button type="button" class="snav prev" id="st-prev" aria-label="←"></button><button type="button" class="snav next" id="st-next" aria-label="→"></button>
+    <button type="button" class="sclose" id="st-close" aria-label="${t.close}">✕</button>
+    <div class="sbody">
+      ${s.pic ? `<div class="pic">${s.pic}</div>` : `<div class="sic" aria-hidden="true">${s.ic}</div>`}
+      <span class="eyebrow">${esc(s.lbl)}</span><h2>${esc(s.h)}</h2>${s.p ? `<p>${esc(s.p)}</p>` : ''}
+      ${s.act ? `<button class="btn" type="button" id="st-act">${s.act[1]}</button>` : ''}
+    </div></div>`;
+  $('#st-prev').addEventListener('click', () => openStory(i - 1));
+  $('#st-next').addEventListener('click', () => openStory(i + 1));
+  $('#st-close').addEventListener('click', closeStory);
+  $('#st-act')?.addEventListener('click', () => {
+    const a = s.act[0];
+    if (a === 'tip') { S.tipsDone = S.tipsDone || {}; S.tipsDone[iso(new Date())] = tipIndex(new Date(), ui.tipShift || 0); save(); toast(t.tipDid); return openStory(i + 1); }
+    closeStory(); go({ play: 2, learn: 3, mom: 7 }[a]);
+  });
+  STORY_T = setTimeout(() => openStory(i + 1), 8000);
+}
+function closeStory() { clearTimeout(STORY_T); overlayHost().innerHTML = ''; if (S.tab === 0) render(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#overlay')?.innerHTML) { closeStory(); ui.log = null; } });
+
+/* quick log: a bottom sheet of chips, like Flo's symptom log; it writes into the diary */
+function openLogSheet(day) {
+  const t = L(), c = child(), k = S.lang === 'kk';
+  if (isEx()) { ui.form = 'new'; ui.err = ''; render(); window.scrollTo(0, 0); return; }
+  const chip = (g, [id, ic, kk, ru]) => `<button type="button" class="lchip" data-lg="${g}:${id}" aria-pressed="false"><span aria-hidden="true">${ic}</span>${k ? kk : ru}</button>`;
+  overlayHost().innerHTML = `<div class="lsheet-bg" id="lg-bg"><div class="fsheet" role="dialog" aria-modal="true" aria-labelledby="lg-t">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="row between"><h2 class="h2" id="lg-t">${t.logT}</h2><span class="small muted num">${esc(c.name)} · ${fmtDate(day)}</span></div>
+    <h3 class="h3">${t.logSkills}</h3><div class="lchips">${LOG_SKILLS.map(x => chip('s', x)).join('')}</div>
+    <h3 class="h3">${t.logHealth}</h3><div class="lchips">${LOG_HEALTH.map(x => chip('h', x)).join('')}</div>
+    <h3 class="h3">${t.etypes.growth}</h3>
+    <div class="row" style="flex-wrap:nowrap"><div class="field" style="flex:1"><label for="lg-h">${t.eH}</label><input id="lg-h" type="number" inputmode="decimal" step="0.1" min="30" max="140"></div>
+      <div class="field" style="flex:1"><label for="lg-w">${t.eW}</label><input id="lg-w" type="number" inputmode="decimal" step="0.01" min="1" max="40"></div></div>
+    <div class="field"><label for="lg-n">${t.etypes.note}</label><input id="lg-n" maxlength="200" placeholder="${t.eTextPh}" autocomplete="off"></div>
+    <p class="err" id="lg-err" role="alert"></p>
+    <div class="row" style="flex-wrap:nowrap"><button class="btn primary" type="button" id="lg-save" style="flex:1">${t.save}</button><button class="btn line" type="button" id="lg-cancel">${t.cancel}</button></div>
+  </div></div>`;
+  const close = () => { overlayHost().innerHTML = ''; };
+  document.querySelectorAll('[data-lg]').forEach(b => b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true')));
+  $('#lg-bg').addEventListener('click', e => { if (e.target.id === 'lg-bg') close(); });
+  $('#lg-cancel').addEventListener('click', close);
+  $('#lg-save').addEventListener('click', () => {
+    const on = [...document.querySelectorAll('[data-lg][aria-pressed="true"]')].map(b => b.dataset.lg.split(':'));
+    const h = $('#lg-h').value.trim(), w = $('#lg-w').value.trim(), note = $('#lg-n').value.trim();
+    if (!on.length && !h && !w && !note) { $('#lg-err').textContent = t.logEmpty; return; }
+    const lbl = (list, id) => { const x = list.find(r => r[0] === id); return k ? x[2] : x[3]; }, out = [], base = 'e' + Date.now().toString(36);
+    const add = (type, text, extra = {}) => out.push(Object.assign({ id: base + out.length, type, date: day, text, h: null, w: null, photo: false }, extra));
+    on.filter(([g]) => g === 's').forEach(([, id]) => add(['word', 'step', 'tooth'].includes(id) ? id : 'skill', lbl(LOG_SKILLS, id)));
+    const hl = on.filter(([g]) => g === 'h').map(([, id]) => lbl(LOG_HEALTH, id));
+    if (hl.length) add('health', hl.join(', '));
+    if (h || w) add('growth', '', { h: h ? +h : null, w: w ? +w : null });
+    if (note) add('note', note);
+    (S.diary[c.id] = S.diary[c.id] || []).push(...out); save(); close(); render(); toast(t.logSaved);
   });
 }
 
