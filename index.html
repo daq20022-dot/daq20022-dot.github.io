@@ -263,7 +263,7 @@
   .ans button { border: 0; border-radius: 8px; background: var(--surface-2); font-weight: 600; }
   .say { border: 0; background: var(--accent-soft); color: var(--accent); }
   nav.tabbar { background: color-mix(in srgb, var(--surface) 78%, transparent); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--line); box-shadow: none; }
-  .tabbar-in { grid-template-columns: repeat(6, 1fr); }
+  .tabbar-in { grid-template-columns: repeat(4, 1fr); }
   .tabbar button { font-weight: 500; font-size: 10px; color: var(--muted); }
   .tabbar .pill { padding: 2px 8px; background: transparent !important; }
   .tabbar button[aria-current="page"] { color: var(--accent); }
@@ -397,6 +397,10 @@
     transition: transform .18s cubic-bezier(.3,.7,.4,1.5), background-color .2s; }
   .lchip:active { transform: scale(.94); }
   .lchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); box-shadow: none; }
+  .subnav { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--surface); box-shadow: 0 4px 18px rgba(207,54,96,.06); position: sticky; top: calc(env(safe-area-inset-top, 0px) + 58px); z-index: 10; }
+  .subnav button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 9px 8px; font-size: 15px; font-weight: 600; color: var(--muted); }
+  .subnav button[aria-current="page"] { background: var(--accent); color: var(--accent-fg); }
+  .tabbar button { font-size: 11px; }
   /*MOM-CSS*/
   #mom h1, #mom h2 { font-family: var(--serif); font-weight: 600; margin: 0; }
   #mom h1 { font-size: 30px; line-height: 1.15; }
@@ -646,11 +650,11 @@ const T = {
 };
 
 // strings for the Flo-like home (week strip, stories, quick log)
-Object.assign(T.kk, { wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
+Object.assign(T.kk, { tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subHelp: 'Қайда бару', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
   logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
   timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
   entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
-Object.assign(T.ru, { wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
+Object.assign(T.ru, { tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subHelp: 'Куда обращаться', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
   logSkills: 'Новые умения', logHealth: 'Самочувствие', logEmpty: 'Выберите хотя бы одну отметку', logSaved: 'Сохранено в дневник ✓',
   timeCheck: 'Пора пройти проверку', mythT: 'Миф или правда?', knowT: 'Полезно знать', momHint: 'Цикл, беременность, забота о себе', close: 'Закрыть',
   entriesN: n => `Записей: ${n}`, helpHint: 'Куда обращаться' });
@@ -1779,14 +1783,19 @@ return { render, summary };
 })({ lang: () => S.lang });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
-const NAV = ['home', 'check', 'play', 'learn', 'help', 'mom'], NAV_S = [0, 1, 2, 3, 4, 7];
+// 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
+const NAV = ['home', 'check', 'learn', 'mom'], NAV_S = [0, 1, 3, 7], TAB_OF = { 0: 0, 5: 0, 1: 1, 4: 1, 2: 2, 3: 2, 6: 2, 7: 3 };
+const SUB = { dev: [[1, 'subCheck'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
+function subnav(g) {
+  return `<nav class="subnav" aria-label="${L().tabs[TAB_OF[S.tab]]}">${SUB[g].map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
+}
 function renderShell() {
   document.documentElement.lang = S.lang;
   if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', S.theme);
   $('#sub').textContent = L().sub;
   document.querySelectorAll('.seg button[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === S.lang));
-  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${(S.tab === 5 ? 0 : S.tab === 6 ? 3 : S.tab) === NAV_S[i] ? 'aria-current="page"' : ''}>
-    <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().nav[i]}</button>`).join('');
+  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${TAB_OF[S.tab] === i ? 'aria-current="page"' : ''}>
+    <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().tabs[i]}</button>`).join('');
   NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(NAV_S[i])));
 }
 function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
@@ -1848,6 +1857,7 @@ function bindChildForm() {
   $('#f-photo-del').addEventListener('click', () => showPhoto(''));
 }
 function bindCommon() {
+  document.querySelectorAll('[data-sub]').forEach(b => b.addEventListener('click', () => go(+b.dataset.sub)));
   document.querySelectorAll('[data-child]').forEach(b => b.addEventListener('click', () => { S.cur = b.dataset.child; ui.stage = null; save(); render(); }));
   document.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => { ui.form = 'new'; ui.err = ''; S.tab = 0; render(); $('#f-name')?.focus(); }));
   bindChildForm();
@@ -2129,6 +2139,7 @@ function check() {
   const groups = {}; st.items.forEach((it, i) => (groups[it[0]] = groups[it[0]] || []).push(i));
   const D = doneOf(c.id);
   return `
+    ${subnav('dev')}
     ${childPicker()}
     <div class="card">
       <div class="row between"><span class="eyebrow">${esc(c.name)} · ${ageTxt(cm)}</span>${si === cur ? `<span class="status todo">${t.current}</span>` : ''}</div>
@@ -2200,6 +2211,7 @@ function play() {
   const dateTxt = `${t.days[(sel.getDay() + 6) % 7]}, ${fmtDate(selIso)}`;
   const rel = off === 0 ? t.today : off === 1 ? t.tomorrow : off === -1 ? t.yesterday : '';
   return `
+    ${subnav('know')}
     ${childPicker()}
     <div class="card">
       <span class="eyebrow">${esc(c.name)} · ${ageTxt(corrM(c))}</span>
@@ -2247,8 +2259,8 @@ function bindPlay() {
 function learn() {
   const t = L(), k = S.lang === 'kk';
   return `
+    ${subnav('know')}
     <div class="card"><h1 class="h1">${t.learnT}</h1></div>
-    <div class="card"><h2 class="h3">🍼 ${t.careT}</h2><p class="small muted">${t.careNote}</p><button class="btn soft" type="button" id="go-care">${t.openCare} →</button></div>
     ${ARTICLES.map((a, i) => `<details class="art" id="art-${i}">
       <summary><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[a.ic]}</svg></span><span class="h3">${a.t[li()]}</span>
         <svg class="chev" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>
@@ -2271,7 +2283,8 @@ function care() {
       <div class="body">${c[6] ? `<p class="small" style="font-weight:700;color:var(--bad)">${t.careUrgent}</p>` : ''}<ul>${(k ? c[2] : c[4]).map(x => `<li>${x}</li>`).join('')}</ul>${videoBlock('care', key + i, c[5].split('|')[li()])}</div>
     </details>`).join('');
   return `
-    <div class="card"><button class="link small" type="button" id="care-back" style="justify-self:start">${t.careBack}</button><h1 class="h1">${t.careT}</h1><p class="small muted">${t.careNote}</p></div>
+    ${subnav('know')}
+    <div class="card"><h1 class="h1">${t.careT}</h1><p class="small muted">${t.careNote}</p></div>
     ${sec('baby', t.careBaby)}
     ${sec('mom', t.careMom)}
     <p class="src small muted" style="padding:0 4px">${t.careSrc}</p>
@@ -2301,6 +2314,7 @@ function reportText(c) {
 function help() {
   const t = L(), c = child(), F = S.flags[c.id] || [], k = S.lang === 'kk';
   return `
+    ${subnav('dev')}
     ${childPicker()}
     <div class="card"><h1 class="h1">${t.flagsT}</h1><p class="small muted">${t.flagsNote}</p>
       <div>${FLAGS.map((f, i) => `<div class="check"><input type="checkbox" id="fl-${i}" data-flag="${i}" ${F.includes(i) ? 'checked' : ''}><label for="fl-${i}">${f[li()]}</label></div>`).join('')}</div>
@@ -2409,7 +2423,7 @@ function bindDiary() {
 
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
-const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => $('#go-care')?.addEventListener('click', () => go(6))], [help, bindHelp], [diary, bindDiary], [care, () => $('#care-back')?.addEventListener('click', () => go(3))], [mom, () => MOM.render()]];
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()]];
 function mom() { return `<div id="mom" class="stack"><nav class="mtabs" id="mom-tabs" aria-label="${L().momT}"></nav><div id="mom-app"></div><div id="mom-sheet"></div></div>${legal()}`; }
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
