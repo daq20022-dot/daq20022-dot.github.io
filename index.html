@@ -401,6 +401,25 @@
   .subnav button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 9px 8px; font-size: 15px; font-weight: 600; color: var(--muted); }
   .subnav button[aria-current="page"] { background: var(--accent); color: var(--accent-fg); }
   .tabbar button { font-size: 11px; }
+  body.wz-on nav.tabbar { display: none; }
+  body.wz-on main { padding-bottom: 32px; }
+  .wz { display: grid; gap: 16px; padding-top: 6px; }
+  .wz-dots { display: flex; gap: 6px; justify-content: center; }
+  .wz-dots i { width: 26px; height: 5px; border-radius: 3px; background: var(--line); }
+  .wz-dots i.on { background: var(--accent); }
+  .wz-art { border-radius: 28px; overflow: hidden; box-shadow: 0 10px 30px rgba(207,54,96,.12); line-height: 0; }
+  .wz-art img { width: 100%; height: auto; display: block; }
+  .wz-h { font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; }
+  .wz-p { font-size: 17px; color: var(--muted); }
+  .wz-opts { display: grid; gap: 12px; }
+  .wz-opt { border: 0; background: var(--surface); border-radius: 22px; padding: 16px; display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; text-align: left;
+    box-shadow: 0 4px 18px rgba(207,54,96,.06); transition: transform .18s cubic-bezier(.3,.7,.4,1.5), box-shadow .2s; }
+  .wz-opt:active { transform: scale(.97); }
+  .wz-opt .ic { width: 56px; height: 56px; border-radius: 18px; background: var(--accent-soft); display: grid; place-items: center; font-size: 30px; }
+  .wz-opt b { display: block; font-size: 18px; } .wz-opt small { color: var(--muted); font-size: 14px; }
+  .wz-opt[aria-pressed="true"] { box-shadow: inset 0 0 0 2.5px var(--accent), 0 4px 18px rgba(207,54,96,.12); }
+  .btn:disabled { opacity: .45; }
+  .wday i.fert { background: var(--lav); }
   .pic img { width: 100%; height: auto; display: block; aspect-ratio: 600 / 448; object-fit: cover; background: var(--surface-2); }
   .card.game .btn.yt, .vcard .btn.yt { justify-self: start; margin-top: 4px; }
   /*MOM-CSS*/
@@ -652,11 +671,45 @@ const T = {
 };
 
 // strings for the Flo-like home (week strip, stories, quick log)
-Object.assign(T.kk, { playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subHelp: 'Қайда бару', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
+Object.assign(T.kk, { tabsBy: { preg: ['Бүгін', 'Жүктілік', 'Білім'], plan: ['Бүгін', 'Цикл', 'Білім'] }, forYouT: 'Сізге арналған',
+  wzHello: 'Құшаққа қош келдіңіз!', wzIntro: 'Бірнеше сұраққа жауап беріңіз — қосымшаны сізге бейімдейміз.', wzPrivacy: 'Тіркелу жоқ. Барлық дерек тек осы телефонда сақталады.',
+  wzStart: 'Бастау', wzNext: 'Әрі қарай', wzDone: 'Дайын', wzStageQ: 'Сіз қазір қай кезеңдесіз?', wzStageNote: 'Кейін баптаулардан өзгертуге болады.',
+  wzStages: { born: ['Балам бар', 'Бала дамуын тексеру, ойындар, күнделік'], preg: ['Жүктімін', 'Апта сайын: нәресте қалай өсіп жатыр'], plan: ['Жоспарлап жүрмін', 'Цикл, құнарлы күндер, дайындық'] },
+  wzBornH: 'Балаңыз туралы', wzConcernQ: 'Сізді не мазалайды? (бірнешеуін таңдауға болады)', wzPregH: 'Жүктілігіңіз туралы', wzDue: 'Болжамды босану күні', wzOr: 'немесе',
+  wzLmp: 'Соңғы етеккірдің бірінші күні', wzFirstQ: 'Бұл бірінші балаңыз ба?', wzYes: 'Иә', wzNo: 'Жоқ', wzMomName: 'Сіздің атыңыз (міндетті емес)', wzPlanH: 'Циклыңыз туралы',
+  wzLast: 'Соңғы етеккір басталған күн', wzCycle: 'Циклдің ұзақтығы, күн (әдетте 28)', wzTryQ: 'Қанша уақыттан бері жоспарлап жүрсіз?', wzTry: ['Жаңа бастадым', '6–12 ай', '1 жылдан көп'],
+  wzErrPreg: 'Босану күнін немесе соңғы етеккір күнін көрсетіңіз', wzErrPlan: 'Соңғы етеккір басталған күнді көрсетіңіз', wzSaved: 'Дайын! Қосымша сізге бейімделді ✓',
+  stageNow: 'Кезең', changeStage: 'Өзгерту', weekNews: 'Аптаның жаңалығы', babySize: 'Нәрестенің өлшемі', weekN: w => `${w} апта`,
+  sizeNote: 'Салыстыру шамамен: әр нәресте өз қарқынымен өседі.', pregSignsT: 'Дереу дәрігерге', pregSignsH: 'Қауіпті белгілер',
+  pregSignsP: 'Қан кету, қатты бас ауруы немесе көз алдының бұлдырауы, беттің және қолдың кенет ісінуі, қызба, іштің қатты ауыруы, су кетуі, нәрестенің қозғалысы азайса — дереу дәрігерге немесе 103-ке хабарласыңыз.',
+  prepT: 'Нәрестеге дайындық', dueIn: n => `Босануға ${n} күн`, dueNow: 'Босану мерзімі келді', triN: n => `${n}-триместр`, openPregCal: 'Жүктілік күнтізбесі',
+  cycleTipT: 'Цикл кеңесі', planTipT: 'Жоспарлауға кеңес', folicH: 'Фолий қышқылын бастаңыз',
+  folicP: 'ДДҰ жүктілікті жоспарлағанда күніне 400 мкг фолий қышқылын ішуге кеңес береді — бұл нәрестенің жүйке түтігі ақауларының қаупін азайтады. Дозаны дәрігермен келісіңіз.',
+  planDocT: 'Дәрігерге қашан', planDocH: 'Жүктілік ұзақ болмаса',
+  planDocP: 'Тұрақты жыныстық өмірде 12 ай бойы жүкті болмасаңыз (35 жастан асқанда — 6 ай), гинекологқа барыңыз. Бұл жиі кездеседі және көбіне шешіледі.',
+  cycleDay: 'Цикл күні', lateN: n => `Кешігу: ${n} күн`, fertileNow: 'Құнарлы күндер', toOvu: n => `Овуляцияға ${n} күн`, toPeriod: n => `Етеккірге ${n} күн`, openCycleCal: 'Цикл күнтізбесі',
+  tryLongH: 'Гинекологпен кеңескен жөн', tryLongP: '1 жылдан көп жоспарласаңыз, дәрігер себебін тексеріп, көмектесе алады. Бұл — қалыпты қадам.', playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subHelp: 'Қайда бару', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
   logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
   timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
   entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
-Object.assign(T.ru, { playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subHelp: 'Куда обращаться', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
+Object.assign(T.ru, { tabsBy: { preg: ['Сегодня', 'Беременность', 'Знания'], plan: ['Сегодня', 'Цикл', 'Знания'] }, forYouT: 'Для вас',
+  wzHello: 'Добро пожаловать в Құшақ!', wzIntro: 'Ответьте на пару вопросов — и мы настроим приложение под вас.', wzPrivacy: 'Без регистрации. Все данные хранятся только в этом телефоне.',
+  wzStart: 'Начать', wzNext: 'Далее', wzDone: 'Готово', wzStageQ: 'Где вы сейчас?', wzStageNote: 'Это можно изменить позже в настройках.',
+  wzStages: { born: ['У меня есть ребёнок', 'Проверка развития, игры, дневник'], preg: ['Я беременна', 'Неделя за неделей: как растёт малыш'], plan: ['Планирую беременность', 'Цикл, фертильные дни, подготовка'] },
+  wzBornH: 'Расскажите о малыше', wzConcernQ: 'Что вас беспокоит? (можно несколько)', wzPregH: 'О вашей беременности', wzDue: 'Предполагаемая дата родов', wzOr: 'или',
+  wzLmp: 'Первый день последних месячных', wzFirstQ: 'Это ваш первый ребёнок?', wzYes: 'Да', wzNo: 'Нет', wzMomName: 'Ваше имя (необязательно)', wzPlanH: 'О вашем цикле',
+  wzLast: 'Когда начались последние месячные', wzCycle: 'Длина цикла, дней (обычно 28)', wzTryQ: 'Как давно планируете?', wzTry: ['Только начинаю', '6–12 месяцев', 'Больше года'],
+  wzErrPreg: 'Укажите дату родов или первый день последних месячных', wzErrPlan: 'Укажите, когда начались последние месячные', wzSaved: 'Готово! Приложение настроено под вас ✓',
+  stageNow: 'Этап', changeStage: 'Изменить', weekNews: 'Эта неделя', babySize: 'Размер малыша', weekN: w => `${w} нед.`,
+  sizeNote: 'Сравнение примерное: каждый малыш растёт в своём темпе.', pregSignsT: 'Срочно к врачу', pregSignsH: 'Тревожные признаки',
+  pregSignsP: 'Кровотечение, сильная головная боль или пелена перед глазами, внезапные отёки лица и рук, температура, сильная боль в животе, подтекание вод, малыш стал меньше шевелиться — сразу к врачу или звоните 103.',
+  prepT: 'Готовимся к малышу', dueIn: n => `До родов ${n} дн.`, dueNow: 'Срок родов наступил', triN: n => `${n}-й триместр`, openPregCal: 'Календарь беременности',
+  cycleTipT: 'Совет по циклу', planTipT: 'Совет при планировании', folicH: 'Начните фолиевую кислоту',
+  folicP: 'ВОЗ советует при планировании принимать 400 мкг фолиевой кислоты в день — это снижает риск пороков нервной трубки у малыша. Дозу согласуйте с врачом.',
+  planDocT: 'Когда к врачу', planDocH: 'Если беременность не наступает',
+  planDocP: 'Если беременность не наступает 12 месяцев при регулярной половой жизни (после 35 лет — 6 месяцев), обратитесь к гинекологу. Это частая ситуация, и её часто удаётся решить.',
+  cycleDay: 'День цикла', lateN: n => `Задержка: ${n} дн.`, fertileNow: 'Фертильные дни', toOvu: n => `До овуляции ${n} дн.`, toPeriod: n => `До месячных ${n} дн.`, openCycleCal: 'Календарь цикла',
+  tryLongH: 'Стоит посоветоваться с гинекологом', tryLongP: 'Если вы планируете больше года, врач поможет найти причину. Это нормальный шаг.', playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subHelp: 'Куда обращаться', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
   logSkills: 'Новые умения', logHealth: 'Самочувствие', logEmpty: 'Выберите хотя бы одну отметку', logSaved: 'Сохранено в дневник ✓',
   timeCheck: 'Пора пройти проверку', mythT: 'Миф или правда?', knowT: 'Полезно знать', momHint: 'Цикл, беременность, забота о себе', close: 'Закрыть',
   entriesN: n => `Записей: ${n}`, helpHint: 'Куда обращаться' });
@@ -1785,24 +1838,44 @@ function summary() {
   const c = cycleInfo(); if (!c) return '';
   return c.late > 0 ? `${x.late}: ${x.daysW(c.late)}` : c.toNext === 0 ? x.periodToday : x.periodsIn(c.toNext);
 }
-return { render, summary };
+/* used by the app's home screen and first-run questionnaire */
+function info() {
+  S.lang = HOST.lang(); const x = t(), out = { mode: S.mode, name: S.name };
+  if (S.mode === 'preg') { const p = pregInfo(); if (p) out.preg = Object.assign({}, p, { fruit: x.fruit[Math.min(40, Math.max(4, p.w))] || '', tip: x.pregTips[p.tri] }); }
+  else { const c = cycleInfo(); if (c) out.cycle = Object.assign({}, c, { chanceT: x.chance[c.chance], tip: x.tips[c.ph][new Date().getDate() % x.tips[c.ph].length] }); }
+  return out;
+}
+function setup(o) {
+  S.mode = o.mode; if (o.name) S.name = o.name;
+  if (o.mode === 'preg') S.preg = { lmp: o.lmp };
+  else {
+    S.cycleLen = o.cycleLen || S.cycleLen;
+    const e = add(o.lastStart, S.periodLen - 1);
+    if (!S.periods.some(p => p.start === o.lastStart)) S.periods.push({ start: o.lastStart, end: e > today() ? null : e });
+  }
+  S.onboarded = true; S.tab = 0; save();
+}
+return { render, summary, info, setup };
 })({ lang: () => S.lang });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
-const NAV = ['home', 'check', 'learn', 'mom'], NAV_S = [0, 1, 3, 7], TAB_OF = { 0: 0, 5: 0, 1: 1, 4: 1, 2: 2, 3: 2, 6: 2, 7: 3 };
+// the tab set depends on the stage chosen in the questionnaire (STAGE_NAV)
 const SUB = { dev: [[1, 'subCheck'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
+const subOf = g => g === 'know' && S.stage === 'preg' ? [[6, 'subCare'], [3, 'subLearn']] : g === 'know' && S.stage === 'plan' ? [[3, 'subLearn'], [6, 'subCare']] : SUB[g];
 function subnav(g) {
-  return `<nav class="subnav" aria-label="${L().tabs[TAB_OF[S.tab]]}">${SUB[g].map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
+  return `<nav class="subnav" aria-label="${tabLabels()[tabOf(S.tab)] || ''}">${subOf(g).map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
 }
 function renderShell() {
   document.documentElement.lang = S.lang;
   if (S.theme === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', S.theme);
   $('#sub').textContent = L().sub;
   document.querySelectorAll('.seg button[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === S.lang));
-  $('#tabbar').innerHTML = NAV.map((n, i) => `<button type="button" id="nav-${n}" ${TAB_OF[S.tab] === i ? 'aria-current="page"' : ''}>
-    <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${L().tabs[i]}</button>`).join('');
-  NAV.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(NAV_S[i])));
+  const N = stageNav();
+  $('#tabbar').style.gridTemplateColumns = `repeat(${N.nav.length}, 1fr)`;
+  $('#tabbar').innerHTML = N.nav.map((n, i) => `<button type="button" id="nav-${n}" ${tabOf(S.tab) === i ? 'aria-current="page"' : ''}>
+    <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${tabLabels()[i]}</button>`).join('');
+  N.nav.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(N.to[i])));
 }
 function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
 function toast(msg) {
@@ -1974,7 +2047,10 @@ function storiesOf(c) {
   const tp = TIPS[tipIndex(new Date(), ui.tipShift || 0)];
   const art = ARTICLES[dayN % ARTICLES.length], fact = (k ? art.k : art.r)[Math.floor(dayN / ARTICLES.length) % 5];
   const my = MYTHS[dayN % MYTHS.length];
-  return [
+  // what the parent said worries them in the questionnaire comes first
+  const cs = (S.concerns || []).filter(x => CONCERN_ART[x]), ca = cs.length ? ARTICLES.find(a => a.ic === CONCERN_ART[cs[dayN % cs.length]]) : null;
+  const mine = ca ? [{ id: 'mine', ic: '💗', bg: 'linear-gradient(160deg,#FFB8CC,#FFD9C2)', lbl: t.forYouT, h: ca.t[li()], p: (k ? ca.k : ca.r)[dayN % 5], act: ['learn', t.subLearn] }] : [];
+  return [...mine,
     { id: 'play', ic: '🎲', bg: 'linear-gradient(160deg,#FFC9A8,#FF9EB5)', lbl: t.todayPlay, h: k ? pi[0] : pi[2], p: k ? pi[1] : pi[3], pic: gamePic(PLAY.indexOf(pg), gf.order[0]), act: ['play', t.allPlays] },
     { id: 'tip', ic: tp[0], bg: 'linear-gradient(160deg,#FFE79A,#FFBE8A)', lbl: t.tip, h: k ? tp[1] : tp[3], p: k ? tp[2] : tp[4], act: (S.tipsDone || {})[iso(new Date())] !== undefined ? null : ['tip', t.tipDone] },
     { id: 'know', ic: '💡', bg: 'linear-gradient(160deg,#BFE3FF,#B8BEFF)', lbl: t.knowT, h: art.t[li()], p: fact, act: ['learn', t.nav[3]] },
@@ -1984,6 +2060,7 @@ function storiesOf(c) {
 }
 const seenToday = () => (S.seen && S.seen.d === iso(new Date()) ? S.seen.ids : []);
 function home() {
+  if (S.stage === 'preg' || S.stage === 'plan') return homeStage();
   const t = L(), c = child(), m = ageM(c), cm = corrM(c), si = stageIdx(cm), st = STAGES[si], ss = stageState(c, st);
   const next = STAGES[si + 1], due = ss.k === 'todo' || ss.k === 'part';
   const frac = next ? Math.min(1, Math.max(0, (cm - st.min) / (next.min - st.min))) : 1;
@@ -2036,6 +2113,7 @@ function home() {
       ${[['music', t.musicT], ['sfx', t.tapT]].map(([k, n]) => `<div class="row between"><span class="small muted">${n}</span><div class="seg" role="group">${[true, false].map((v, i) => `<button type="button" data-snd-set="${k}:${v}" aria-pressed="${(S[k] !== false) === v}">${t.onOff[i]}</button>`).join('')}</div></div>`).join('')}
       <div class="row between"><span class="small muted">${t.theme}</span>
         <div class="seg" role="group">${['auto', 'light', 'dark'].map((v, i) => `<button type="button" id="th-${v}" data-theme-set="${v}" aria-pressed="${S.theme === v}">${t.themes[i]}</button>`).join('')}</div></div>
+      <div class="row between"><span class="small muted">${t.stageNow}: <b>${t.wzStages.born[0]}</b></span><button class="btn line sm" type="button" id="chg-stage">${t.changeStage}</button></div>
       ${ui.confirmDel
         ? `<div class="banner bad"><p>${t.confirmDel(esc(c.name))}</p><div class="row"><button class="btn sm" style="background:var(--bad);color:#fff" type="button" id="del-yes">${t.yesDel}</button><button class="btn line sm" type="button" id="del-no">${t.cancel}</button></div></div>`
         : `<button class="link small" type="button" id="del" style="justify-self:start;color:var(--bad)">${t.delChild}: ${esc(c.name)}</button>`}
@@ -2043,6 +2121,8 @@ function home() {
     ${legal()}`;
 }
 function bindHome() {
+  if (S.stage === 'preg' || S.stage === 'plan') return bindHomeStage();
+  $('#chg-stage')?.addEventListener('click', changeStage);
   $('#go-check')?.addEventListener('click', () => go(1));
   $('#go-play')?.addEventListener('click', () => go(2));
   $('#go-diary')?.addEventListener('click', () => go(5));
@@ -2072,7 +2152,7 @@ function bindHome() {
 let STORY_T = null;
 function overlayHost() { let h = $('#overlay'); if (!h) { h = document.createElement('div'); h.id = 'overlay'; document.body.appendChild(h); } return h; }
 function openStory(i) {
-  const L5 = storiesOf(child()), t = L();
+  const L5 = S.stage === 'preg' || S.stage === 'plan' ? stageStories() : storiesOf(child()), t = L();
   clearTimeout(STORY_T);
   if (i < 0) i = 0;
   if (i >= L5.length) return closeStory();
@@ -2093,7 +2173,7 @@ function openStory(i) {
   $('#st-act')?.addEventListener('click', () => {
     const a = s.act[0];
     if (a === 'tip') { S.tipsDone = S.tipsDone || {}; S.tipsDone[iso(new Date())] = tipIndex(new Date(), ui.tipShift || 0); save(); toast(t.tipDid); return openStory(i + 1); }
-    closeStory(); go({ play: 2, learn: 3, mom: 7 }[a]);
+    closeStory(); go({ play: 2, learn: 3, care: 6, mom: 7 }[a]);
   });
   STORY_T = setTimeout(() => openStory(i + 1), 8000);
 }
@@ -2134,6 +2214,200 @@ function openLogSheet(day) {
     if (note) add('note', note);
     (S.diary[c.id] = S.diary[c.id] || []).push(...out); save(); close(); render(); toast(t.logSaved);
   });
+}
+
+/* ---------- first run: a short questionnaire (child born / pregnant / planning), then the app adapts to the answer ---------- */
+// S.stage: 'born' | 'preg' | 'plan'; existing users who already have a child are 'born'
+if (!S.stage && S.children.length) S.stage = 'born';
+const STAGE_NAV = {
+  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 4], [2, 3, 6], [7]] },
+  preg: { nav: ['home', 'mom', 'learn'], to: [0, 7, 6], groups: [[0, 5], [7], [6, 3, 2, 1, 4]] },
+  plan: { nav: ['home', 'mom', 'learn'], to: [0, 7, 3], groups: [[0, 5], [7], [3, 6, 2, 1, 4]] },
+};
+const stageNav = () => STAGE_NAV[S.stage] || STAGE_NAV.born;
+const tabOf = tab => Math.max(0, stageNav().groups.findIndex(g => g.includes(tab)));
+const tabLabels = () => L().tabsBy[S.stage] || L().tabs;
+const CONCERNS = [['speech', '🗣', 'Сөйлеуі', 'Речь'], ['move', '🏃', 'Қозғалысы', 'Движения'], ['sleep', '😴', 'Ұйқысы', 'Сон'],
+  ['behav', '🧩', 'Мінез-құлқы', 'Поведение'], ['food', '🥣', 'Тамақтануы', 'Питание'], ['none', '😊', 'Бәрі жақсы', 'Всё хорошо']];
+const CONCERN_ART = { speech: 'speech', sleep: 'sleep', behav: 'puzzle', food: 'food', move: 'ear' };
+function welcome() {
+  const t = L(), w = ui.wz || (ui.wz = { step: 0 }), k = S.lang === 'kk';
+  const dots = `<div class="wz-dots" aria-hidden="true">${[0, 1, 2].map(i => `<i class="${i <= w.step ? 'on' : ''}"></i>`).join('')}</div>`;
+  if (w.step === 0) return `<section class="wz">
+    ${dots}
+    <div class="wz-art"><img src="games/g0_0.jpg" alt=""></div>
+    <h1 class="wz-h">${t.wzHello}</h1>
+    <p class="wz-p">${t.wzIntro}</p>
+    <p class="small muted">🔒 ${t.wzPrivacy}</p>
+    <button class="btn primary block" type="button" id="wz-next">${t.wzStart}</button>
+  </section>`;
+  if (w.step === 1) return `<section class="wz">
+    ${dots}
+    <h1 class="wz-h">${t.wzStageQ}</h1>
+    <p class="wz-p">${t.wzStageNote}</p>
+    <div class="wz-opts">${[['born', '👶'], ['preg', '🤰'], ['plan', '🌸']].map(([id, ic]) => `<button type="button" class="wz-opt" data-stage="${id}" aria-pressed="${w.stage === id}">
+      <span class="ic" aria-hidden="true">${ic}</span><span><b>${t.wzStages[id][0]}</b><small>${t.wzStages[id][1]}</small></span></button>`).join('')}</div>
+    <button class="btn primary block" type="button" id="wz-next" ${w.stage ? '' : 'disabled'}>${t.wzNext}</button>
+  </section>`;
+  const today = iso(new Date()), back = `<button class="link small" type="button" id="wz-back" style="justify-self:start">${t.back}</button>`;
+  const err = w.err ? `<p class="err" role="alert">${w.err}</p>` : '';
+  if (w.stage === 'born') return `<section class="wz">
+    ${dots}${back}
+    <h1 class="wz-h">${t.wzBornH}</h1>
+    <form class="f" id="wz-form" novalidate>
+      <div class="field"><label for="wz-name">${t.name}</label><input id="wz-name" maxlength="30" autocomplete="off" value="${esc(w.name || '')}"></div>
+      <div class="field"><label for="wz-dob">${t.dob}</label><input id="wz-dob" type="date" max="${today}" value="${w.dob || ''}"></div>
+      <div class="field"><label for="wz-weeks">${t.weeks}</label><input id="wz-weeks" type="number" inputmode="numeric" min="22" max="42" placeholder="40" value="${w.weeks || ''}"></div>
+      <div class="field"><label>${t.wzConcernQ}</label><div class="lchips">${CONCERNS.map(([id, ic, kk, ru]) => `<button type="button" class="lchip" data-concern="${id}" aria-pressed="${(w.concerns || []).includes(id)}"><span aria-hidden="true">${ic}</span>${k ? kk : ru}</button>`).join('')}</div></div>
+      ${err}<button class="btn primary block" type="submit">${t.wzDone}</button>
+    </form></section>`;
+  if (w.stage === 'preg') return `<section class="wz">
+    ${dots}${back}
+    <h1 class="wz-h">${t.wzPregH}</h1>
+    <form class="f" id="wz-form" novalidate>
+      <div class="field"><label for="wz-due">${t.wzDue}</label><input id="wz-due" type="date" min="${today}" max="${iso(new Date(Date.now() + 300 * 864e5))}" value="${w.due || ''}"></div>
+      <p class="small muted" style="text-align:center">${t.wzOr}</p>
+      <div class="field"><label for="wz-lmp">${t.wzLmp}</label><input id="wz-lmp" type="date" max="${today}" min="${iso(new Date(Date.now() - 300 * 864e5))}" value="${w.lmp || ''}"></div>
+      <div class="field"><label>${t.wzFirstQ}</label><div class="lchips">${[['yes', t.wzYes], ['no', t.wzNo]].map(([v, l]) => `<button type="button" class="lchip" data-first="${v}" aria-pressed="${w.first === v}">${l}</button>`).join('')}</div></div>
+      <div class="field"><label for="wz-mname">${t.wzMomName}</label><input id="wz-mname" maxlength="30" autocomplete="off" value="${esc(w.mname || '')}"></div>
+      ${err}<button class="btn primary block" type="submit">${t.wzDone}</button>
+    </form></section>`;
+  return `<section class="wz">
+    ${dots}${back}
+    <h1 class="wz-h">${t.wzPlanH}</h1>
+    <form class="f" id="wz-form" novalidate>
+      <div class="field"><label for="wz-last">${t.wzLast}</label><input id="wz-last" type="date" max="${today}" min="${iso(new Date(Date.now() - 120 * 864e5))}" value="${w.last || ''}"></div>
+      <div class="field"><label for="wz-clen">${t.wzCycle}</label><input id="wz-clen" type="number" inputmode="numeric" min="18" max="50" value="${w.clen || 28}"></div>
+      <div class="field"><label>${t.wzTryQ}</label><div class="lchips">${t.wzTry.map((l, i) => `<button type="button" class="lchip" data-try="${i}" aria-pressed="${w.try === i}">${l}</button>`).join('')}</div></div>
+      <div class="field"><label for="wz-mname">${t.wzMomName}</label><input id="wz-mname" maxlength="30" autocomplete="off" value="${esc(w.mname || '')}"></div>
+      ${err}<button class="btn primary block" type="submit">${t.wzDone}</button>
+    </form></section>`;
+}
+function bindWelcome() {
+  const t = L(), w = ui.wz, keep = () => { const v = id => $('#' + id)?.value; Object.assign(w, { name: v('wz-name') ?? w.name, dob: v('wz-dob') ?? w.dob, weeks: v('wz-weeks') ?? w.weeks,
+    due: v('wz-due') ?? w.due, lmp: v('wz-lmp') ?? w.lmp, mname: v('wz-mname') ?? w.mname, last: v('wz-last') ?? w.last, clen: v('wz-clen') ?? w.clen }); };
+  const redraw = () => { keep(); render(); };
+  $('#wz-next')?.addEventListener('click', () => { w.step++; w.err = ''; render(); window.scrollTo(0, 0); });
+  $('#wz-back')?.addEventListener('click', () => { keep(); w.step--; w.err = ''; render(); });
+  document.querySelectorAll('[data-stage]').forEach(b => b.addEventListener('click', () => { w.stage = b.dataset.stage; render(); }));
+  document.querySelectorAll('[data-concern]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.concern, cs = new Set(w.concerns || []);
+    if (cs.has(id)) cs.delete(id); else { cs.add(id); if (id === 'none') ['speech', 'move', 'sleep', 'behav', 'food'].forEach(x => cs.delete(x)); else cs.delete('none'); }
+    w.concerns = [...cs]; redraw(); }));
+  document.querySelectorAll('[data-first]').forEach(b => b.addEventListener('click', () => { w.first = b.dataset.first; redraw(); }));
+  document.querySelectorAll('[data-try]').forEach(b => b.addEventListener('click', () => { w.try = +b.dataset.try; redraw(); }));
+  $('#wz-form')?.addEventListener('submit', e => {
+    e.preventDefault(); keep(); const today = iso(new Date());
+    if (w.stage === 'born') {
+      const name = capName(w.name || ''), m = w.dob ? monthsBetween(new Date(w.dob + 'T00:00:00'), new Date()) : NaN;
+      if (!name) { w.err = t.errName; return render(); }
+      if (!w.dob || isNaN(m) || m < 0 || m > 72) { w.err = t.errDob; return render(); }
+      const id = 'c' + Date.now().toString(36); S.children.push({ id, name, dob: w.dob, weeks: (w.weeks || '').trim(), photo: '' }); S.cur = id;
+      S.concerns = (w.concerns || []).filter(x => x !== 'none');
+    } else if (w.stage === 'preg') {
+      let lmp = w.lmp;
+      if (w.due) { const d = new Date(w.due + 'T12:00:00'); d.setDate(d.getDate() - 280); lmp = iso(d); }
+      if (!lmp || lmp > today) { w.err = t.wzErrPreg; return render(); }
+      MOM.setup({ mode: 'preg', lmp, name: (w.mname || '').trim() }); S.firstBaby = w.first !== 'no';
+    } else {
+      if (!w.last || w.last > today) { w.err = t.wzErrPlan; return render(); }
+      const clen = Math.round(+w.clen); MOM.setup({ mode: 'ttc', lastStart: w.last, cycleLen: clen >= 18 && clen <= 50 ? clen : 28, name: (w.mname || '').trim() });
+      S.tryLong = w.try === 2;
+    }
+    S.stage = w.stage; S.tab = 0; ui.wz = null; save(); render(); window.scrollTo(0, 0); toast(t.wzSaved);
+  });
+}
+function changeStage() { ui.wz = { step: 1, stage: S.stage }; S.stage = null; save(); render(); window.scrollTo(0, 0); }
+
+/* home for the pregnant and planning stages: same layout as the child home, the numbers come from the Mom section */
+function dayStrip(markOf) {
+  const t = L(), d0 = dayDate(0), mon = new Date(d0); mon.setDate(d0.getDate() - ((d0.getDay() + 6) % 7));
+  return `<div class="wstrip">${[0, 1, 2, 3, 4, 5, 6].map(i => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i); const s = iso(d);
+    return `<button type="button" class="wday${s === iso(d0) ? ' today' : ''}" data-momday="${s}" aria-label="${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${markOf(s)}"></i></button>`;
+  }).join('')}</div>`;
+}
+const dDays = (a, b) => Math.round((new Date(a + 'T12:00:00') - new Date(b + 'T12:00:00')) / 864e5);
+function stageStories() {
+  const t = L(), k = S.lang === 'kk', dayN = Math.floor(Date.now() / 864e5), m = MOM.info();
+  const my = MYTHS[dayN % MYTHS.length], art = ARTICLES[dayN % ARTICLES.length], fact = (k ? art.k : art.r)[Math.floor(dayN / ARTICLES.length) % 5];
+  const cb = CARE.baby[dayN % CARE.baby.length];
+  const myth = { id: 'myth', ic: '🤔', bg: 'linear-gradient(160deg,#DCCBFF,#FFB8CC)', lbl: t.mythT, h: k ? my[0] : my[2], p: '✓ ' + (k ? my[1] : my[3]) };
+  if (S.stage === 'preg') { const p = m.preg || {}; return [
+    { id: 'week', ic: '🤰', bg: 'linear-gradient(160deg,#FFC2D3,#FFD9C2)', lbl: t.weekNews, h: p.tip ? p.tip[0] : t.tabsBy.preg[1], p: p.tip ? p.tip[1] : '', act: ['mom', t.openMom] },
+    { id: 'size', ic: '🍑', bg: 'linear-gradient(160deg,#FFE79A,#FFBE8A)', lbl: t.babySize, h: p.fruit ? `${t.weekN(p.w)}: ${p.fruit}` : t.babySize, p: t.sizeNote },
+    { id: 'signs', ic: '🚑', bg: 'linear-gradient(160deg,#FFB3B3,#FFD1C2)', lbl: t.pregSignsT, h: t.pregSignsH, p: t.pregSignsP },
+    { id: 'prep', ic: cb[0], bg: 'linear-gradient(160deg,#BFE3FF,#B8BEFF)', lbl: t.prepT, h: k ? cb[1] : cb[3], p: (k ? cb[2] : cb[4])[0], act: ['care', t.openCare] },
+    myth]; }
+  const c = m.cycle || {};
+  return [
+    { id: 'cyc', ic: '🌙', bg: 'linear-gradient(160deg,#FFC2D3,#DCCBFF)', lbl: t.cycleTipT, h: c.chanceT || t.tabsBy.plan[1], p: c.tip || '', act: ['mom', t.openMom] },
+    { id: 'folic', ic: '💊', bg: 'linear-gradient(160deg,#FFE79A,#FFBE8A)', lbl: t.planTipT, h: t.folicH, p: t.folicP },
+    { id: 'doc', ic: '🩺', bg: 'linear-gradient(160deg,#BFE3FF,#B8BEFF)', lbl: t.planDocT, h: t.planDocH, p: t.planDocP },
+    { id: 'know', ic: '💡', bg: 'linear-gradient(160deg,#C9F2DF,#BFE3FF)', lbl: t.knowT, h: art.t[li()], p: fact, act: ['learn', t.subLearn] },
+    myth];
+}
+function settingsCard() {
+  const t = L();
+  return `<div class="card flat">
+      ${[['music', t.musicT], ['sfx', t.tapT]].map(([k, n]) => `<div class="row between"><span class="small muted">${n}</span><div class="seg" role="group">${[true, false].map((v, i) => `<button type="button" data-snd-set="${k}:${v}" aria-pressed="${(S[k] !== false) === v}">${t.onOff[i]}</button>`).join('')}</div></div>`).join('')}
+      <div class="row between"><span class="small muted">${t.theme}</span>
+        <div class="seg" role="group">${['auto', 'light', 'dark'].map((v, i) => `<button type="button" id="th-${v}" data-theme-set="${v}" aria-pressed="${S.theme === v}">${t.themes[i]}</button>`).join('')}</div></div>
+      <div class="row between"><span class="small muted">${t.stageNow}: <b>${t.wzStages[S.stage || 'born'][0]}</b></span><button class="btn line sm" type="button" id="chg-stage">${t.changeStage}</button></div>
+    </div>`;
+}
+function homeStage() {
+  const t = L(), m = MOM.info(), seen = seenToday(), preg = S.stage === 'preg';
+  let strip, frac, lbl, big, sub, st, btn, flag = '';
+  if (preg) {
+    const p = m.preg;
+    if (!p) return `<div class="card"><p>${t.wzErrPreg}</p><button class="btn primary" type="button" id="chg-stage">${t.changeStage}</button></div>`;
+    strip = dayStrip(s => (s === p.due ? 'on' : ''));
+    frac = p.pct / 100; lbl = (m.name ? m.name + ' · ' : '') + t.tabsBy.preg[1]; big = t.weekN(p.w);
+    sub = p.left > 0 ? t.dueIn(p.left) : t.dueNow; st = p.fruit ? `${t.babySize}: ${p.fruit}` : `${t.triN(p.tri)}`; btn = t.openPregCal;
+  } else {
+    const c = m.cycle;
+    if (!c) return `<div class="card"><p>${t.wzErrPlan}</p><button class="btn primary" type="button" id="chg-stage">${t.changeStage}</button></div>`;
+    strip = dayStrip(s => (s >= c.fertS && s <= c.fertE ? 'fert' : s === c.next ? 'on' : ''));
+    const today = iso(new Date()), toOvu = dDays(c.ovu, today);
+    frac = Math.min(1, c.cd / c.C); lbl = (m.name ? m.name + ' · ' : '') + t.cycleDay; big = String(c.cd);
+    sub = c.late > 0 ? t.lateN(c.late) : today >= c.fertS && today <= c.fertE ? t.fertileNow : toOvu > 0 ? t.toOvu(toOvu) : t.toPeriod(c.toNext);
+    st = c.chanceT; btn = t.openCycleCal;
+    if (S.tryLong) flag = `<div class="banner warn"><b>${t.tryLongH}</b><p>${t.tryLongP}</p></div>`;
+  }
+  const tiles = preg
+    ? [['go-mom', '🤰', t.tabsBy.preg[1], t.openMom], ['go-care', '🍼', t.careT, t.openCare], ['go-learn', '📚', t.subLearn, t.tabs[2]], ['go-help', '🧭', t.nav[4], t.helpHint]]
+    : [['go-mom', '🌙', t.tabsBy.plan[1], t.openMom], ['go-learn', '📚', t.subLearn, t.tabs[2]], ['go-care', '🍼', t.careT, t.openCare], ['go-help', '🧭', t.nav[4], t.helpHint]];
+  return `
+    <section class="hero" aria-label="${esc(lbl)}">
+      ${strip}
+      <div class="orb">${ageRing(frac)}
+        <div class="orb-in"><span class="lbl">${esc(lbl)}</span><b class="big num">${big}</b><span class="sub">${sub}</span><span class="st">${esc(st || '')}</span></div>
+      </div>
+      <div class="hero-acts"><button class="btn primary" type="button" id="go-mom2">${btn}</button></div>
+    </section>
+    ${flag}
+    <section class="stack" aria-label="${t.storiesT}">
+      <h2 class="h2">${t.storiesT}</h2>
+      <div class="stories">${stageStories().map((s, i) => `<button type="button" class="story-t${seen.includes(s.id) ? ' seen' : ''}" data-story="${i}" style="background:${s.bg}"><span class="e" aria-hidden="true">${s.ic}</span><b>${esc(s.lbl)}</b></button>`).join('')}</div>
+    </section>
+    <div class="tiles">${tiles.map(([id, ic, h, sm]) => `<button class="tile" type="button" id="${id}"><span aria-hidden="true">${ic}</span><b>${h}</b><small>${sm}</small></button>`).join('')}</div>
+    ${settingsCard()}
+    ${legal()}`;
+}
+function bindHomeStage() {
+  ['go-mom', 'go-mom2'].forEach(id => $('#' + id)?.addEventListener('click', () => go(7)));
+  $('#go-care')?.addEventListener('click', () => go(6));
+  $('#go-learn')?.addEventListener('click', () => go(3));
+  $('#go-help')?.addEventListener('click', () => go(4));
+  document.querySelectorAll('[data-momday]').forEach(b => b.addEventListener('click', () => go(7)));
+  document.querySelectorAll('[data-story]').forEach(b => b.addEventListener('click', () => openStory(+b.dataset.story)));
+  bindSettings();
+}
+function bindSettings() {
+  document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
+  document.querySelectorAll('[data-snd-set]').forEach(b => b.addEventListener('click', () => { const [k, v] = b.dataset.sndSet.split(':'); S[k] = v === 'true'; save(); SND.sync(); render(); }));
+  $('#chg-stage')?.addEventListener('click', changeStage);
 }
 
 function check() {
@@ -2436,6 +2710,8 @@ function mom() { return `<div id="mom" class="stack"><nav class="mtabs" id="mom-
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
   renderShell();
+  document.body.classList.toggle('wz-on', !S.stage);
+  if (!S.stage) { $('#view').innerHTML = welcome(); bindWelcome(); bindCommon(); animateEnter($('#view'), 'wz' + (ui.wz?.step ?? 0) + (ui.wz?.stage || '')); return; }
   const [view, bind] = SCREENS[S.tab] || SCREENS[0];
   $('#view').innerHTML = view();
   bind(); bindCommon();
