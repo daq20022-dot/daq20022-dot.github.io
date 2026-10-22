@@ -1881,7 +1881,21 @@ function renderShell() {
     <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${tabLabels()[i]}</button>`).join('');
   N.nav.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(N.to[i])));
 }
-function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); }
+function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); pushNav(); }
+/* the phone's Back button / swipe-back: every screen change and every overlay is a history entry */
+let POP = false;
+function pushNav(extra) { if (POP) return; try { history.pushState(Object.assign({ t: S.tab, st: ui.stage ?? null }, extra || {}), ''); } catch (e) {} }
+function dropOverlay() {   // close an overlay without going back (its entry becomes the current screen)
+  clearTimeout(STORY_T); overlayHost().innerHTML = '';
+  if (history.state && history.state.ov) try { history.replaceState({ t: S.tab, st: ui.stage ?? null }, ''); } catch (e) {}
+}
+function closeOverlay() { if (history.state && history.state.ov) history.back(); else { dropOverlay(); if (S.tab === 0) render(); } }
+window.addEventListener('popstate', e => {
+  const st = e.state || { t: 0 };
+  if ($('#overlay')?.innerHTML) { clearTimeout(STORY_T); $('#overlay').innerHTML = ''; if (S.tab === 0) render(); return; }
+  if (!S.stage && ui.wz) { ui.wz.step = st.wz || 0; ui.wz.err = ''; render(); return; }
+  POP = true; go(st.t ?? 0, st.st ?? undefined); POP = false;
+});
 function toast(msg) {
   ui.toast = msg; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
   document.body.appendChild(el); setTimeout(() => el.remove(), 1800);
@@ -2160,7 +2174,7 @@ function openStory(i) {
   clearTimeout(STORY_T);
   if (i < 0) i = 0;
   if (i >= L5.length) return closeStory();
-  const s = L5[i], seen = seenToday();
+  const s = L5[i], seen = seenToday(), fresh = !overlayHost().innerHTML;
   if (!seen.includes(s.id)) { S.seen = { d: iso(new Date()), ids: [...seen, s.id] }; save(); }
   overlayHost().innerHTML = `<div class="story" role="dialog" aria-modal="true" aria-label="${esc(s.lbl)}" style="background:${s.bg}">
     <div class="sbars">${L5.map((_, j) => `<i class="${j < i ? 'full' : j === i ? 'run' : ''}"></i>`).join('')}</div>
@@ -2171,18 +2185,19 @@ function openStory(i) {
       <span class="eyebrow">${esc(s.lbl)}</span><h2>${esc(s.h)}</h2>${s.p ? `<p>${esc(s.p)}</p>` : ''}
       ${s.act ? `<button class="btn" type="button" id="st-act">${s.act[1]}</button>` : ''}
     </div></div>`;
+  if (fresh) pushNav({ ov: 1 });
   $('#st-prev').addEventListener('click', () => openStory(i - 1));
   $('#st-next').addEventListener('click', () => openStory(i + 1));
   $('#st-close').addEventListener('click', closeStory);
   $('#st-act')?.addEventListener('click', () => {
     const a = s.act[0];
     if (a === 'tip') { S.tipsDone = S.tipsDone || {}; S.tipsDone[iso(new Date())] = tipIndex(new Date(), ui.tipShift || 0); save(); toast(t.tipDid); return openStory(i + 1); }
-    closeStory(); go({ play: 2, learn: 3, care: 6, mom: 7 }[a]);
+    dropOverlay(); go({ play: 2, learn: 3, care: 6, mom: 7 }[a]);
   });
   STORY_T = setTimeout(() => openStory(i + 1), 8000);
 }
-function closeStory() { clearTimeout(STORY_T); overlayHost().innerHTML = ''; if (S.tab === 0) render(); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#overlay')?.innerHTML) { closeStory(); ui.log = null; } });
+function closeStory() { closeOverlay(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#overlay')?.innerHTML) closeOverlay(); });
 
 /* quick log: a bottom sheet of chips, like Flo's symptom log; it writes into the diary */
 function openLogSheet(day) {
@@ -2201,7 +2216,8 @@ function openLogSheet(day) {
     <p class="err" id="lg-err" role="alert"></p>
     <div class="row" style="flex-wrap:nowrap"><button class="btn primary" type="button" id="lg-save" style="flex:1">${t.save}</button><button class="btn line" type="button" id="lg-cancel">${t.cancel}</button></div>
   </div></div>`;
-  const close = () => { overlayHost().innerHTML = ''; };
+  pushNav({ ov: 1 });
+  const close = closeOverlay;
   document.querySelectorAll('[data-lg]').forEach(b => b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true')));
   $('#lg-bg').addEventListener('click', e => { if (e.target.id === 'lg-bg') close(); });
   $('#lg-cancel').addEventListener('click', close);
@@ -2216,7 +2232,7 @@ function openLogSheet(day) {
     if (hl.length) add('health', hl.join(', '));
     if (h || w) add('growth', '', { h: h ? +h : null, w: w ? +w : null });
     if (note) add('note', note);
-    (S.diary[c.id] = S.diary[c.id] || []).push(...out); save(); close(); render(); toast(t.logSaved);
+    (S.diary[c.id] = S.diary[c.id] || []).push(...out); save(); dropOverlay(); render(); toast(t.logSaved);
   });
 }
 
@@ -2291,8 +2307,8 @@ function bindWelcome() {
   const t = L(), w = ui.wz, keep = () => { const v = id => $('#' + id)?.value; Object.assign(w, { name: v('wz-name') ?? w.name, dob: v('wz-dob') ?? w.dob, weeks: v('wz-weeks') ?? w.weeks,
     due: v('wz-due') ?? w.due, lmp: v('wz-lmp') ?? w.lmp, mname: v('wz-mname') ?? w.mname, last: v('wz-last') ?? w.last, clen: v('wz-clen') ?? w.clen }); };
   const redraw = () => { keep(); render(); };
-  $('#wz-next')?.addEventListener('click', () => { w.step++; w.err = ''; render(); window.scrollTo(0, 0); });
-  $('#wz-back')?.addEventListener('click', () => { keep(); w.step--; w.err = ''; render(); });
+  $('#wz-next')?.addEventListener('click', () => { w.step++; w.err = ''; pushNav({ wz: w.step }); render(); window.scrollTo(0, 0); });
+  $('#wz-back')?.addEventListener('click', () => { keep(); if (history.state && history.state.wz) history.back(); else { w.step--; w.err = ''; render(); } });
   document.querySelectorAll('[data-stage]').forEach(b => b.addEventListener('click', () => { w.stage = b.dataset.stage; render(); }));
   document.querySelectorAll('[data-concern]').forEach(b => b.addEventListener('click', () => {
     const id = b.dataset.concern, cs = new Set(w.concerns || []);
@@ -2688,7 +2704,7 @@ function diary() {
 }
 function bindDiary() {
   const c = child(), t = L();
-  $('#d-back')?.addEventListener('click', () => go(0));
+  $('#d-back')?.addEventListener('click', () => (history.length > 1 && history.state ? history.back() : go(0)));
   $('#e-add')?.addEventListener('click', () => { if (isEx()) { ui.form = 'new'; go(0); ui.form = 'new'; render(); return; } ui.entry = true; ui.eErr = ''; render(); $('#e-text')?.focus(); });
   $('#e-cancel')?.addEventListener('click', () => { ui.entry = false; ui.eErr = ''; render(); });
   $('#e-type')?.addEventListener('change', e => { ui.eType = e.target.value; });
@@ -2731,6 +2747,7 @@ function animateEnter(el, key) {
   const tb = $('#tabbar'); tb.classList.remove('switch'); void tb.offsetWidth; tb.classList.add('switch');
 }
 document.querySelectorAll('.seg button[data-lang]').forEach(b => b.addEventListener('click', () => { S.lang = b.dataset.lang; save(); render(); }));
+try { history.replaceState({ t: S.tab, st: null }, ''); } catch (e) {}
 render();
 if (S.notif) syncNotifSchedule();
 </script>
