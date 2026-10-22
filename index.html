@@ -354,6 +354,12 @@
   .wday i { width: 5px; height: 5px; border-radius: 50%; }
   .wday i.on { background: var(--accent); }
   .wday:disabled { opacity: .45; }
+  .wknav { width: 100%; display: flex; align-items: center; gap: 6px; }
+  .wknav b { flex: 1; text-align: center; font-size: 15px; text-transform: capitalize; }
+  .wknav .btn { min-width: 38px; padding-inline: 10px; }
+  .calpick { position: relative; overflow: hidden; cursor: pointer; }
+  .calpick input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+  .wday.sel b { box-shadow: 0 0 0 2px var(--accent); }
   .orb { position: relative; width: min(80vw, 300px); aspect-ratio: 1; }
   .orb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .orb-in { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle at 32% 26%, var(--orb1), var(--orb2) 58%, var(--orb3));
@@ -1639,7 +1645,7 @@ function calendar() {
   const prev = iso(new Date(y, m - 2, 1, 12)).slice(0, 7), next = iso(new Date(y, m, 1, 12)).slice(0, 7);
   return `<div class="stack" style="padding-top:8px">
     <div class="card">
-      <div class="row between"><button class="btn line sm" data-month="${prev}" aria-label="prev">‹</button><h2>${MONF[S.lang][m - 1]} ${y}</h2><button class="btn line sm" data-month="${next}" aria-label="next">›</button></div>
+      <div class="row between"><button class="btn line sm" data-month="${prev}" aria-label="prev">‹</button><h2>${MONF[S.lang][m - 1]} ${y}</h2><div class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn line sm" data-month="${next}" aria-label="next">›</button><label class="btn line sm calpick" aria-label="📅">📅<input type="date" id="cal-pick" value="${sel}"></label></div></div>
       <div class="cal">${cells}</div>
       <div class="legend"><span><i class="dot" style="background:var(--period)"></i>${x.lgPeriod}</span><span><i class="dot" style="box-shadow:inset 0 0 0 2px var(--period)"></i>${x.lgPred}</span><span><i class="dot" style="background:var(--fert-soft);box-shadow:inset 0 0 0 2px var(--fert)"></i>${x.lgFert}</span><span><i class="dot" style="background:var(--fert)"></i>${x.lgOvu}</span></div>
     </div>
@@ -1810,6 +1816,7 @@ function bindAll() {
   $('#p-end') && ($('#p-end').onclick = () => { endPeriod(today()); save(); toast(t().saved); render(); });
   document.querySelectorAll('[data-month]').forEach(b => b.onclick = () => { ui.month = b.dataset.month; render(); });
   document.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { ui.sel = b.dataset.day; render(); });
+  $('#cal-pick') && ($('#cal-pick').onchange = e => { const v = e.target.value; if (v) { ui.sel = v; ui.month = v.slice(0, 7); render(); } });
   $('#mark-start') && ($('#mark-start').onclick = () => { startPeriod(ui.sel || today()); save(); toast(t().saved); render(); });
   $('#mark-end') && ($('#mark-end').onclick = () => { endPeriod(ui.sel || today()); save(); toast(t().saved); render(); });
   $('#rep') && ($('#rep').onclick = openReport);
@@ -1866,7 +1873,8 @@ function setup(o) {
   S.onboarded = true; S.tab = 0; save();
 }
 function back() { if (S.tab === 0) return false; S.tab = 0; save(); render(); scrollTo(0, 0); return true; }
-return { render, summary, info, setup, back, atRoot: () => S.tab === 0 };
+function openDay(ds) { S.tab = 1; ui.sel = ds; ui.month = ds.slice(0, 7); save(); }
+return { render, summary, info, setup, back, openDay, atRoot: () => S.tab === 0 };
 })({ lang: () => S.lang, changed: () => updBack() });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
@@ -1891,7 +1899,7 @@ function renderShell() {
 /* on-screen Back button (iPhone home-screen apps have no system Back): a stack of visited screens */
 const NAV = [];
 function go(i, stage) { if (!POP && (S.tab !== i || (ui.stage ?? null) !== (stage ?? null))) { NAV.push({ t: S.tab, st: ui.stage ?? null }); if (NAV.length > 30) NAV.shift(); }
-  ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); pushNav(); }
+  ui.dayOff = 0; ui.wkOff = 0; ui.wkSel = null; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); pushNav(); }
 /* the phone's Back button / swipe-back: every screen change and every overlay is a history entry */
 let POP = false;
 function pushNav(extra) { if (POP) return; try { history.pushState(Object.assign({ t: S.tab, st: ui.stage ?? null }, extra || {}), ''); } catch (e) {} }
@@ -2066,12 +2074,29 @@ const LOG_SKILLS = [['word', '🗣', 'Алғашқы сөз', 'Первое сл
 const LOG_HEALTH = [['good', '😊', 'Көңілді', 'Хорошее настроение'], ['eat', '🥣', 'Жақсы тамақтанды', 'Хорошо поел'], ['sleep', '😴', 'Нашар ұйықтады', 'Плохо спал'],
   ['cry', '😢', 'Қыңқылдады', 'Капризничал'], ['temp', '🌡', 'Қызуы көтерілді', 'Температура'], ['cold', '🤧', 'Тұмау', 'Насморк'],
   ['rash', '🔴', 'Бөртпе', 'Сыпь'], ['tummy', '🤢', 'Іші ауырды', 'Болел животик']];
+/* home date strip: any week (‹ ›) and any date (📅 opens the phone's calendar) */
+function wkMon() { const d = dayDate((ui.wkOff || 0) * 7); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d; }
+function wkNav(max) {
+  const t = L(), mon = wkMon(), mid = new Date(mon); mid.setDate(mon.getDate() + 3);
+  const lbl = mid.toLocaleDateString(S.lang === 'kk' ? 'kk-KZ' : 'ru-RU', { month: 'long', year: 'numeric' }).replace(/\s*г\.?$/, '');
+  return `<div class="wknav"><button type="button" class="btn line sm" data-wk="-1" aria-label="‹">‹</button><b>${esc(lbl)}</b>
+    ${ui.wkOff ? `<button type="button" class="btn line sm" data-wk="0">${t.today}</button>` : ''}
+    <button type="button" class="btn line sm" data-wk="1" aria-label="›">›</button>
+    <label class="btn line sm calpick" aria-label="📅">📅<input type="date" id="wk-pick" value="${ui.wkSel || iso(dayDate(0))}" ${max ? `max="${max}"` : ''}></label></div>`;
+}
+function bindWk(pick) {
+  const keep = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
+  document.querySelectorAll('[data-wk]').forEach(b => b.addEventListener('click', () => { const v = +b.dataset.wk; ui.wkOff = v ? (ui.wkOff || 0) + v : 0; if (!v) ui.wkSel = null; keep(); }));
+  $('#wk-pick')?.addEventListener('change', e => { const v = e.target.value; if (!v) return;
+    const d = new Date(v + 'T12:00:00'), m0 = dayDate(0); m0.setDate(m0.getDate() - ((m0.getDay() + 6) % 7));
+    ui.wkOff = Math.floor(Math.round((d - m0) / DAY) / 7); ui.wkSel = v; keep(); pick(v); });
+}
 function weekStrip(c) {
-  const t = L(), d0 = dayDate(0), mon = new Date(d0); mon.setDate(d0.getDate() - ((d0.getDay() + 6) % 7));
+  const t = L(), d0 = dayDate(0), mon = wkMon();
   const marked = new Set([...(S.diary[c.id] || []).map(e => e.date), ...Object.values(doneOf(c.id))]);
   return `<div class="wstrip">${[0, 1, 2, 3, 4, 5, 6].map(i => {
     const d = new Date(mon); d.setDate(mon.getDate() + i); const s = iso(d), td = s === iso(d0);
-    return `<button type="button" class="wday${td ? ' today' : ''}" data-logday="${s}" ${d > d0 ? 'disabled' : ''} aria-label="${t.logT} ${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${marked.has(s) ? 'on' : ''}"></i></button>`;
+    return `<button type="button" class="wday${td ? ' today' : ''}${s === ui.wkSel ? ' sel' : ''}" data-logday="${s}" ${d > d0 ? 'disabled' : ''} aria-label="${t.logT} ${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${marked.has(s) ? 'on' : ''}"></i></button>`;
   }).join('')}</div>`;
 }
 function ageRing(frac) {
@@ -2112,6 +2137,7 @@ function home() {
     ${isEx() && !ui.form ? `<div class="banner info"><p>${t.example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${t.addChild}</button></div>` : ''}
     ${childPicker()}
     <section class="hero" aria-label="${esc(c.name)}">
+      ${wkNav(iso(dayDate(0)))}
       ${weekStrip(c)}
       <div class="orb">${ageRing(frac)}
         <div class="orb-in">
@@ -2170,6 +2196,7 @@ function bindHome() {
   $('#go-help')?.addEventListener('click', () => go(4));
   $('#qlog')?.addEventListener('click', () => openLogSheet(iso(new Date())));
   document.querySelectorAll('[data-logday]').forEach(b => b.addEventListener('click', () => openLogSheet(b.dataset.logday)));
+  bindWk(v => { if (v <= iso(new Date())) openLogSheet(v); });
   document.querySelectorAll('[data-story]').forEach(b => b.addEventListener('click', () => openStory(+b.dataset.story)));
   $('#rem-daily')?.addEventListener('change', e => { ui.daily = e.target.checked; });
   bindNotif();
@@ -2362,10 +2389,10 @@ function changeStage() { ui.wz = { step: 1, stage: S.stage }; S.stage = null; sa
 
 /* home for the pregnant and planning stages: same layout as the child home, the numbers come from the Mom section */
 function dayStrip(markOf) {
-  const t = L(), d0 = dayDate(0), mon = new Date(d0); mon.setDate(d0.getDate() - ((d0.getDay() + 6) % 7));
-  return `<div class="wstrip">${[0, 1, 2, 3, 4, 5, 6].map(i => {
+  const t = L(), d0 = dayDate(0), mon = wkMon();
+  return wkNav() + `<div class="wstrip">${[0, 1, 2, 3, 4, 5, 6].map(i => {
     const d = new Date(mon); d.setDate(mon.getDate() + i); const s = iso(d);
-    return `<button type="button" class="wday${s === iso(d0) ? ' today' : ''}" data-momday="${s}" aria-label="${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${markOf(s)}"></i></button>`;
+    return `<button type="button" class="wday${s === iso(d0) ? ' today' : ''}${s === ui.wkSel ? ' sel' : ''}" data-momday="${s}"${s === ui.wkSel ? ' data-sel' : ''} aria-label="${fmtDate(s)}"><span>${t.wd[i]}</span><b class="num">${d.getDate()}</b><i class="${markOf(s)}"></i></button>`;
   }).join('')}</div>`;
 }
 const dDays = (a, b) => Math.round((new Date(a + 'T12:00:00') - new Date(b + 'T12:00:00')) / 864e5);
@@ -2441,7 +2468,9 @@ function bindHomeStage() {
   $('#go-care')?.addEventListener('click', () => go(6));
   $('#go-learn')?.addEventListener('click', () => go(3));
   $('#go-help')?.addEventListener('click', () => go(4));
-  document.querySelectorAll('[data-momday]').forEach(b => b.addEventListener('click', () => go(7)));
+  const momDay = v => { MOM.openDay(v); go(7); };
+  document.querySelectorAll('[data-momday]').forEach(b => b.addEventListener('click', () => momDay(b.dataset.momday)));
+  bindWk(momDay);
   document.querySelectorAll('[data-story]').forEach(b => b.addEventListener('click', () => openStory(+b.dataset.story)));
   bindSettings();
 }
@@ -2541,7 +2570,7 @@ function play() {
       <div class="row between" style="flex-wrap:nowrap">
         <button type="button" class="btn line sm" id="day-prev" aria-label="‹">‹</button>
         <div style="text-align:center;min-width:0"><b>${rel ? rel + ' · ' : ''}${dateTxt}</b></div>
-        <button type="button" class="btn line sm" id="day-next" aria-label="›">›</button>
+        <div class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn line sm" id="day-next" aria-label="›">›</button><label class="btn line sm calpick" aria-label="📅">📅<input type="date" id="day-pick" value="${selIso}"></label></div>
       </div>
       <div class="week num">${wk.map((d, i) => { const di = iso(d), o = Math.round((d - dayDate(0)) / DAY);
         return `<button type="button" class="wd" data-off="${o}" aria-pressed="${di === selIso}"><i class="${(P[di] || []).length ? 'on' : ''} ${di === today ? 'today' : ''} ${di === selIso ? 'sel' : ''}">${d.getDate()}</i>${t.days[i]}</button>`; }).join('')}</div>
@@ -2563,10 +2592,11 @@ function play() {
 }
 function bindPlay() {
   const c = child(), today = iso(new Date());
-  const setOff = o => { ui.dayOff = Math.max(-60, Math.min(60, o)); const y = window.scrollY; render(); window.scrollTo(0, y); };
+  const setOff = o => { ui.dayOff = o; const y = window.scrollY; render(); window.scrollTo(0, y); };
   $('#day-prev')?.addEventListener('click', () => setOff((ui.dayOff || 0) - 1));
   $('#day-next')?.addEventListener('click', () => setOff((ui.dayOff || 0) + 1));
   $('#day-today')?.addEventListener('click', () => setOff(0));
+  $('#day-pick')?.addEventListener('change', e => { const v = e.target.value; if (v) setOff(Math.round((new Date(v + 'T12:00:00') - dayDate(0)) / DAY)); });
   bindSay();
   document.querySelectorAll('[data-off]').forEach(b => b.addEventListener('click', () => setOff(+b.dataset.off)));
   document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => {
