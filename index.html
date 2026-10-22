@@ -42,6 +42,10 @@
   .bar-in { max-width: 600px; margin: 0 auto; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
     display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .backbtn { flex: none; display: inline-flex; align-items: center; gap: 4px; height: 38px; padding: 0 14px 0 8px; margin-right: -4px; border: 0; border-radius: 19px; background: var(--accent); color: var(--accent-fg); font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+  .backbtn svg { width: 22px; height: 22px; }
+  .backbtn[hidden] { display: none; }
+  .backbtn:not([hidden]) + .brand small, .backbtn:not([hidden]) + .brand b { display: none; }
   .brand svg { width: 34px; height: 34px; flex: none; }
   .brand b { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
   .brand small { display: block; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
@@ -521,7 +525,8 @@
 
 </head><body><header class="bar">
   <div class="bar-in">
-    <div class="brand">
+    <button type="button" class="backbtn" id="backBtn" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span></button>
+    <div class="brand" style="margin-right:auto">
       <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="qg-brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8FB1"/><stop offset=".35" stop-color="#FFA36C"/><stop offset=".65" stop-color="#FFD86B"/><stop offset="1" stop-color="#6EDDB4"/></linearGradient></defs><rect width="100" height="100" rx="23" fill="url(#qg-brand)"/><g transform="translate(9 7) scale(.82)"><path d="M52 18Q42 32 40 46M52 18Q62 34 62 52" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/><path d="M52 18c6-7 15-8 21-3-6 7-15 8-21 3z" fill="#FFFFFF"/><circle cx="38" cy="62" r="15" fill="#FFFFFF"/><circle cx="63" cy="66" r="12" fill="#FFFFFF"/></g></svg>
       <div><b>QUŞAQ</b><small id="sub"></small></div>
     </div>
@@ -1488,6 +1493,7 @@ function render() {
   tabs.hidden = false;
   tabs.innerHTML = t().tabs.map((n, i) => `<button type="button" data-mtab="${i}" ${S.tab === i ? 'aria-current="page"' : ''}><span>${ICONS[i]}</span>${n}</button>`).join('');
   tabs.querySelectorAll('[data-mtab]').forEach(b => b.onclick = () => { S.tab = +b.dataset.mtab; save(); render(); scrollTo(0, 0); });
+  HOST.changed && HOST.changed();
   const V = [home, calendar, analysis, learn, profile][S.tab] || home;
   app.innerHTML = V(); bindAll();
   if (ui.lastTab !== S.tab) { ui.lastTab = S.tab; app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); } else app.classList.remove('enter');
@@ -1859,8 +1865,9 @@ function setup(o) {
   }
   S.onboarded = true; S.tab = 0; save();
 }
-return { render, summary, info, setup };
-})({ lang: () => S.lang });
+function back() { if (S.tab === 0) return false; S.tab = 0; save(); render(); scrollTo(0, 0); return true; }
+return { render, summary, info, setup, back, atRoot: () => S.tab === 0 };
+})({ lang: () => S.lang, changed: () => updBack() });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
@@ -1881,7 +1888,10 @@ function renderShell() {
     <span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></span>${tabLabels()[i]}</button>`).join('');
   N.nav.forEach((n, i) => $('#nav-' + n).addEventListener('click', () => go(N.to[i])));
 }
-function go(i, stage) { ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); pushNav(); }
+/* on-screen Back button (iPhone home-screen apps have no system Back): a stack of visited screens */
+const NAV = [];
+function go(i, stage) { if (!POP && (S.tab !== i || (ui.stage ?? null) !== (stage ?? null))) { NAV.push({ t: S.tab, st: ui.stage ?? null }); if (NAV.length > 30) NAV.shift(); }
+  ui.dayOff = 0; ui.entry = false; ui.delEntry = null; S.tab = i; ui.stage = stage ?? null; ui.form = null; ui.confirmDel = false; save(); render(); window.scrollTo(0, 0); pushNav(); }
 /* the phone's Back button / swipe-back: every screen change and every overlay is a history entry */
 let POP = false;
 function pushNav(extra) { if (POP) return; try { history.pushState(Object.assign({ t: S.tab, st: ui.stage ?? null }, extra || {}), ''); } catch (e) {} }
@@ -1894,8 +1904,19 @@ window.addEventListener('popstate', e => {
   const st = e.state || { t: 0 };
   if ($('#overlay')?.innerHTML) { clearTimeout(STORY_T); $('#overlay').innerHTML = ''; if (S.tab === 0) render(); return; }
   if (!S.stage && ui.wz) { ui.wz.step = st.wz || 0; ui.wz.err = ''; render(); return; }
+  if (NAV.length) NAV.pop();
   POP = true; go(st.t ?? 0, st.st ?? undefined); POP = false;
 });
+function canBack() { return !!S.stage && (S.tab !== 0 || NAV.length > 0 || (S.tab === 7 && !MOM.atRoot())); }
+function updBack() { const b = $('#backBtn'); if (!b) return; const l = S.lang === 'kk' ? 'Артқа' : 'Назад'; b.hidden = !canBack(); b.querySelector('span').textContent = l; b.setAttribute('aria-label', l); }
+function appBack() {
+  if ($('#overlay')?.innerHTML) { closeOverlay(); return; }
+  if (S.tab === 7 && MOM.back()) { updBack(); return; }
+  const prev = NAV.pop() || { t: 0, st: null };
+  POP = true; go(prev.t, prev.st ?? undefined); POP = false;
+  try { history.replaceState({ t: S.tab, st: ui.stage ?? null }, ''); } catch (e) {}
+}
+$('#backBtn').addEventListener('click', appBack);
 function toast(msg) {
   ui.toast = msg; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; el.setAttribute('role', 'status');
   document.body.appendChild(el); setTimeout(() => el.remove(), 1800);
@@ -2736,6 +2757,7 @@ function render() {
   $('#view').innerHTML = view();
   bind(); bindCommon();
   animateEnter($('#view'), 'tab' + S.tab + (S.tab === 1 ? ':' + (ui.stage ?? '') : ''));
+  updBack();
 }
 // screen entrance plays only when the screen changes, not on every tap that re-renders it
 let LAST_SCREEN = null;
