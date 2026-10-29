@@ -126,6 +126,12 @@
   .bar-p { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
   .bar-p i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .25s; }
 
+  .vx { border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; background: var(--surface); }
+  .vx.done { border-left-color: var(--ok); }
+  .vx.due { border-left-color: var(--accent); }
+  .vx.late { border-left-color: var(--bad); }
+  .vx ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
+  .vx .row { flex-wrap: wrap; }
   .timeline { display: grid; gap: 0; }
   .tl { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
   .tl:last-child { border-bottom: 0; }
@@ -705,7 +711,7 @@ Object.assign(T.kk, { tabsBy: { preg: ['Бүгін', 'Жүктілік', 'Біл
   planDocT: 'Дәрігерге қашан', planDocH: 'Жүктілік ұзақ болмаса',
   planDocP: 'Тұрақты жыныстық өмірде 12 ай бойы жүкті болмасаңыз (35 жастан асқанда — 6 ай), гинекологқа барыңыз. Бұл жиі кездеседі және көбіне шешіледі.',
   cycleDay: 'Цикл күні', lateN: n => `Кешігу: ${n} күн`, fertileNow: 'Құнарлы күндер', toOvu: n => `Овуляцияға ${n} күн`, toPeriod: n => `Етеккірге ${n} күн`, openCycleCal: 'Цикл күнтізбесі',
-  tryLongH: 'Гинекологпен кеңескен жөн', tryLongP: '1 жылдан көп жоспарласаңыз, дәрігер себебін тексеріп, көмектесе алады. Бұл — қалыпты қадам.', playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subHelp: 'Қайда бару', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
+  tryLongH: 'Гинекологпен кеңескен жөн', tryLongP: '1 жылдан көп жоспарласаңыз, дәрігер себебін тексеріп, көмектесе алады. Бұл — қалыпты қадам.', playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subVax: 'Екпелер', subHelp: 'Қайда бару', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
   logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
   timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
   entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
@@ -726,7 +732,7 @@ Object.assign(T.ru, { tabsBy: { preg: ['Сегодня', 'Беременност
   planDocT: 'Когда к врачу', planDocH: 'Если беременность не наступает',
   planDocP: 'Если беременность не наступает 12 месяцев при регулярной половой жизни (после 35 лет — 6 месяцев), обратитесь к гинекологу. Это частая ситуация, и её часто удаётся решить.',
   cycleDay: 'День цикла', lateN: n => `Задержка: ${n} дн.`, fertileNow: 'Фертильные дни', toOvu: n => `До овуляции ${n} дн.`, toPeriod: n => `До месячных ${n} дн.`, openCycleCal: 'Календарь цикла',
-  tryLongH: 'Стоит посоветоваться с гинекологом', tryLongP: 'Если вы планируете больше года, врач поможет найти причину. Это нормальный шаг.', playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subHelp: 'Куда обращаться', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
+  tryLongH: 'Стоит посоветоваться с гинекологом', tryLongP: 'Если вы планируете больше года, врач поможет найти причину. Это нормальный шаг.', playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subVax: 'Прививки', subHelp: 'Куда обращаться', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
   logSkills: 'Новые умения', logHealth: 'Самочувствие', logEmpty: 'Выберите хотя бы одну отметку', logSaved: 'Сохранено в дневник ✓',
   timeCheck: 'Пора пройти проверку', mythT: 'Миф или правда?', knowT: 'Полезно знать', momHint: 'Цикл, беременность, забота о себе', close: 'Закрыть',
   entriesN: n => `Записей: ${n}`, helpHint: 'Куда обращаться' });
@@ -2079,7 +2085,7 @@ return { render, summary, info, setup, back, openDay, atRoot: () => S.tab === 0 
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
 // the tab set depends on the stage chosen in the questionnaire (STAGE_NAV)
-const SUB = { dev: [[1, 'subCheck'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
+const SUB = { dev: [[1, 'subCheck'], [8, 'subVax'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
 const subOf = g => g === 'know' && S.stage === 'preg' ? [[6, 'subCare'], [3, 'subLearn']] : g === 'know' && S.stage === 'plan' ? [[3, 'subLearn'], [6, 'subCare']] : SUB[g];
 function subnav(g) {
   return `<nav class="subnav" aria-label="${tabLabels()[tabOf(S.tab)] || ''}">${subOf(g).map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
@@ -2216,7 +2222,12 @@ async function syncNotifSchedule() {
     const t = L(), days = [], now = new Date();
     for (let o = 0; o < 21; o++) {
       const d = new Date(now); d.setDate(d.getDate() + o); const di = iso(d); let msg = null;
-      for (const c of S.children) {
+      const vt = vaxT();
+      for (const c of S.children) { const Dv = vaxDone(c);
+        for (const v of VAX) { if (Dv[v.id]) continue; const gap = Math.round((vaxDue(c, v) - new Date(di + 'T12:00:00')) / 864e5);
+          if (gap === 1 || gap === 0) { msg = { title: (gap ? vt.nTitle : vt.nToday)(c.name, v.age[li()]), body: vt.nBody, tag: 'ek-vax-' + c.id + '-' + v.id }; break; } }
+        if (msg) break; }
+      if (!msg) for (const c of S.children) {
         const cm = corrM(c, d), si = stageIdx(cm), st = STAGES[si], D = (S.done[c.id] || {});
         const sd = new Date(c.dob + 'T12:00:00'); sd.setMonth(sd.getMonth() + st.min); const since = Math.round((d - sd) / 864e5);
         if (cm >= 2 && !D[st.min] && since >= 0 && since % 3 === 0) { msg = { title: t.nDue(c.name, st.label[li()]), body: t.nDueBody, tag: 'ek-check-' + c.id + '-' + st.min }; break; }
@@ -2352,6 +2363,7 @@ function home() {
       </div>
       <div class="row" style="justify-content:center">${isEx() ? '' : `<button class="link small" type="button" id="edit">✎ ${t.editChild}</button><button class="link small" type="button" data-add>＋ ${t.addMore}</button>`}</div>
     </section>
+    ${vaxHomeCard(c)}
     ${flagsN ? `<div class="banner warn"><b>${t.flagsHit(flagsN)}</b><p>${t.flagsHitP}</p></div>` : ''}
     <section class="stack" aria-label="${t.storiesT}">
       <h2 class="h2">${t.storiesT}</h2>
@@ -2389,6 +2401,7 @@ function bindHome() {
   if (S.stage === 'preg' || S.stage === 'plan') return bindHomeStage();
   $('#chg-stage')?.addEventListener('click', changeStage);
   $('#go-check')?.addEventListener('click', () => go(1));
+  $('#go-vax')?.addEventListener('click', () => go(8));
   $('#go-play')?.addEventListener('click', () => go(2));
   $('#go-diary')?.addEventListener('click', () => go(5));
   $('#go-mom')?.addEventListener('click', () => go(7));
@@ -2489,7 +2502,7 @@ function openLogSheet(day) {
 // S.stage: 'born' | 'preg' | 'plan'; existing users who already have a child are 'born'
 if (!S.stage && S.children.length) S.stage = 'born';
 const STAGE_NAV = {
-  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 4], [2, 3, 6], [7]] },
+  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 8, 4], [2, 3, 6], [7]] },
   preg: { nav: ['home', 'mom', 'learn'], to: [0, 7, 6], groups: [[0, 5], [7], [6, 3, 2, 1, 4]] },
   plan: { nav: ['home', 'mom', 'learn'], to: [0, 7, 3], groups: [[0, 5], [7], [3, 6, 2, 1, 4]] },
 };
@@ -2872,6 +2885,104 @@ function reportText(c) {
   lines.push('', r.foot, `${fmtDate(iso(new Date()))}`);
   return lines.join('\n');
 }
+/* ---------- vaccinations: National immunization calendar of Kazakhstan (Government Decree No. 612 of 24.09.2020) ---------- */
+// one visit = an age with the shots given together; due date = date of birth + m months (+ d days)
+const VAX = [
+  { id: 'v0', m: 0, d: 0, age: ['1–4 күн', '1–4 дня'], shots: [['ВГВ-1', 'В гепатитіне қарсы (1-доза)', 'Гепатит B (1-я доза)'], ['БЦЖ', 'Туберкулезге қарсы', 'Туберкулёз']] },
+  { id: 'v2', m: 2, d: 0, age: ['2 ай', '2 месяца'], shots: [['АбКДС-ВГВ-Hib-ИПВ', 'Көкжөтел, дифтерия, сіреспе, В гепатиті, Hib, полиомиелит', 'Коклюш, дифтерия, столбняк, гепатит B, Hib, полиомиелит'], ['ПКИ-1', 'Пневмококк инфекциясы', 'Пневмококковая инфекция']] },
+  { id: 'v3', m: 3, d: 0, age: ['3 ай', '3 месяца'], shots: [['АбКДС-Hib-ИПВ', 'Көкжөтел, дифтерия, сіреспе, Hib, полиомиелит', 'Коклюш, дифтерия, столбняк, Hib, полиомиелит']] },
+  { id: 'v4', m: 4, d: 0, age: ['4 ай', '4 месяца'], shots: [['АбКДС-ВГВ-Hib-ИПВ', 'Көкжөтел, дифтерия, сіреспе, В гепатиті, Hib, полиомиелит', 'Коклюш, дифтерия, столбняк, гепатит B, Hib, полиомиелит'], ['ПКИ-2', 'Пневмококк инфекциясы', 'Пневмококковая инфекция']] },
+  { id: 'v12', m: 12, d: 0, age: ['12–15 ай', '12–15 месяцев'], shots: [['ККП-1', 'Қызылша, қызамық, паротит', 'Корь, краснуха, паротит'], ['ПКИ-3', 'Пневмококк (ревакцинация)', 'Пневмококк (ревакцинация)']] },
+  { id: 'v18', m: 18, d: 0, age: ['18 ай', '18 месяцев'], shots: [['АбКДС-Hib-ИПВ', 'Ревакцинация: көкжөтел, дифтерия, сіреспе, Hib, полиомиелит', 'Ревакцинация: коклюш, дифтерия, столбняк, Hib, полиомиелит']] },
+  { id: 'v24', m: 24, d: 0, age: ['2 жас', '2 года'], shots: [['ВГА', 'А гепатитіне қарсы — өңіріңізде бар-жоғын емханадан сұраңыз', 'Гепатит A — уточните в поликлинике, проводится ли в вашем регионе']] },
+  { id: 'v72', m: 72, d: 0, age: ['6 жас', '6 лет'], shots: [['ККП-2', 'Қызылша, қызамық, паротит (2-доза)', 'Корь, краснуха, паротит (2-я доза)'], ['АбКДС', 'Ревакцинация: көкжөтел, дифтерия, сіреспе', 'Ревакцинация: коклюш, дифтерия, столбняк']] },
+];
+const vaxT = () => S.lang === 'kk'
+  ? { title: 'Екпелер', sub: 'ҚР Ұлттық екпе күнтізбесі', next: 'Келесі екпе', inDays: n => n === 0 ? 'бүгін' : n === 1 ? 'ертең' : `${n} күннен кейін`, late: n => `${n} күн өтіп кетті`, done: d => `Салынды ${d}`,
+      mark: 'Салынды деп белгілеу', undo: 'Белгіні алу', allDone: 'Барлық екпе салынды 🎉', markPast: 'Өткен екпелердің бәрін «салынды» деп белгілеу', ask: 'Белгіленбеген өткен екпелер — салынды ма?',
+      cal: 'Телефон күнтізбесіне қосу', calNote: 'Әр екпеге бір күн бұрын еске салады', later: 'Алда', free: 'Ұлттық күнтізбедегі екпелер тегін. Нақты күн мен вакцинаны емхананың педиатры белгілейді.',
+      home: (a, w) => `💉 Екпе: ${a} — ${w}`, homeBtn: 'Екпелер күнтізбесі', nTitle: (n, a) => `Ертең ${n}: ${a} екпесі`, nToday: (n, a) => `Бүгін ${n}: ${a} екпесі`, nBody: 'Емханаға жазылуды ұмытпаңыз. Құшақта белгілеңіз.', ics: (n, a) => `QUŞAQ: ${n} — екпе ${a}`, dueOn: d => `Мерзімі ${d}` }
+  : { title: 'Прививки', sub: 'Национальный календарь прививок РК', next: 'Следующая прививка', inDays: n => n === 0 ? 'сегодня' : n === 1 ? 'завтра' : `через ${n} дн.`, late: n => `просрочено на ${n} дн.`, done: d => `Сделано ${d}`,
+      mark: 'Отметить: сделано', undo: 'Снять отметку', allDone: 'Все прививки сделаны 🎉', markPast: 'Отметить все прошедшие как сделанные', ask: 'Прошедшие прививки без отметки — уже сделаны?',
+      cal: 'Добавить в календарь телефона', calNote: 'Напомнит за день до каждой прививки', later: 'Впереди', free: 'Прививки Национального календаря бесплатные. Точную дату и вакцину назначает педиатр поликлиники.',
+      home: (a, w) => `💉 Прививка ${a} — ${w}`, homeBtn: 'Календарь прививок', nTitle: (n, a) => `Завтра ${n}: прививка ${a}`, nToday: (n, a) => `Сегодня ${n}: прививка ${a}`, nBody: 'Не забудьте записаться в поликлинику. Отметьте в Құшақ.', ics: (n, a) => `QUŞAQ: ${n} — прививка ${a}`, dueOn: d => `Срок ${d}` };
+const vaxDue = (c, v) => { const d = new Date(c.dob + 'T12:00:00'); d.setMonth(d.getMonth() + v.m); d.setDate(d.getDate() + v.d); return d; };
+const vaxDone = c => (S.vax || {})[c.id] || {};
+// the first visit not marked done: it is the "next" one; visits more than 60 days late that were never marked are just "not marked"
+function vaxNext(c) {
+  const D = vaxDone(c), now = dayDate(0);
+  for (const v of VAX) { if (D[v.id]) continue; const due = vaxDue(c, v), days = Math.round((due - now) / DAY); if (days >= -60) return { v, due, days }; }
+  return null;
+}
+function vaxHomeCard(c) {
+  if (isEx()) return '';
+  const n = vaxNext(c); if (!n || n.days > 14) return '';
+  const t = vaxT(), when = n.days < 0 ? t.late(-n.days) : `${t.inDays(n.days)} · ${fmtDate(iso(n.due))}`;
+  return `<div class="banner ${n.days < 0 ? 'bad' : 'info'}"><b>${t.home(n.v.age[li()], when)}</b><p>${n.v.shots.map(x => x[0]).join(' · ')}</p><button class="btn primary sm" type="button" id="go-vax" style="justify-self:start">${t.homeBtn} →</button></div>`;
+}
+function vax() {
+  const t = vaxT(), c = child(), D = vaxDone(c), now = dayDate(0), nx = vaxNext(c), k = li();
+  const unmarked = VAX.filter(v => !D[v.id] && vaxDue(c, v) < now).length;
+  const head = nx ? `<p class="eyebrow">${t.next}</p><h2 class="h2">${nx.v.age[k]}</h2>
+      <p><span class="status ${nx.days < 0 ? 'bad' : 'todo'}">${nx.days < 0 ? t.late(-nx.days) : t.inDays(nx.days)}</span> <span class="small muted">${fmtDate(iso(nx.due))}</span></p>`
+    : `<h2 class="h2">${VAX.every(v => D[v.id]) ? t.allDone : t.title}</h2>`;
+  return `
+    ${subnav('dev')}
+    ${childPicker()}
+    <div class="card">
+      <span class="eyebrow">${esc(c.name)} · ${ageTxt(corrM(c))}</span>
+      <h1 class="h1">💉 ${t.title}</h1>
+      <p class="small muted">${t.sub}</p>
+      ${head}
+      ${unmarked > 1 && !isEx() ? `<div class="banner info"><p>${t.ask}</p><button class="btn line sm" type="button" id="vx-past" style="justify-self:start">${t.markPast}</button></div>` : ''}
+    </div>
+    ${isEx() ? `<div class="banner info"><p>${L().example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${L().addChild}</button></div>` : ''}
+    ${VAX.map(v => {
+      const due = vaxDue(c, v), days = Math.round((due - now) / DAY), done = D[v.id], isNext = nx && nx.v === v;
+      const cls = done ? 'done' : isNext ? (days < 0 ? 'late' : 'due') : '';
+      const st = done ? `<span class="status ok">✓ ${t.done(fmtDate(done))}</span>` : isNext ? `<span class="status ${days < 0 ? 'bad' : 'todo'}">${days < 0 ? t.late(-days) : t.inDays(days)}</span>` : days > 0 ? `<span class="small muted">${t.later}</span>` : '';
+      return `<div class="vx ${cls}">
+        <div class="row between"><b>${v.age[k]}</b>${st}</div>
+        <p class="small muted">${t.dueOn(fmtDate(iso(due)))}</p>
+        <ul>${v.shots.map(x => `<li><b>${x[0]}</b> — ${x[1 + k]}</li>`).join('')}</ul>
+        ${days <= 30 || done ? `<button class="btn ${done ? 'line' : 'soft'} sm" type="button" data-vx="${v.id}" style="justify-self:start">${done ? t.undo : '✓ ' + t.mark}</button>` : ''}
+      </div>`;
+    }).join('')}
+    ${isEx() ? '' : `<div class="card"><button class="btn primary" type="button" id="vx-ics">📅 ${t.cal}</button><p class="small muted">${t.calNote}</p><p class="small muted" id="vx-msg" role="status"></p></div>`}
+    <div class="banner info"><p>${t.free}</p></div>
+    ${legal()}`;
+}
+function vaxIcs(c) {
+  const t = vaxT(), pad = n => String(n).padStart(2, '0'), stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
+  const dt = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`, escI = x => String(x).replace(/[,;\\]/g, m => '\\' + m);
+  const L2 = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//QUŞAQ//KZ', 'CALSCALE:GREGORIAN'], D = vaxDone(c), now = dayDate(0);
+  VAX.forEach(v => {
+    const d = vaxDue(c, v); if (D[v.id] || d < now) return;
+    const sum = escI(t.ics(c.name, v.age[li()]));
+    L2.push('BEGIN:VEVENT', `UID:ek-vax-${c.id}-${v.id}@erte-komek`, `DTSTAMP:${stamp}`, `DTSTART;TZID=Asia/Almaty:${dt(d)}T090000`, `DTEND;TZID=Asia/Almaty:${dt(d)}T100000`,
+      `SUMMARY:${sum}`, `DESCRIPTION:${escI(v.shots.map(x => x[0]).join(', '))}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-P1D', `DESCRIPTION:${sum}`, 'END:VALARM', 'END:VEVENT');
+  });
+  L2.push('END:VCALENDAR');
+  return L2.join('\r\n');
+}
+function bindVax() {
+  const c = child(), keep = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
+  const guard = () => { if (!isEx()) return false; ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return true; };
+  document.querySelectorAll('[data-vx]').forEach(b => b.addEventListener('click', () => {
+    if (guard()) return;
+    const V = bucket(S.vax || (S.vax = {}), c.id), id = b.dataset.vx;
+    if (V[id]) delete V[id]; else V[id] = iso(new Date());
+    save(); keep();
+  }));
+  $('#vx-past')?.addEventListener('click', () => {
+    if (guard()) return;
+    const V = bucket(S.vax || (S.vax = {}), c.id), now = dayDate(0);
+    VAX.forEach(v => { const d = vaxDue(c, v); if (!V[v.id] && d < now) V[v.id] = iso(d); });
+    save(); keep();
+  });
+  $('#vx-ics')?.addEventListener('click', () => offerFile('qusaq-privivki.ics', 'text/calendar', vaxIcs(c), $('#vx-msg')));
+  bindSay && bindSay();
+}
 function help() {
   const t = L(), c = child(), F = S.flags[c.id] || [], k = S.lang === 'kk';
   return `
@@ -2984,7 +3095,7 @@ function bindDiary() {
 
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
-const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()]];
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()], [vax, bindVax]];
 function mom() { return `<div id="mom" class="stack"><nav class="mtabs" id="mom-tabs" aria-label="${L().momT}"></nav><div id="mom-app"></div><div id="mom-sheet"></div></div>${legal()}`; }
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
