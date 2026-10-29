@@ -1283,6 +1283,52 @@ function offerFile(name, mime, data, msgEl) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   if (msgEl) msgEl.textContent = L().remDone;
 }
+/* backup: every erte-komek* key of localStorage in one JSON file, so a lost phone or a cleared browser loses nothing */
+const BK_PREFIX = 'erte-komek';
+const bkT = () => S.lang === 'kk'
+  ? { h: 'Сақтық көшірме', note: 'Барлық дерек тек осы телефонда. Көшірмені WhatsApp-қа өзіңізге немесе «Файлдарға» сақтап қойыңыз.', save: 'Көшірме сақтау', restore: 'Көшірмеден қалпына келтіру',
+      last: d => `Соңғы көшірме: ${d}`, never: 'Көшірме әлі жасалмаған', old: n => `Соңғы көшірмеге ${n} күн болды — жаңасын сақтаңыз`, saved: 'Көшірме дайын ✓',
+      bad: 'Бұл Құшақ көшірмесі емес немесе файл бүлінген', ask: d => `${d} көшірмесінен қалпына келтіру керек пе? Қазіргі деректер ауыстырылады.`, ok: 'Деректер қалпына келтірілді ✓', has: 'Бұрын Құшақ қолдандыңыз ба?' }
+  : { h: 'Резервная копия', note: 'Все данные хранятся только в этом телефоне. Сохраните копию себе в WhatsApp или в «Файлы».', save: 'Сохранить копию', restore: 'Восстановить из копии',
+      last: d => `Последняя копия: ${d}`, never: 'Копия ещё не сделана', old: n => `С последней копии прошло ${n} дн. — сохраните новую`, saved: 'Копия готова ✓',
+      bad: 'Это не копия Құшақ или файл повреждён', ask: d => `Восстановить данные из копии от ${d}? Текущие данные будут заменены.`, ok: 'Данные восстановлены ✓', has: 'Уже пользовались Құшақ?' };
+function bkKeys() { const out = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(BK_PREFIX)) out.push(k); } } catch (e) {} return out.sort(); }
+function backupSave(msgEl) {
+  S.lastBackup = new Date().toISOString(); save();
+  const data = {}; bkKeys().forEach(k => { data[k] = localStorage.getItem(k); });
+  const day = iso(new Date());
+  offerFile(`qusaq-backup-${day}.json`, 'application/json', JSON.stringify({ app: 'qusaq', v: 1, at: S.lastBackup, data }), null);
+  if (msgEl) msgEl.textContent = bkT().saved;
+}
+function backupRestore(file, msgEl) {
+  const t = bkT(), r = new FileReader();
+  r.onload = () => {
+    let b; try { b = JSON.parse(r.result); } catch (e) { b = null; }
+    const ok = b && b.app === 'qusaq' && b.data && typeof b.data === 'object' && Object.keys(b.data).length
+      && Object.entries(b.data).every(([k, v]) => k.startsWith(BK_PREFIX) && typeof v === 'string');
+    if (ok) try { Object.values(b.data).forEach(v => JSON.parse(v)); } catch (e) { b = null; }
+    if (!ok || !b) { if (msgEl) msgEl.textContent = t.bad; return; }
+    if (!window.confirm(t.ask(b.at ? fmtDate(String(b.at).slice(0, 10)) : '—'))) return;
+    try { bkKeys().forEach(k => localStorage.removeItem(k)); Object.entries(b.data).forEach(([k, v]) => localStorage.setItem(k, v)); } catch (e) { if (msgEl) msgEl.textContent = t.bad; return; }
+    if (msgEl) msgEl.textContent = t.ok;
+    setTimeout(() => location.reload(), 600);
+  };
+  r.readAsText(file);
+}
+function backupCard() {
+  const t = bkT(), last = S.lastBackup ? new Date(S.lastBackup) : null, days = last ? Math.floor((Date.now() - last) / DAY) : null;
+  const status = !last ? `<p class="small" style="color:var(--bad)">${t.never}</p>` : days >= 14 ? `<p class="small" style="color:var(--bad)">${t.old(days)}</p>` : `<p class="small muted">${t.last(fmtDate(iso(last)))}</p>`;
+  return `<div class="card flat">
+    <h2 class="h3">💾 ${t.h}</h2><p class="small muted">${t.note}</p>${status}
+    <button class="btn primary" type="button" id="bk-save">${t.save}</button>
+    <label class="btn line sm" style="justify-self:start;cursor:pointer">${t.restore}<input type="file" id="bk-file" accept="application/json,.json" hidden></label>
+    <p class="small muted" id="bk-msg" role="status"></p>
+  </div>`;
+}
+function bindBackup() {
+  $('#bk-save')?.addEventListener('click', () => { backupSave($('#bk-msg')); const y = window.scrollY; render(); window.scrollTo(0, y); setTimeout(() => { const m = $('#bk-msg'); if (m) m.textContent = bkT().saved; }, 0); });
+  $('#bk-file')?.addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) backupRestore(f, $('#bk-msg')); e.target.value = ''; });
+}
 function buildIcs(c, daily) {
   const t = L(), pad = n => String(n).padStart(2, '0'), stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
   const dt = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
@@ -2336,6 +2382,7 @@ function home() {
         ? `<div class="banner bad"><p>${t.confirmDel(esc(c.name))}</p><div class="row"><button class="btn sm" style="background:var(--bad);color:#fff" type="button" id="del-yes">${t.yesDel}</button><button class="btn line sm" type="button" id="del-no">${t.cancel}</button></div></div>`
         : `<button class="link small" type="button" id="del" style="justify-self:start;color:var(--bad)">${t.delChild}: ${esc(c.name)}</button>`}
     </div>`}
+    ${ui.form || isEx() ? '' : backupCard()}
     ${legal()}`;
 }
 function bindHome() {
@@ -2353,6 +2400,7 @@ function bindHome() {
   document.querySelectorAll('[data-story]').forEach(b => b.addEventListener('click', () => openStory(+b.dataset.story)));
   $('#rem-daily')?.addEventListener('change', e => { ui.daily = e.target.checked; });
   bindNotif();
+  bindBackup();
   $('#rem-ics')?.addEventListener('click', () => offerFile('erte-komek.ics', 'text/calendar', buildIcs(child(), ui.daily), $('#rem-msg')));
   $('#edit')?.addEventListener('click', () => { ui.form = 'edit'; ui.err = ''; render(); window.scrollTo(0, 0); });
   document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
@@ -2461,6 +2509,8 @@ function welcome() {
     <p class="wz-p">${t.wzIntro}</p>
     <p class="small muted">🔒 ${t.wzPrivacy}</p>
     <button class="btn primary block" type="button" id="wz-next">${t.wzStart}</button>
+    <label class="link small" style="justify-self:center;text-align:center;cursor:pointer">${bkT().has}<br>${bkT().restore}<input type="file" id="bk-file" accept="application/json,.json" hidden></label>
+    <p class="small muted" id="bk-msg" role="status"></p>
   </section>`;
   if (w.step === 1) return `<section class="wz">
     ${dots}
@@ -2508,6 +2558,7 @@ function bindWelcome() {
   const t = L(), w = ui.wz, keep = () => { const v = id => $('#' + id)?.value; Object.assign(w, { name: v('wz-name') ?? w.name, dob: v('wz-dob') ?? w.dob, weeks: v('wz-weeks') ?? w.weeks,
     due: v('wz-due') ?? w.due, lmp: v('wz-lmp') ?? w.lmp, mname: v('wz-mname') ?? w.mname, last: v('wz-last') ?? w.last, clen: v('wz-clen') ?? w.clen }); };
   const redraw = () => { keep(); render(); };
+  bindBackup();
   $('#wz-next')?.addEventListener('click', () => { w.step++; w.err = ''; pushNav({ wz: w.step }); render(); window.scrollTo(0, 0); });
   $('#wz-back')?.addEventListener('click', () => { keep(); if (history.state && history.state.wz) history.back(); else { w.step--; w.err = ''; render(); } });
   document.querySelectorAll('[data-stage]').forEach(b => b.addEventListener('click', () => { w.stage = b.dataset.stage; render(); }));
@@ -2614,6 +2665,7 @@ function homeStage() {
     </section>
     <div class="tiles">${tiles.map(([id, ic, h, sm]) => `<button class="tile" type="button" id="${id}"><span aria-hidden="true">${ic}</span><b>${h}</b><small>${sm}</small></button>`).join('')}</div>
     ${settingsCard()}
+    ${backupCard()}
     ${legal()}`;
 }
 function bindHomeStage() {
@@ -2631,6 +2683,7 @@ function bindSettings() {
   document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.themeSet; save(); render(); }));
   document.querySelectorAll('[data-snd-set]').forEach(b => b.addEventListener('click', () => { const [k, v] = b.dataset.sndSet.split(':'); S[k] = v === 'true'; save(); SND.sync(); render(); }));
   $('#chg-stage')?.addEventListener('click', changeStage);
+  bindBackup();
 }
 
 function check() {
