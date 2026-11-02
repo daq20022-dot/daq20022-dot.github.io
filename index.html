@@ -716,7 +716,7 @@ const T = {
 };
 
 // strings for the Flo-like home (week strip, stories, quick log)
-Object.assign(T.kk, { tabsBy: { preg: ['Бүгін', 'Жүктілік', 'Білім'], plan: ['Бүгін', 'Цикл', 'Білім'] }, forYouT: 'Сізге арналған',
+Object.assign(T.kk, { tabsBy: { born: ['Бүгін', 'Даму', 'Ойындар', 'Білім', 'Ана'], preg: ['Бүгін', 'Жүктілік', 'Білім'], plan: ['Бүгін', 'Цикл', 'Білім'] }, forYouT: 'Сізге арналған',
   wzHello: 'Құшаққа қош келдіңіз!', wzIntro: 'Бірнеше сұраққа жауап беріңіз — қосымшаны сізге бейімдейміз.', wzPrivacy: 'Тіркелу жоқ. Барлық дерек тек осы телефонда сақталады.',
   wzStart: 'Бастау', wzNext: 'Әрі қарай', wzDone: 'Дайын', wzStageQ: 'Сіз қазір қай кезеңдесіз?', wzStageNote: 'Кейін баптаулардан өзгертуге болады.',
   wzStages: { born: ['Балам бар', 'Бала дамуын тексеру, ойындар, күнделік'], preg: ['Жүктімін', 'Апта сайын: нәресте қалай өсіп жатыр'], plan: ['Жоспарлап жүрмін', 'Цикл, құнарлы күндер, дайындық'] },
@@ -737,7 +737,7 @@ Object.assign(T.kk, { tabsBy: { preg: ['Бүгін', 'Жүктілік', 'Біл
   logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
   timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
   entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
-Object.assign(T.ru, { tabsBy: { preg: ['Сегодня', 'Беременность', 'Знания'], plan: ['Сегодня', 'Цикл', 'Знания'] }, forYouT: 'Для вас',
+Object.assign(T.ru, { tabsBy: { born: ['Сегодня', 'Развитие', 'Игры', 'Знания', 'Мама'], preg: ['Сегодня', 'Беременность', 'Знания'], plan: ['Сегодня', 'Цикл', 'Знания'] }, forYouT: 'Для вас',
   wzHello: 'Добро пожаловать в Құшақ!', wzIntro: 'Ответьте на пару вопросов — и мы настроим приложение под вас.', wzPrivacy: 'Без регистрации. Все данные хранятся только в этом телефоне.',
   wzStart: 'Начать', wzNext: 'Далее', wzDone: 'Готово', wzStageQ: 'Где вы сейчас?', wzStageNote: 'Это можно изменить позже в настройках.',
   wzStages: { born: ['У меня есть ребёнок', 'Проверка развития, игры, дневник'], preg: ['Я беременна', 'Неделя за неделей: как растёт малыш'], plan: ['Планирую беременность', 'Цикл, фертильные дни, подготовка'] },
@@ -2107,9 +2107,10 @@ return { render, summary, info, setup, back, openDay, atRoot: () => S.tab === 0 
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
 // the tab set depends on the stage chosen in the questionnaire (STAGE_NAV)
-const SUB = { dev: [[1, 'subCheck'], [10, 'subAut'], [9, 'subGrow'], [8, 'subVax'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
+const SUB = { dev: [[1, 'subCheck'], [10, 'subAut'], [9, 'subGrow'], [8, 'subVax'], [4, 'subHelp']], know: [[3, 'subLearn'], [6, 'subCare']] };   // games have their own tab in the bottom bar
 const subOf = g => g === 'know' && S.stage === 'preg' ? [[6, 'subCare'], [3, 'subLearn']] : g === 'know' && S.stage === 'plan' ? [[3, 'subLearn'], [6, 'subCare']] : SUB[g];
 function subnav(g) {
+  if (!subOf(g).some(([i]) => i === S.tab)) return '';   // e.g. Games: its own bottom tab, no pills
   return `<nav class="subnav" aria-label="${tabLabels()[tabOf(S.tab)] || ''}">${subOf(g).map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
 }
 function renderShell() {
@@ -2526,7 +2527,7 @@ function openLogSheet(day) {
 // S.stage: 'born' | 'preg' | 'plan'; existing users who already have a child are 'born'
 if (!S.stage && S.children.length) S.stage = 'born';
 const STAGE_NAV = {
-  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 10, 9, 8, 4], [2, 3, 6], [7]] },
+  born: { nav: ['home', 'check', 'play', 'learn', 'mom'], to: [0, 1, 2, 3, 7], groups: [[0, 5], [1, 10, 9, 8, 4], [2], [3, 6], [7]] },
   preg: { nav: ['home', 'mom', 'learn'], to: [0, 7, 6], groups: [[0, 5], [7], [6, 3, 2, 1, 4]] },
   plan: { nav: ['home', 'mom', 'learn'], to: [0, 7, 3], groups: [[0, 5], [7], [3, 6, 2, 1, 4]] },
 };
