@@ -126,6 +126,25 @@
   .bar-p { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
   .bar-p i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .25s; }
 
+  .aut-red, .aut-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .aut-red li { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); }
+  .aut-red li.urgent { background: var(--bad-bg); color: var(--bad); font-weight: 600; }
+  .aut-age { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .aut-list li { padding-left: 22px; position: relative; }
+  .aut-list li::before { content: '•'; position: absolute; left: 6px; color: var(--accent); font-weight: 800; }
+  .aut-list.bad li::before { content: '✕'; color: var(--bad); left: 2px; }
+  .aut-qs { display: grid; gap: 10px; }
+  .aut-q { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; }
+  .aut-q.risk { border-color: var(--warn); background: var(--warn-bg); }
+  .aut-q p { margin: 0; }
+  .aut-yn { display: inline-flex; gap: 8px; }
+  .aut-yn button { font: inherit; font-weight: 700; min-width: 76px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: inherit; cursor: pointer; }
+  .aut-yn button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .aut-rep { width: 100%; min-height: 150px; font: 13px/1.45 ui-monospace, Menlo, monospace; border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: var(--surface); color: inherit; }
+  .aut-vids { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .aut-vid { display: grid; gap: 4px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); text-decoration: none; color: inherit; background: var(--surface); }
+  .aut-vid span { font-size: 26px; } .aut-vid small { color: var(--muted); }
+  .aut-home { border: 2px solid var(--accent); }
   .vx { border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; background: var(--surface); }
   .vx.done { border-left-color: var(--ok); }
   .vx.due { border-left-color: var(--accent); }
@@ -714,7 +733,7 @@ Object.assign(T.kk, { tabsBy: { preg: ['Бүгін', 'Жүктілік', 'Біл
   planDocT: 'Дәрігерге қашан', planDocH: 'Жүктілік ұзақ болмаса',
   planDocP: 'Тұрақты жыныстық өмірде 12 ай бойы жүкті болмасаңыз (35 жастан асқанда — 6 ай), гинекологқа барыңыз. Бұл жиі кездеседі және көбіне шешіледі.',
   cycleDay: 'Цикл күні', lateN: n => `Кешігу: ${n} күн`, fertileNow: 'Құнарлы күндер', toOvu: n => `Овуляцияға ${n} күн`, toPeriod: n => `Етеккірге ${n} күн`, openCycleCal: 'Цикл күнтізбесі',
-  tryLongH: 'Гинекологпен кеңескен жөн', tryLongP: '1 жылдан көп жоспарласаңыз, дәрігер себебін тексеріп, көмектесе алады. Бұл — қалыпты қадам.', playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subGrow: 'Бой', subVax: 'Екпелер', subHelp: 'Көмек', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
+  tryLongH: 'Гинекологпен кеңескен жөн', tryLongP: '1 жылдан көп жоспарласаңыз, дәрігер себебін тексеріп, көмектесе алады. Бұл — қалыпты қадам.', playVidT: 'Ойындарға видеошолу', playVidH: 'Осы жасқа арналған ойындарды видеодан көріңіз', tabs: ['Бүгін', 'Даму', 'Білім', 'Ана'], subCheck: 'Тексеру', subGrow: 'Бой', subVax: 'Екпелер', subAut: 'Аутизм', subHelp: 'Көмек', subLearn: 'Сабақтар', subPlay: 'Ойындар', subCare: 'Күтім', wd: ['Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб', 'Жс'], storiesT: 'Бүгін сіз үшін', quickLog: 'Белгілеу', logT: 'Бүгін не болды?',
   logSkills: 'Жаңа дағдылар', logHealth: 'Көңіл-күйі мен денсаулығы', logEmpty: 'Кемінде бір белгі таңдаңыз', logSaved: 'Күнделікке сақталды ✓',
   timeCheck: 'Тексеру уақыты келді', mythT: 'Миф па, шындық па?', knowT: 'Білген жөн', momHint: 'Цикл, жүктілік, өзіңізге күтім', close: 'Жабу',
   entriesN: n => `${n} жазба`, helpHint: 'Қайда бару керек' });
@@ -735,7 +754,7 @@ Object.assign(T.ru, { tabsBy: { preg: ['Сегодня', 'Беременност
   planDocT: 'Когда к врачу', planDocH: 'Если беременность не наступает',
   planDocP: 'Если беременность не наступает 12 месяцев при регулярной половой жизни (после 35 лет — 6 месяцев), обратитесь к гинекологу. Это частая ситуация, и её часто удаётся решить.',
   cycleDay: 'День цикла', lateN: n => `Задержка: ${n} дн.`, fertileNow: 'Фертильные дни', toOvu: n => `До овуляции ${n} дн.`, toPeriod: n => `До месячных ${n} дн.`, openCycleCal: 'Календарь цикла',
-  tryLongH: 'Стоит посоветоваться с гинекологом', tryLongP: 'Если вы планируете больше года, врач поможет найти причину. Это нормальный шаг.', playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subGrow: 'Рост', subVax: 'Прививки', subHelp: 'Помощь', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
+  tryLongH: 'Стоит посоветоваться с гинекологом', tryLongP: 'Если вы планируете больше года, врач поможет найти причину. Это нормальный шаг.', playVidT: 'Видеообзор игр', playVidH: 'Посмотрите, как играют в эти игры с малышами этого возраста', tabs: ['Сегодня', 'Развитие', 'Знания', 'Мама'], subCheck: 'Проверка', subGrow: 'Рост', subVax: 'Прививки', subAut: 'Аутизм', subHelp: 'Помощь', subLearn: 'Уроки', subPlay: 'Игры', subCare: 'Уход', wd: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], storiesT: 'Сегодня для вас', quickLog: 'Отметить', logT: 'Что сегодня было?',
   logSkills: 'Новые умения', logHealth: 'Самочувствие', logEmpty: 'Выберите хотя бы одну отметку', logSaved: 'Сохранено в дневник ✓',
   timeCheck: 'Пора пройти проверку', mythT: 'Миф или правда?', knowT: 'Полезно знать', momHint: 'Цикл, беременность, забота о себе', close: 'Закрыть',
   entriesN: n => `Записей: ${n}`, helpHint: 'Куда обращаться' });
@@ -2088,7 +2107,7 @@ return { render, summary, info, setup, back, openDay, atRoot: () => S.tab === 0 
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
 // the tab set depends on the stage chosen in the questionnaire (STAGE_NAV)
-const SUB = { dev: [[1, 'subCheck'], [9, 'subGrow'], [8, 'subVax'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
+const SUB = { dev: [[1, 'subCheck'], [10, 'subAut'], [9, 'subGrow'], [8, 'subVax'], [4, 'subHelp']], know: [[3, 'subLearn'], [2, 'subPlay'], [6, 'subCare']] };
 const subOf = g => g === 'know' && S.stage === 'preg' ? [[6, 'subCare'], [3, 'subLearn']] : g === 'know' && S.stage === 'plan' ? [[3, 'subLearn'], [6, 'subCare']] : SUB[g];
 function subnav(g) {
   return `<nav class="subnav" aria-label="${tabLabels()[tabOf(S.tab)] || ''}">${subOf(g).map(([i, k]) => `<button type="button" data-sub="${i}" ${S.tab === i ? 'aria-current="page"' : ''}>${L()[k]}</button>`).join('')}</nav>`;
@@ -2367,6 +2386,7 @@ function home() {
       <div class="row" style="justify-content:center">${isEx() ? '' : `<button class="link small" type="button" id="edit">✎ ${t.editChild}</button><button class="link small" type="button" data-add>＋ ${t.addMore}</button>`}</div>
     </section>
     ${vaxHomeCard(c)}
+    ${isEx() ? '' : autHomeCard(c)}
     ${flagsN ? `<div class="banner warn"><b>${t.flagsHit(flagsN)}</b><p>${t.flagsHitP}</p></div>` : ''}
     <section class="stack" aria-label="${t.storiesT}">
       <h2 class="h2">${t.storiesT}</h2>
@@ -2405,6 +2425,7 @@ function bindHome() {
   $('#chg-stage')?.addEventListener('click', changeStage);
   $('#go-check')?.addEventListener('click', () => go(1));
   $('#go-vax')?.addEventListener('click', () => go(8));
+  $('#go-aut')?.addEventListener('click', () => go(10));
   $('#go-play')?.addEventListener('click', () => go(2));
   $('#go-diary')?.addEventListener('click', () => go(5));
   $('#go-mom')?.addEventListener('click', () => go(7));
@@ -2505,7 +2526,7 @@ function openLogSheet(day) {
 // S.stage: 'born' | 'preg' | 'plan'; existing users who already have a child are 'born'
 if (!S.stage && S.children.length) S.stage = 'born';
 const STAGE_NAV = {
-  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 9, 8, 4], [2, 3, 6], [7]] },
+  born: { nav: ['home', 'check', 'learn', 'mom'], to: [0, 1, 3, 7], groups: [[0, 5], [1, 10, 9, 8, 4], [2, 3, 6], [7]] },
   preg: { nav: ['home', 'mom', 'learn'], to: [0, 7, 6], groups: [[0, 5], [7], [6, 3, 2, 1, 4]] },
   plan: { nav: ['home', 'mom', 'learn'], to: [0, 7, 3], groups: [[0, 5], [7], [3, 6, 2, 1, 4]] },
 };
@@ -3081,6 +3102,174 @@ function bindVax() {
   $('#vx-ics')?.addEventListener('click', () => offerFile('qusaq-privivki.ics', 'text/calendar', vaxIcs(c), $('#vx-msg')));
   bindSay && bindSay();
 }
+/* ---------- autism (РАС): early signs, a simple self-check, what to do in Kazakhstan, how children are helped, video lessons.
+   Signs follow CDC «Signs and symptoms of ASD» and the AAP red flags. The self-check is our own plain list, NOT M-CHAT and not a diagnosis. ---------- */
+const AUT_RED = [   // [age, kk, ru]
+  ['6', '6 айда: кең күлімсіреу, қуанышты мимика жоқ', '6 мес: нет широких улыбок и радостного выражения лица'],
+  ['9', '9 айда: сізбен дыбыс, күлкі, мимика алмаспайды', '9 мес: не обменивается с вами звуками, улыбками, мимикой'],
+  ['12', '12 айда: былдырламайды; ым жоқ (саусақпен көрсету, қол бұлғау); атын атағанда қарамайды', '12 мес: нет лепета; нет жестов (показать пальцем, помахать «пока»); не откликается на имя'],
+  ['16', '16 айда: бірде-бір сөз жоқ', '16 мес: нет ни одного слова'],
+  ['24', '24 айда: екі сөзден тұратын мағыналы тіркес жоқ (қайталау емес)', '24 мес: нет осмысленных фраз из 2 слов (не повторение за взрослым)'],
+  ['!', 'Кез келген жаста: бұрын болған сөздер, былдыр немесе қарым-қатынас дағдылары жоғалса — бірден дәрігерге', 'В любом возрасте: пропали слова, лепет или навыки общения, которые уже были, — сразу к врачу'],
+];
+const AUT_SIGNS = {
+  soc: ['Қарым-қатынас', 'Общение', [
+    ['Көзге сирек қарайды', 'Редко смотрит в глаза'],
+    ['Қызықты нәрсені саусақпен көрсетпейді, көрсету үшін әкелмейді', 'Не показывает пальцем на интересное и не приносит показать'],
+    ['Сіз көрсеткен жаққа қарамайды', 'Не смотрит туда, куда показываете вы'],
+    ['«Ку-ку» сияқты ойындарға, еліктеуге қызықпайды', 'Не интересуется «ку-ку» и играми-подражанием'],
+    ['Атын атағанда жиі жауап бермейді', 'Часто не откликается на имя'],
+    ['Басқа балаларға қызығушылық аз', 'Мало интереса к другим детям']]],
+  beh: ['Мінез-құлық', 'Поведение', [
+    ['Ойыншықтарды қатарға тізеді, дөңгелекті ұзақ айналдырады', 'Выстраивает игрушки в ряд, подолгу крутит колёса'],
+    ['Сөздер мен фразаларды қайталай береді', 'Повторяет одни и те же слова или фразы'],
+    ['Бірдей қимылдар: қолын бұлғайды, тербеледі, айналады', 'Одинаковые движения: машет руками, раскачивается, кружится'],
+    ['Кішкене өзгерістерден қатты ренжиді', 'Сильно расстраивается из-за мелких изменений'],
+    ['Дыбысқа, иіске, матаға, дәмге тым қатты немесе тым әлсіз әсер етеді', 'Слишком сильно или слабо реагирует на звуки, запахи, ткани, вкус'],
+    ['Бір нәрсеге ерекше қатты әуес', 'Очень сильный узкий интерес к одному']]],
+};
+// self-check: [kk, ru, risky answer]
+const AUT_Q = [
+  ['Сізбен сөйлескенде не ойнағанда көзіңізге қарай ма?', 'Смотрит ли вам в глаза, когда вы говорите или играете?', 'n'],
+  ['Атын атағанда бұрылып қарай ма?', 'Оборачивается ли, когда вы зовёте по имени?', 'n'],
+  ['Қызықты нәрсені сізге саусақпен көрсете ме (сұрау үшін ғана емес)?', 'Показывает ли пальцем, чтобы поделиться интересным (не только попросить)?', 'n'],
+  ['Бір нәрсені сізге көрсету үшін әкеле ме?', 'Приносит ли вещи, чтобы показать их вам?', 'n'],
+  ['Сіз саусақпен көрсеткен жаққа қарай ма?', 'Смотрит ли туда, куда вы показываете пальцем?', 'n'],
+  ['Сізге еліктей ме (қол бұлғау, шапалақтау, әрекетті қайталау)?', 'Подражает ли вам (машет, хлопает, повторяет действия)?', 'n'],
+  ['«Жасанды» ойын ойнай ма (қуыршақты тамақтандыру, ойыншық телефонмен сөйлесу)?', 'Играет ли «понарошку» (кормит куклу, «говорит» по игрушечному телефону)?', 'n'],
+  ['Сіздің күлкіңізге күлкімен жауап бере ме?', 'Улыбается ли в ответ на вашу улыбку?', 'n'],
+  ['Басқа балаларға қызығады ма?', 'Интересуется ли другими детьми?', 'n'],
+  ['Ерекше қайталанатын қимылдар бар ма (бетінің жанында қол бұлғау, тербелу, айналу)?', 'Бывают ли необычные повторяющиеся движения (машет руками у лица, раскачивается, кружится)?', 'y'],
+  ['Кәдімгі дыбыстарға тым қатты әсер ете ме (құлағын жабады, жылайды)?', 'Очень сильно реагирует на обычные звуки (закрывает уши, плачет)?', 'y'],
+  ['Бұрын болған сөздерін не дағдыларын жоғалтты ма?', 'Терял ли ребёнок слова или навыки, которые уже были?', 'y'],
+];
+const AUT_WHAT = [
+  ['Педиатр', 'Белгілерді айтып, төмендегі есепті көрсетіңіз. 18 және 24 айда аутизмге скрининг жасауды сұраңыз.', 'Педиатр', 'Расскажите о признаках и покажите отчёт ниже. Попросите скрининг на аутизм в 18 и 24 месяца.'],
+  ['Есту тексеруі', 'Атына жауап бермеу естудің нашарлығынан да болуы мүмкін — сурдологқа тексеріңіз.', 'Проверка слуха', 'Ребёнок может не откликаться из-за плохого слуха — проверьте у сурдолога.'],
+  ['Балалар неврологы мен психиатры', 'Аутизм (АСБ) диагнозын тексеруден кейін дәрігер қояды. Сенімді диагноз көбіне 18–24 айдан бастап қойылады.', 'Детский невролог и психиатр', 'Диагноз РАС ставит врач после осмотра. Достоверно его часто ставят уже с 18–24 месяцев.'],
+  ['ПМПК', 'Тегін. Қорытынды мен ұсыныс береді, тегін сабақтарға жолдама береді.', 'ПМПК', 'Бесплатно. Даёт заключение и рекомендации, направление на бесплатные занятия.'],
+  ['ППТК және оңалту орталықтары', 'Логопед, психолог, дефектологпен тегін сабақтар.', 'КППК и центры реабилитации', 'Бесплатные занятия с логопедом, психологом, дефектологом.'],
+  ['Үйде бүгіннен бастаңыз', 'Диагнозды күтпей, күнде қарым-қатынас ойындарын ойнаңыз — ерте көмек ең тиімді.', 'Начните дома сегодня', 'Не ждите диагноза: каждый день играйте в игры на общение — ранняя помощь самая эффективная.'],
+];
+const AUT_HELP = {
+  good: [
+    ['Ерте мінез-құлық және дамыту бағдарламалары (ABA, Денвер моделі — ESDM)', 'Ранние поведенческие и развивающие программы (ABA, Денверская модель — ESDM)'],
+    ['Логопедпен сабақтар — сөйлеу мен түсінуді дамыту', 'Занятия с логопедом — речь и понимание'],
+    ['Эрготерапия және сенсорлық ерекшеліктерге көмек', 'Эрготерапия и помощь с сенсорными особенностями'],
+    ['Ата-аналарды оқыту: ДДСҰ-ның ата-аналарға арналған бағдарламасы (Caregiver Skills Training)', 'Обучение родителей: программа ВОЗ для родителей (Caregiver Skills Training)'],
+    ['Көрнекі кесте, карточкалар (PECS) — сөз әлі жоқ кезде қарым-қатынас үшін', 'Визуальное расписание и карточки (PECS) — общение, пока слов ещё нет'],
+    ['Дәрілерді тек дәрігер тағайындайды — ұйқы, қатты ашушаңдық сияқты қосымша мәселелерге, аутизмнің өзіне емес', 'Лекарства назначает только врач — при сопутствующих проблемах (сон, сильная раздражительность), а не «от аутизма»'],
+  ],
+  bad: [
+    ['Хелация, «бағаналы жасушалар», MMS/хлор ішкізу — қауіпті', 'Хелация, «стволовые клетки», MMS/хлор внутрь — опасно'],
+    ['Көрсеткішсіз қатаң диеталар мен қымбат БАД-тар «аутизмнен» — дәлелі жоқ', 'Строгие диеты без показаний и дорогие БАДы «от аутизма» — пользы не доказано'],
+    ['«Толық емдейміз» деген уәделер — аутизм таблеткамен емделмейді', 'Обещания «полностью вылечим» — аутизм не лечится таблетками'],
+    ['Екпелер аутизм тудырмайды — мұны үлкен зерттеулер дәлелдеген', 'Прививки не вызывают аутизм — это доказано большими исследованиями'],
+  ],
+};
+const AUT_VIDEOS = [   // [emoji, kk title, ru title, 'kk query|ru query']
+  ['🔎', 'Аутизмнің ерте белгілері', 'Ранние признаки аутизма', 'аутизм ерте белгілері|ранние признаки аутизма у детей до 3 лет'],
+  ['🧩', 'Аутизм деген не — қарапайым тілмен', 'Что такое аутизм простыми словами', 'аутизм деген не|что такое аутизм простыми словами для родителей'],
+  ['👉', 'Бірлескен назар: ойындар', 'Совместное внимание: игры дома', 'аутизм бірлескен назар ойын|совместное внимание аутизм игры с ребенком'],
+  ['🗣', 'Сөйлеуді қалай дамытуға болады', 'Как запустить речь', 'аутизм сөйлеу дамыту логопед|как запустить речь у ребенка с аутизмом логопед'],
+  ['🎯', 'ABA — ата-аналарға арналған негіздер', 'ABA для родителей: основы', 'ABA терапия ата-аналарға|ABA терапия для родителей основы'],
+  ['🌱', 'Денвер моделі (ESDM)', 'Денверская модель (ESDM)', 'денверская модель ESDM|денверская модель раннего вмешательства ESDM для родителей'],
+  ['🎧', 'Сенсорлық ерекшеліктер', 'Сенсорные особенности: как помочь', 'аутизм сенсорлық|сенсорные особенности аутизм как помочь ребенку'],
+  ['🌧', 'Ашу-ыза және мінез-құлық', 'Истерики и трудное поведение', 'аутизм ашу-ыза|аутизм истерики как помочь ребенку'],
+  ['🗂', 'Көрнекі кесте және PECS', 'Визуальное расписание и PECS', 'PECS карточки|PECS карточки визуальное расписание аутизм'],
+  ['🌍', 'ДДСҰ: ата-аналарға арналған бағдарлама', 'Программа ВОЗ для родителей', 'WHO caregiver skills training autism|программа ВОЗ для родителей детей с аутизмом'],
+];
+const autT = () => S.lang === 'kk' ? {
+  title: 'Аутизм: ерте белгілері', sub: 'Неғұрлым ерте байқасаңыз, соғұрлым көмек тиімді. Аутизм — дамудың ерекшелігі, таблеткамен емделмейді, бірақ ерте сабақтар көп көмектеседі.',
+  redT: 'Жас бойынша алаңдататын белгілер', signsT: 'Аутизм қалай байқалуы мүмкін', oneSign: 'Бір белгі әлі аутизм дегенді білдірмейді. Бірнеше белгі болса — дәрігермен ақылдасыңыз.',
+  qT: '2 минуттық өзін-өзі тексеру', qSub: '16 айдан 3 жасқа дейінгі балаларға. Бұл тест те, диагноз да емес — белгілерді өткізіп алмау үшін қарапайым тізім.',
+  yes: 'Иә', no: 'Жоқ', answered: (a, n) => `${a} / ${n} жауап`, reset: 'Қайта бастау',
+  r0: 'Алаңдататын белгілер аз. Дамуын бақылай беріңіз.', r1: 'Кейбір белгілер бар. Педиатрмен ақылдасып, ресми M-CHAT-R/F сауалнамасын өтіңіз.', r2: 'Бірнеше белгі бар. Жақын арада педиатрға барып, невролог пен психиатрға жолдама сұраңыз. Күтпеңіз.',
+  mchat: 'Ресми M-CHAT-R/F сауалнамасы (16–30 ай)', report: 'Дәрігерге арналған есеп', copy: 'Мәтінді көшіру', copied: 'Көшірілді',
+  whatT: 'Белгілер болса — Қазақстанда не істеу керек', helpT: 'Аутизмі бар балаларға қалай көмектеседі', goodT: 'Тиімділігі дәлелденген', badT: 'Пайдасыз немесе қауіпті',
+  vidT: 'Видеосабақтар', vidNote: 'Сілтемелер YouTube іздеуіне апарады. Дәрігерлердің, логопедтердің, орталықтардың видеоларын таңдаңыз; «толық емдейміз» дегенге сенбеңіз.',
+  map: 'Жақын ПМПК мен ППТК-ны табу', homeT: 'Аутизм белгілері: 2 минутта тексеріңіз', homeP: 'Ерте белгілер, тексеру, не істеу керек және видеосабақтар', homeBtn: 'Ашу',
+  foot: 'Бұл бөлім ақпарат үшін, диагноз емес. Белгілер CDC мен AAP материалдары бойынша.', child: 'Бала', age: 'Жасы', risk: 'Алаңдататын жауаптар',
+} : {
+  title: 'Аутизм: ранние признаки', sub: 'Чем раньше заметить, тем лучше помощь. Аутизм — особенность развития, его не лечат таблеткой, но ранние занятия очень помогают.',
+  redT: 'Тревожные признаки по возрасту', signsT: 'Как может проявляться аутизм', oneSign: 'Один признак ещё не значит аутизм. Если признаков несколько — обсудите с врачом.',
+  qT: 'Самопроверка за 2 минуты', qSub: 'Для детей от 16 месяцев до 3 лет. Это не тест и не диагноз — простой список, чтобы не пропустить признаки.',
+  yes: 'Да', no: 'Нет', answered: (a, n) => `${a} из ${n} ответов`, reset: 'Начать заново',
+  r0: 'Тревожных признаков мало. Продолжайте следить за развитием.', r1: 'Есть некоторые признаки. Обсудите с педиатром и пройдите официальный опросник M-CHAT-R/F.', r2: 'Признаков несколько. В ближайшее время сходите к педиатру и попросите направление к неврологу и психиатру. Не ждите.',
+  mchat: 'Официальный опросник M-CHAT-R/F (16–30 мес)', report: 'Отчёт для врача', copy: 'Скопировать текст', copied: 'Скопировано',
+  whatT: 'Если есть признаки — что делать в Казахстане', helpT: 'Как помогают детям с аутизмом', goodT: 'Доказанная помощь', badT: 'Бесполезно или опасно',
+  vidT: 'Видеоуроки', vidNote: 'Ссылки ведут на поиск YouTube. Выбирайте видео врачей, логопедов, центров; не верьте обещаниям «вылечить полностью».',
+  map: 'Найти ближайшие ПМПК и КППК', homeT: 'Признаки аутизма: проверьте за 2 минуты', homeP: 'Ранние признаки, самопроверка, что делать и видеоуроки', homeBtn: 'Открыть',
+  foot: 'Раздел носит информационный характер и не ставит диагноз. Признаки — по материалам CDC и AAP.', child: 'Ребёнок', age: 'Возраст', risk: 'Тревожные ответы',
+};
+const autAns = c => bucket(S.aut || (S.aut = {}), c.id);
+function autScore(c) { const A = autAns(c); let r = 0, n = 0; AUT_Q.forEach((q, i) => { if (A[i]) { n++; if (A[i] === q[2]) r++; } }); return { r, n, lost: A[11] === 'y' }; }
+function autLevel(s) { return s.lost || s.r >= 4 ? 2 : s.r >= 2 ? 1 : 0; }
+function autHomeCard(c) {
+  const m = corrM(c); if (m < 6 || m > 72) return '';
+  const t = autT(), s = autScore(c), lv = s.n ? autLevel(s) : -1;
+  return `<div class="banner ${lv === 2 ? 'bad' : lv === 1 ? 'warn' : 'info'} aut-home"><b>🧩 ${t.homeT}</b><p>${lv >= 0 ? [t.r0, t.r1, t.r2][lv] : t.homeP}</p><button class="btn primary sm" type="button" id="go-aut" style="justify-self:start">${t.homeBtn} →</button></div>`;
+}
+function autReport(c) {
+  const t = autT(), A = autAns(c), k = li(), s = autScore(c);
+  return [`QUŞAQ — ${t.title}`, `${t.child}: ${c.name}`, `${t.age}: ${ageTxt(corrM(c))}`, `${t.risk}: ${s.r} / ${s.n}`, '',
+    ...AUT_Q.map((q, i) => `${A[i] === q[2] ? '⚠️' : A[i] ? '✓' : '·'} ${q[k]} — ${A[i] === 'y' ? t.yes : A[i] === 'n' ? t.no : '—'}`), '', t.foot].join('\n');
+}
+function aut() {
+  const t = autT(), c = child(), k = li(), A = autAns(c), s = autScore(c), lv = s.n ? autLevel(s) : -1;
+  return `
+    ${subnav('dev')}
+    ${childPicker()}
+    <div class="card">
+      <span class="eyebrow">${esc(c.name)} · ${ageTxt(corrM(c))}</span>
+      <h1 class="h1">🧩 ${t.title}</h1>
+      <p class="small muted">${t.sub}</p>
+    </div>
+    <div class="card"><h2 class="h2">${t.redT}</h2>
+      <ul class="aut-red">${AUT_RED.map(r => `<li class="${r[0] === '!' ? 'urgent' : ''}"><span class="aut-age">${r[0] === '!' ? '⚠️' : r[0] + (k ? ' мес' : ' ай')}</span><span>${r[0] === '!' ? r[1 + k] : r[1 + k].replace(/^[^:]+:\s*/, '')}</span></li>`).join('')}</ul>
+    </div>
+    <div class="card"><h2 class="h2">${t.signsT}</h2>
+      ${Object.values(AUT_SIGNS).map(g => `<h3 class="h3">${g[k]}</h3><ul class="aut-list">${g[2].map(x => `<li>${x[k]}</li>`).join('')}</ul>`).join('')}
+      <p class="small muted">${t.oneSign}</p>
+    </div>
+    <div class="card" id="aut-q"><h2 class="h2">${t.qT}</h2><p class="small muted">${t.qSub}</p>
+      ${isEx() ? `<div class="banner info"><p>${L().example}</p><button class="btn primary sm" type="button" data-add style="justify-self:start">＋ ${L().addChild}</button></div>` : ''}
+      <div class="aut-qs">${AUT_Q.map((q, i) => `<div class="aut-q${A[i] && A[i] === q[2] ? ' risk' : ''}"><p>${i + 1}. ${q[k]}</p>
+        <div class="aut-yn" role="group" aria-label="${esc(q[k])}">${['y', 'n'].map(v => `<button type="button" data-aq="${i}" data-av="${v}" aria-pressed="${A[i] === v}">${v === 'y' ? t.yes : t.no}</button>`).join('')}</div></div>`).join('')}</div>
+      <p class="small muted num">${t.answered(s.n, AUT_Q.length)}</p>
+      ${lv >= 0 ? `<div class="banner ${['info', 'warn', 'bad'][lv]}"><b>${[t.r0, t.r1, t.r2][lv]}</b>
+        <a class="btn line sm" href="https://mchatscreen.com/" target="_blank" rel="noopener" style="justify-self:start">${t.mchat} ↗</a></div>
+        <div class="row"><button class="btn soft sm" type="button" id="aut-copy">📋 ${t.copy}</button><button class="link small" type="button" id="aut-reset">${t.reset}</button></div>
+        <textarea id="aut-rep" class="aut-rep" readonly aria-label="${t.report}">${esc(autReport(c))}</textarea>` : ''}
+    </div>
+    <div class="card"><h2 class="h2">${t.whatT}</h2>
+      <ol class="steps">${AUT_WHAT.map(w => `<li><div class="card flat"><h3 class="h3">${w[k ? 2 : 0]}</h3><p class="small">${w[k ? 3 : 1]}</p></div></li>`).join('')}</ol>
+      <button class="btn primary sm" type="button" id="aut-map" style="justify-self:start">📍 ${t.map}</button>
+    </div>
+    <div class="card"><h2 class="h2">${t.helpT}</h2>
+      <h3 class="h3">✅ ${t.goodT}</h3><ul class="aut-list">${AUT_HELP.good.map(x => `<li>${x[k]}</li>`).join('')}</ul>
+      <h3 class="h3">⛔ ${t.badT}</h3><ul class="aut-list bad">${AUT_HELP.bad.map(x => `<li>${x[k]}</li>`).join('')}</ul>
+    </div>
+    <div class="card"><h2 class="h2">🎬 ${t.vidT}</h2><p class="small muted">${t.vidNote}</p>
+      <div class="aut-vids">${AUT_VIDEOS.map(v => { const q = v[3].split('|'); return `<a class="aut-vid" href="${ytUrl(q[k] || q[1])}" target="_blank" rel="noopener"><span aria-hidden="true">${v[0]}</span><b>${v[1 + k]}</b><small>YouTube ↗</small></a>`; }).join('')}</div>
+    </div>
+    <p class="small muted">${t.foot}</p>
+    ${legal()}`;
+}
+function bindAut() {
+  const c = child(), keep = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
+  document.querySelectorAll('[data-aq]').forEach(b => b.addEventListener('click', () => {
+    if (isEx()) { ui.form = 'new'; S.tab = 0; render(); window.scrollTo(0, 0); return; }
+    const A = autAns(c), i = b.dataset.aq; A[i] = A[i] === b.dataset.av ? undefined : b.dataset.av; if (!A[i]) delete A[i];
+    save(); keep();
+  }));
+  $('#aut-reset')?.addEventListener('click', () => { S.aut[c.id] = {}; save(); keep(); });
+  $('#aut-copy')?.addEventListener('click', () => {
+    const ta = $('#aut-rep'), sel = () => { ta.focus(); ta.select(); toast(L().selected); };
+    try { navigator.clipboard.writeText(ta.value).then(() => toast(autT().copied), sel); } catch (e) { sel(); }
+  });
+  $('#aut-map')?.addEventListener('click', () => go(4));
+}
 function help() {
   const t = L(), c = child(), F = S.flags[c.id] || [], k = S.lang === 'kk';
   return `
@@ -3194,7 +3383,7 @@ function bindDiary() {
 
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
-const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()], [vax, bindVax], [growth, bindGrowth]];
+const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()], [vax, bindVax], [growth, bindGrowth], [aut, bindAut]];
 function mom() { return `<div id="mom" class="stack"><nav class="mtabs" id="mom-tabs" aria-label="${L().momT}"></nav><div id="mom-app"></div><div id="mom-sheet"></div></div>${legal()}`; }
 function render() {
   if (S.cur && !S.children.find(c => c.id === S.cur)) S.cur = S.children[0]?.id || null;
