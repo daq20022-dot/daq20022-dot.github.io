@@ -429,6 +429,13 @@
   .sbody h2 { font-size: 28px; font-weight: 800; line-height: 1.15; }
   .sbody p { font-size: 18px; line-height: 1.5; }
   .sbody .btn { pointer-events: auto; justify-self: start; background: #2A1520; color: #FFFFFF; }
+  .ask-sheet { max-height: 86vh; grid-template-columns: minmax(0, 1fr); }
+  .ask-log { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; max-height: 46vh; overflow: auto; padding: 2px; }
+  .ask-me { justify-self: end; max-width: 85%; background: var(--accent); color: var(--accent-fg); padding: 10px 14px; border-radius: 18px 18px 4px 18px; font-weight: 600; }
+  .ask-bot { justify-self: start; max-width: 92%; background: var(--surface); padding: 12px 14px; border-radius: 18px 18px 18px 4px; box-shadow: inset 0 0 0 1.5px var(--line); display: grid; gap: 10px; }
+  .ask-bot p { margin: 0; line-height: 1.45; }
+  .ask-form { display: flex; gap: 8px; }
+  .ask-form input { flex: 1; min-width: 0; font: inherit; padding: 11px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: inherit; }
   .lsheet-bg { position: fixed; inset: 0; z-index: 55; background: rgba(42,10,26,.42); display: flex; align-items: flex-end; justify-content: center; animation: fadeIn .2s ease; }
   .fsheet { background: var(--bg); width: 100%; max-width: 600px; max-height: 90vh; overflow: auto; border-radius: 28px 28px 0 0; display: grid; gap: 14px;
     padding: 10px 18px calc(env(safe-area-inset-bottom, 0px) + 20px); animation: sheetUp .35s cubic-bezier(.2,.8,.2,1); }
@@ -567,6 +574,7 @@
       <div><b>QUŞAQ</b><small id="sub"></small></div>
     </div>
     <div class="row" style="flex-wrap:nowrap;gap:8px">
+    <button type="button" class="sndbtn" id="askOpen" aria-label="Помощник / Көмекші">💬</button>
     <button type="button" class="sndbtn" id="snd" aria-pressed="true" aria-label="Music">🎵</button>
     <div class="seg" role="group" aria-label="Тіл / Язык">
       <button type="button" id="lang-kk" data-lang="kk">ҚАЗ</button>
@@ -1973,7 +1981,7 @@ function learn() {
   return `<div class="stack" style="padding-top:8px">
     <div><h1>${x.learn}</h1><p class="small muted">${x.learnNote}</p></div>
     <div class="card"><h3>💬 ${x.assist}</h3><p class="small muted">${x.assistNote}</p>
-      <div class="chat" id="chat">${ui.chat.map(m => `<div class="qa ${m[0]}">${esc(m[1])}</div>`).join('')}</div>
+      <div class="chat" id="chat">${ui.chat.map(m => typeof m[1] === 'object' ? `<div class="qa ${m[0]}">${esc(m[1].text)}${m[1].go != null ? `<br><button class="btn soft sm" type="button" data-chgo="${m[1].go}" style="margin-top:8px">${S.lang === 'ru' ? 'Открыть' : 'Ашу'} →</button>` : ''}</div>` : `<div class="qa ${m[0]}">${esc(m[1])}</div>`).join('')}</div>
       <form class="row" id="ask" style="flex-wrap:nowrap"><input id="ask-in" class="field" style="flex:1;border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;background:var(--surface)" placeholder="${x.ask}" maxlength="200" autocomplete="off"><button class="btn sm" type="submit">${x.send}</button></form></div>
     ${ARTS.map((a, i) => `<details class="art"><summary><span class="ic">${a[0]}</span><span>${a[1][k]}</span><span class="chev">›</span></summary><div class="body"><ul>${a[2][k].map(s => `<li>${s}</li>`).join('')}</ul></div></details>`).join('')}
     <div class="card"><h3>🔎 ${x.checkT}</h3><p class="small muted">${x.checkNote}</p><div class="stack" id="chk">${CHECK.map((q, i) => `<label class="row small" style="flex-wrap:nowrap;align-items:flex-start;font-weight:700"><input type="checkbox" data-chk="${i}" style="margin-top:3px"> ${q[k]}</label>`).join('')}</div>
@@ -1981,9 +1989,10 @@ function learn() {
     <div class="banner warn"><b>🚑 ${x.flags}</b><ul class="small" style="margin:0;padding-left:18px">${x.flagList.map(f => `<li>${f}</li>`).join('')}</ul></div>
   </div>`;
 }
+function faq(q) { const k = S.lang === 'ru' ? 0 : 1; for (const [re, a] of FAQ) if (re.test(q)) return a[k]; return null; }
 function answer(q) {
-  const k = S.lang === 'ru' ? 0 : 1;
-  for (const [re, a] of FAQ) if (re.test(q)) return a[k];
+  const f = faq(q); if (f) return f;
+  if (HOST.ask) return HOST.ask(q);
   return S.lang === 'ru' ? 'Я пока знаю ответы о цикле, задержке, боли, овуляции, беременности, выделениях, ПМС и контрацепции. Попробуйте спросить об этом — а с личными вопросами лучше к врачу.'
     : 'Мен әзірге цикл, кешігу, ауру, овуляция, жүктілік, бөлініс, ЕАС және контрацепция туралы білемін. Солар туралы сұраңыз — жеке сұрақтар бойынша дәрігерге барған дұрыс.';
 }
@@ -2048,6 +2057,7 @@ function bindAll() {
   $('#mark-end') && ($('#mark-end').onclick = () => { endPeriod(ui.sel || today()); save(); toast(t().saved); render(); });
   $('#rep') && ($('#rep').onclick = openReport);
   if ($('#ask')) $('#ask').onsubmit = e => { e.preventDefault(); const q = $('#ask-in').value.trim(); if (!q) return; ui.chat.push(['me', q], ['bot', answer(q)]); ui.chat = ui.chat.slice(-10); render(); $('#chat')?.scrollIntoView({ block: 'end' }); };
+  document.querySelectorAll('[data-chgo]').forEach(b => b.onclick = () => HOST.go(+b.dataset.chgo));
   if ($('#chk-go')) $('#chk-go').onclick = () => {
     const sel = [...document.querySelectorAll('[data-chk]')].filter(c => c.checked).map(c => +c.dataset.chk), ru = S.lang === 'ru';
     const pcos = sel.filter(i => i <= 2).length, endo = sel.filter(i => i === 3 || i === 4).length, inf = sel.includes(5);
@@ -2101,8 +2111,8 @@ function setup(o) {
 }
 function back() { if (S.tab === 0) return false; S.tab = 0; save(); render(); scrollTo(0, 0); return true; }
 function openDay(ds) { S.tab = 1; ui.sel = ds; ui.month = ds.slice(0, 7); save(); }
-return { render, summary, info, setup, back, openDay, atRoot: () => S.tab === 0 };
-})({ lang: () => S.lang, changed: () => updBack() });
+return { render, summary, info, setup, back, openDay, faq, atRoot: () => S.tab === 0 };
+})({ lang: () => S.lang, changed: () => updBack(), ask: q => askAnswer(q), go: i => go(i) });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
@@ -3382,6 +3392,121 @@ function bindDiary() {
   document.querySelectorAll('[data-photo]').forEach(img => PDB.get(img.dataset.photo).then(u => { if (u) img.src = u; else img.remove(); }).catch(() => img.remove()));
 }
 
+/* ---------- QUŞAQ assistant: understands questions about the whole app (kk/ru), answers and opens the right screen.
+   Rule-based (works offline, no data leaves the phone): topic keywords → answer + «open section» button;
+   then the women's-health FAQ of the Mom module, then game titles, then an overview of all sections. ---------- */
+// [id, keyword regex, tab | null, kk answer, ru answer]
+const ASK_TOPICS = [
+  ['aut', /аутизм|аутист|\bрас\b|m-?chat|смотрит в глаз|глаза не смотр|зрительн|не откликается|не реагирует на имя|машет руками|раскачива|көзге қарамайды|атына қарамайды/, 10,
+    '«Аутизм» бөлімінде: жас бойынша алаңдататын белгілер, 2 минуттық өзін-өзі тексеру, Қазақстанда не істеу керек және видеосабақтар.',
+    'В разделе «Аутизм»: тревожные признаки по возрасту, самопроверка за 2 минуты, что делать в Казахстане и видеоуроки.'],
+  ['games', /игр|игра|поигр|чем занять|занятия с|развивающ|ойын|ойна|ермек/, 2,
+    'Төменгі панельде «Ойындар» қойындысы бар: күнде 10 минут ойын, баланың жасына сай суретті ойындар, күн ойыны. Кез келген күнді таңдауға болады.',
+    'Внизу есть вкладка «Игры»: «10 минут игры каждый день», игры с картинками по возрасту ребёнка и игра дня. Можно выбрать любую дату.'],
+  ['grow', /рост|вес|сантиметр|килограм|перцентил|\bвоз\b|худой|толст|бойы|салмақ|өсу/, 9,
+    '«Даму» → «Бой»: бойы мен салмағын енгізіңіз — ДДСҰ графигінде бала нормамен салыстырылады.',
+    '«Развитие» → «Рост»: внесите рост и вес — ребёнок сравнивается с нормами ВОЗ на графике.'],
+  ['check', /провер|развити|навык|что должен|должен уметь|умеет|отстаёт|отстает|тексер|даму|дағды|не істеуі керек/, 1,
+    '«Даму» → «Тексеру»: жасына сай 5–10 сұраққа жауап беріңіз — нәтиже «Қалыпты» не «Талқылау керек» болып шығады, дәрігерге есеп жасалады.',
+    '«Развитие» → «Проверка»: ответьте на вопросы по возрасту — получите «Норма» или «Стоит обсудить» и готовый отчёт для врача.'],
+  ['vax', /привив|вакцин|екпе|укол|бцж|корь|гепатит|полиомиел/, 8,
+    '«Даму» → «Екпелер»: ҚР ұлттық екпе күнтізбесі (№612 бұйрық), келесі екпе күні, белгілеу және телефон күнтізбесіне қосу.',
+    '«Развитие» → «Прививки»: национальный календарь РК (Приказ №612), дата следующей прививки, отметки и добавление в календарь телефона.'],
+  ['help', /врач|доктор|педиатр|невролог|логопед|пмпк|кппк|ппк|103|скор|опасн|тревож|срочн|дәрігер|жедел|қауіп/, 4,
+    '«Даму» → «Көмек»: бірден дәрігерге бару керек белгілер, қайда жүгіну керек, жақын ПМПК мен ППТК-ны табу және не алып бару керек.',
+    '«Развитие» → «Помощь»: признаки, с которыми идти к врачу сразу, куда обращаться, поиск ближайших ПМПК и КППК и что взять с собой.'],
+  ['diary', /дневник|запис|первое слово|первые шаги|зуб|фото|күнделік|алғашқы сөз|тіс|қадам/, 5,
+    '«Күнделік»: алғашқы сөз, қадам, тіс, бой мен салмақ, фото. Басты экрандағы «Күнделік» тақтасы немесе «＋ Белгілеу» батырмасы.',
+    '«Дневник»: первое слово, первые шаги, зубы, рост и вес, фото. Плитка «Дневник» на главной или кнопка «＋ Отметить».'],
+  ['care', /уход|новорожд|корм|грудн|молок|пупок|купа|колик|срыгив|емізу|сүт|нәресте|күтім|кіндік/, 6,
+    '«Білім» → «Күтім»: жаңа туған нәрестені күту және босанғаннан кейінгі ана, 103-ке қашан қоңырау шалу керек.',
+    '«Знания» → «Уход»: уход за новорождённым и за мамой после родов, когда сразу звонить 103.'],
+  ['learn', /урок|знани|стать|миф|экран|гаджет|мультик|телефон ребенк|сон|спать|прикорм|книг|речь|говорит|слов|сабақ|білім|ұйқы|кітап|сөйле/, 3,
+    '«Білім» → «Сабақтар»: сөйлеу, ұйқы, гаджеттер, екі тіл, қосымша тамақ туралы сабақтар және «Мифтер мен шындық».',
+    '«Знания» → «Уроки»: речь, сон, экраны, два языка, прикорм и «Мифы и правда».'],
+  ['mom', /мама|мать|цикл|месячн|менстр|овуляц|беремен|роды|послерод|етеккір|жүкті|босан|ана денсаулығы/, 7,
+    '«Ана» қойындысы: әйел денсаулығы күнтізбесі — цикл, жүктілік, күйі, есептер және көмекші.',
+    'Вкладка «Мама»: календарь женского здоровья — цикл, беременность, самочувствие, отчёты.'],
+  ['backup', /копи|backup|перенес|новый телефон|восстанов|не потерять|сақтық|көшірме|қалпына/, 0,
+    'Басты экранның төменгі жағында «Сақтық көшірме» картасы бар: деректерді файлға сақтап, жаңа телефонда қалпына келтіресіз.',
+    'Внизу главного экрана есть карточка «Резервная копия»: сохраните данные в файл и восстановите их на новом телефоне.'],
+  ['notif', /уведомл|напомин|оповещ|будильник|хабарланд|еске сал/, 0,
+    'Басты экранның төменгі жағындағы баптауларда хабарландыруларды қосуға және еске салғыштарды күнтізбеге қосуға болады.',
+    'Внизу главного экрана, в настройках, можно включить уведомления и добавить напоминания в календарь телефона.'],
+  ['child', /добав(ить|ь) ребен|профил|имя ребен|дата рожд|второго ребен|ещё один|еще один|недонош|скорр|бала қос|туған күн|шала туған/, 0,
+    'Басты экранда: «✎ Өзгерту» — аты мен туған күні, «＋ Тағы бір бала» — жаңа профиль. 37 аптадан ерте туса, аптасын көрсетіңіз — жасы түзетіледі.',
+    'На главной: «✎ Изменить» — имя и дата рождения, «＋ Ещё один малыш» — новый профиль. Если родился раньше 37 недель, укажите неделю — возраст будет скорректирован.'],
+  ['lang', /язык|казах|русск|перевод|тема|тёмн|темн|ночн|музык|звук|тіл|қазақша|орысша|түнгі/, null,
+    'Тіл — жоғарғы оң жақтағы ҚАЗ / РУС. Музыка — 🎵 батырмасы. Түнгі тақырып — басты экрандағы баптауларда.',
+    'Язык — вверху справа ҚАЗ / РУС. Музыка — кнопка 🎵. Тёмная тема — в настройках внизу главного экрана.'],
+  ['app', /установ|скача|иконк|на телефон|офлайн|без интернет|бесплатн|цена|стоит|данн|приват|регистр|безопас|орнат|тегін|интернетсіз|дерек/, null,
+    'QUŞAQ тегін, тіркелусіз. Барлық дерек тек сіздің телефоныңызда. Орнату: браузер мәзірі → «Басты экранға қосу». Бір рет ашқан соң интернетсіз жұмыс істейді.',
+    'QUŞAQ бесплатный и без регистрации. Все данные хранятся только на вашем телефоне. Установка: меню браузера → «На экран Домой». После первого открытия работает без интернета.'],
+  ['date', /дата|календар|другой день|вчера|завтра|недел|күн таңда|кеше|ертең|апта/, null,
+    'Күнді ауыстыру: басты экран мен «Ойындар» бөліміндегі ‹ › батырмалары (апта бойынша), «Бүгін» және 📅 — кез келген күн.',
+    'Сменить дату: стрелки ‹ › на главной и в «Играх» листают недели, «Сегодня» возвращает, а 📅 открывает любую дату.'],
+];
+const ASK_SECTIONS = [[0, '🏠', 'Бүгін', 'Сегодня'], [2, '🎲', 'Ойындар', 'Игры'], [1, '✅', 'Тексеру', 'Проверка'], [10, '🧩', 'Аутизм', 'Аутизм'], [9, '📏', 'Бой', 'Рост'],
+  [8, '💉', 'Екпелер', 'Прививки'], [4, '🧭', 'Көмек', 'Помощь'], [5, '📒', 'Күнделік', 'Дневник'], [3, '📚', 'Сабақтар', 'Уроки'], [6, '🍼', 'Күтім', 'Уход'], [7, '🌸', 'Ана', 'Мама']];
+const askT = () => S.lang === 'kk' ? {
+  title: 'QUŞAQ көмекшісі', menu: 'QUŞAQ-та мына бөлімдер бар — керегін басыңыз:', hello: 'Сәлеметсіз бе! QUŞAQ туралы кез келген сұрақ қойыңыз: бөлімді тауып, ашып беремін. Мысалы: «ойындар», «екпелер», «бойы мен салмағы».',
+  ph: 'Сұрағыңыз…', send: 'Сұрау', open: 'Ашу', none: 'Нақты жауап таппадым. QUŞAQ-та мына бөлімдер бар:', also: 'Сондай-ақ:',
+  game: (n, a) => `«${n}» ойыны — «Ойындар» бөлімінде (${a}).`, close: 'Жабу', note: 'Көмекші дәрігерді алмастырмайды.',
+  chips: ['Ойындар', 'Екпелер', 'Аутизм', 'Бойы мен салмағы', 'Сақтық көшірме', 'Не істей аласың?'],
+} : {
+  title: 'Помощник QUŞAQ', menu: 'Вот что есть в QUŞAQ — нажмите нужный раздел:', hello: 'Здравствуйте! Спросите что угодно про QUŞAQ — найду и открою нужный раздел. Например: «игры», «прививки», «рост и вес».',
+  ph: 'Ваш вопрос…', send: 'Спросить', open: 'Открыть', none: 'Точного ответа не нашёл. Вот что есть в QUŞAQ:', also: 'Ещё может пригодиться:',
+  game: (n, a) => `Игра «${n}» — в разделе «Игры» (${a}).`, close: 'Закрыть', note: 'Помощник не заменяет врача.',
+  chips: ['Игры', 'Прививки', 'Аутизм', 'Рост и вес', 'Резервная копия', 'Что ты умеешь?'],
+};
+function askAnswer(q0) {
+  const q = ' ' + q0.toLowerCase().replace(/ё/g, 'е') + ' ', k = li(), t = askT();
+  if (/что (ты )?(умеешь|можешь)|что есть|какие раздел|меню|не істей|қандай бөлім|не бар/.test(q)) return { text: t.menu, sections: true };
+  const hits = ASK_TOPICS.filter(x => x[1].test(q));
+  // women's-health questions: the Mom module's own FAQ answers them in detail
+  const mf = MOM.faq && MOM.faq(q0);
+  if (mf && (!hits.length || hits[0][0] === 'mom')) return { text: mf, go: 7 };
+  if (hits.length) {
+    const [a, b] = hits;
+    return { text: a[3 + k] + (b && b[2] !== a[2] ? '\n\n' + t.also + ' ' + b[3 + k] : ''), go: a[2], go2: b && b[2] !== a[2] ? b[2] : null };
+  }
+  // a game by its name
+  const words = q.split(/[^a-zа-яәіңғүұқөһ0-9]+/i).filter(w => w.length >= 4);
+  for (const g of PLAY) for (const it of g.items) {
+    const nm = (it[0] + ' ' + it[2]).toLowerCase().replace(/ё/g, 'е');
+    if (words.some(w => nm.includes(w.slice(0, Math.max(4, w.length - 2))))) return { text: t.game(it[k ? 2 : 0], g.label[k]), go: 2 };
+  }
+  return { text: t.none, sections: true };
+}
+const askBtn = (i, label) => `<button type="button" class="btn soft sm" data-ask-go="${i}">${label} →</button>`;
+const secName = i => { const s = ASK_SECTIONS.find(x => x[0] === i); return s ? s[1] + ' ' + s[2 + li()] : ''; };
+function askMsg(m) {
+  if (m.me) return `<div class="ask-me">${esc(m.me)}</div>`;
+  const t = askT();
+  return `<div class="ask-bot"><p>${esc(m.text).replace(/\n/g, '<br>')}</p>
+    ${m.sections ? `<div class="lchips">${ASK_SECTIONS.map(s => `<button type="button" class="lchip" data-ask-go="${s[0]}"><span aria-hidden="true">${s[1]}</span>${s[2 + li()]}</button>`).join('')}</div>` : ''}
+    ${m.go != null ? `<div class="row">${askBtn(m.go, t.open + ': ' + secName(m.go))}${m.go2 != null ? askBtn(m.go2, secName(m.go2)) : ''}</div>` : ''}</div>`;
+}
+function openAsk() {
+  const t = askT(); ui.ask = ui.ask || [];
+  overlayHost().innerHTML = `<div class="lsheet-bg" id="ask-bg"><div class="fsheet ask-sheet" role="dialog" aria-modal="true" aria-labelledby="ask-t">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="row between"><h2 class="h2" id="ask-t">💬 ${t.title}</h2><button type="button" class="link small" id="ask-x">${t.close}</button></div>
+    <div class="ask-log" id="ask-log">${askMsg({ text: t.hello })}${ui.ask.map(askMsg).join('')}</div>
+    <div class="lchips">${t.chips.map(c => `<button type="button" class="lchip" data-ask-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+    <form class="ask-form" id="ask-f"><input id="ask-q" type="text" maxlength="200" autocomplete="off" placeholder="${t.ph}" aria-label="${t.ph}"><button class="btn primary sm" type="submit">${t.send}</button></form>
+    <p class="small muted">${t.note}</p>
+  </div></div>`;
+  pushNav({ ov: 1 });
+  const log = $('#ask-log'), send = q => { q = q.trim(); if (!q) return; ui.ask.push({ me: q }, askAnswer(q)); ui.ask = ui.ask.slice(-12);
+    log.innerHTML = askMsg({ text: t.hello }) + ui.ask.map(askMsg).join(''); bindGo(); log.scrollTop = log.scrollHeight; $('#ask-q').value = ''; };
+  const bindGo = () => document.querySelectorAll('#ask-bg [data-ask-go]').forEach(b => b.onclick = () => { dropOverlay(); go(+b.dataset.askGo); });
+  bindGo(); log.scrollTop = log.scrollHeight;
+  $('#ask-f').addEventListener('submit', e => { e.preventDefault(); send($('#ask-q').value); });
+  document.querySelectorAll('[data-ask-q]').forEach(b => b.addEventListener('click', () => send(b.dataset.askQ)));
+  $('#ask-x').addEventListener('click', closeOverlay);
+  $('#ask-bg').addEventListener('click', e => { if (e.target.id === 'ask-bg') closeOverlay(); });
+}
 function legal() { return `<footer class="legal">${L().legal.map(x => `<p>${x}</p>`).join('')}</footer>`; }
 
 const SCREENS = [[home, bindHome], [check, bindCheck], [play, bindPlay], [learn, () => {}], [help, bindHelp], [diary, bindDiary], [care, () => {}], [mom, () => MOM.render()], [vax, bindVax], [growth, bindGrowth], [aut, bindAut]];
@@ -3408,6 +3533,7 @@ function animateEnter(el, key) {
 }
 document.querySelectorAll('.seg button[data-lang]').forEach(b => b.addEventListener('click', () => { S.lang = b.dataset.lang; save(); render(); }));
 try { history.replaceState({ t: S.tab, st: null }, ''); } catch (e) {}
+$('#askOpen')?.addEventListener('click', openAsk);
 render();
 if (S.notif) syncNotifSchedule();
 </script>
