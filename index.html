@@ -1529,7 +1529,7 @@ const T = {
     sub: 'Календарь женского здоровья', tabs: ['Сегодня', 'Календарь', 'Анализ', 'Знания', 'Я'],
     hello: 'Здравствуйте', welcome: 'Ваш личный календарь цикла, овуляции и беременности.',
     privacy: 'Без регистрации. Все данные хранятся только на этом телефоне.',
-    goal: 'Что вы хотите отслеживать?', mCycle: 'Цикл', mTtc: 'Хочу забеременеть', mPreg: 'Беременность',
+    goal: 'Что вы хотите отслеживать?', mCycle: 'Цикл', mTtc: 'Хочу забеременеть', mPreg: 'Беременность', mParent: 'Родители', mParentD: 'Малыш уже родился: развитие, игры, прививки',
     mCycleD: 'Месячные, овуляция, самочувствие', mTtcD: 'Фертильные дни и шансы зачатия', mPregD: 'Неделя за неделей',
     lastStart: 'Первый день последних месячных', cycleLen: 'Длина цикла (дней)', periodLen: 'Длительность месячных (дней)',
     lmp: 'Первый день последних месячных до беременности', start: 'Начать', name: 'Имя (необязательно)',
@@ -1574,7 +1574,7 @@ const T = {
     sub: 'Әйел денсаулығының күнтізбесі', tabs: ['Бүгін', 'Күнтізбе', 'Талдау', 'Білім', 'Мен'],
     hello: 'Сәлеметсіз бе', welcome: 'Етеккір, овуляция және жүктілік бойынша жеке күнтізбеңіз.',
     privacy: 'Тіркеусіз. Барлық деректер тек осы телефонда сақталады.',
-    goal: 'Нені қадағалағыңыз келеді?', mCycle: 'Цикл', mTtc: 'Жүкті болғым келеді', mPreg: 'Жүктілік',
+    goal: 'Нені қадағалағыңыз келеді?', mCycle: 'Цикл', mTtc: 'Жүкті болғым келеді', mPreg: 'Жүктілік', mParent: 'Ата-ана', mParentD: 'Бала туылды: даму, ойындар, екпелер',
     mCycleD: 'Етеккір, овуляция, көңіл-күй', mTtcD: 'Құнарлы күндер және мүмкіндік', mPregD: 'Апта сайын',
     lastStart: 'Соңғы етеккірдің бірінші күні', cycleLen: 'Цикл ұзақтығы (күн)', periodLen: 'Етеккір ұзақтығы (күн)',
     lmp: 'Жүктілікке дейінгі соңғы етеккірдің бірінші күні', start: 'Бастау', name: 'Есіміңіз (міндетті емес)',
@@ -1762,7 +1762,7 @@ function onboard() {
     <div class="card" style="background:linear-gradient(140deg,#ffe3ec,#efe1fb);border:0">
       <p class="eyebrow">${x.hello}</p><h1>${x.welcome}</h1><p class="small muted">🔒 ${x.privacy}</p></div>
     <h2>${x.goal}</h2>
-    ${opt('cycle', x.mCycle, x.mCycleD, '🌙')}${opt('ttc', x.mTtc, x.mTtcD, '💗')}${opt('preg', x.mPreg, x.mPregD, '🤰')}
+    ${opt('cycle', x.mCycle, x.mCycleD, '🌙')}${opt('ttc', x.mTtc, x.mTtcD, '💗')}${opt('preg', x.mPreg, x.mPregD, '🤰')}${opt('parent', x.mParent, x.mParentD, '👨‍👩‍👧')}
     <form class="card" id="ob" novalidate>
       <div class="field"><label for="ob-name">${x.name}</label><input id="ob-name" maxlength="30" value="${esc(S.name)}" autocomplete="off"></div>
       <div class="field"><label for="ob-date">${md === 'preg' ? x.lmp : x.lastStart}</label><input id="ob-date" type="date" max="${today()}" min="${add(today(), md === 'preg' ? -300 : -120)}" value="${md === 'preg' ? (S.preg?.lmp || '') : (lastStart() || '')}" required></div>
@@ -1774,7 +1774,7 @@ function onboard() {
     <p class="legal">${x.disclaimer}</p></div>`;
 }
 function bindOnboard() {
-  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { S.mode = b.dataset.mode; save(); render(); });
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { if (b.dataset.mode === 'parent') return HOST.parent(); S.mode = b.dataset.mode; save(); render(); });
   $('#ob').onsubmit = e => {
     e.preventDefault(); const d = $('#ob-date').value;
     if (!d || d > today()) { $('#ob-err').textContent = '⚠ ' + (S.mode === 'preg' ? t().lmp : t().lastStart); return; }
@@ -2000,7 +2000,7 @@ function answer(q) {
 /* ---------- profile / settings ---------- */
 function profile() {
   const x = t();
-  const modes = [['cycle', x.mCycle], ['ttc', x.mTtc], ['preg', x.mPreg]];
+  const modes = [['cycle', x.mCycle], ['ttc', x.mTtc], ['preg', x.mPreg], ['parent', x.mParent]];
   return `<div class="stack" style="padding-top:8px">
     <h1>${x.me}</h1>
     <div class="card"><h3>${x.modeT}</h3><div class="chips">${modes.map(([k, n]) => `<button class="chip" data-setmode="${k}" aria-pressed="${S.mode === k}">${n}</button>`).join('')}</div>
@@ -2068,7 +2068,7 @@ function bindAll() {
     if (!msg.length) msg.push(ru ? 'Явных поводов для беспокойства по этим вопросам нет. Продолжайте отмечать цикл.' : 'Бұл сұрақтар бойынша алаңдауға айқын себеп жоқ. Циклді белгілей беріңіз.');
     $('#chk-out').innerHTML = `<div class="banner ${sel.length && msg.length && (pcos >= 2 || endo || inf) ? 'warn' : 'info'}">${msg.map(m => `<p class="small">${m}</p>`).join('')}<p class="small muted">${t().checkNote.split('.').slice(-2).join('.')}</p></div>`;
   };
-  document.querySelectorAll('[data-setmode]').forEach(b => b.onclick = () => { S.mode = b.dataset.setmode; if (S.mode === 'preg' && !S.preg) { S.onboarded = false; } else if (S.mode !== 'preg' && !lastStart()) { S.onboarded = false; } save(); render(); });
+  document.querySelectorAll('[data-setmode]').forEach(b => b.onclick = () => { if (b.dataset.setmode === 'parent') return HOST.parent(); S.mode = b.dataset.setmode; if (S.mode === 'preg' && !S.preg) { S.onboarded = false; } else if (S.mode !== 'preg' && !lastStart()) { S.onboarded = false; } save(); render(); });
   $('#st-save') && ($('#st-save').onclick = () => {
     if ($('#st-c')) { S.cycleLen = clampN(+$('#st-c').value, 18, 50, S.cycleLen); S.periodLen = clampN(+$('#st-p').value, 1, 12, S.periodLen); }
     if ($('#st-lmp') && $('#st-lmp').value) S.preg = { lmp: $('#st-lmp').value };
@@ -2112,7 +2112,8 @@ function setup(o) {
 function back() { if (S.tab === 0) return false; S.tab = 0; save(); render(); scrollTo(0, 0); return true; }
 function openDay(ds) { S.tab = 1; ui.sel = ds; ui.month = ds.slice(0, 7); save(); }
 return { render, summary, info, setup, back, openDay, faq, atRoot: () => S.tab === 0 };
-})({ lang: () => S.lang, changed: () => updBack(), ask: q => askAnswer(q), go: i => go(i) });
+})({ lang: () => S.lang, changed: () => updBack(), ask: q => askAnswer(q), go: i => go(i),
+  parent: () => { if (S.children.length) { S.stage = 'born'; save(); go(0); } else { ui.wz = { step: 2, stage: 'born' }; S.stage = null; save(); render(); window.scrollTo(0, 0); } } });
 /*/MOM-JS*/
 /* ---------- shell ---------- */
 // 4 tabs like Flo; the screens inside a tab are switched by the pill sub-tabs (subnav)
@@ -2543,7 +2544,7 @@ const STAGE_NAV = {
 };
 const stageNav = () => STAGE_NAV[S.stage] || STAGE_NAV.born;
 const tabOf = tab => Math.max(0, stageNav().groups.findIndex(g => g.includes(tab)));
-const tabLabels = () => L().tabsBy[S.stage] || L().tabs;
+const tabLabels = () => L().tabsBy[S.stage || 'born'] || L().tabs;
 const CONCERNS = [['speech', '🗣', 'Сөйлеуі', 'Речь'], ['move', '🏃', 'Қозғалысы', 'Движения'], ['sleep', '😴', 'Ұйқысы', 'Сон'],
   ['behav', '🧩', 'Мінез-құлқы', 'Поведение'], ['food', '🥣', 'Тамақтануы', 'Питание'], ['none', '😊', 'Бәрі жақсы', 'Всё хорошо']];
 const CONCERN_ART = { speech: 'speech', sleep: 'sleep', behav: 'puzzle', food: 'food', move: 'ear' };
